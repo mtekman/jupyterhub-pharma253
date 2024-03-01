@@ -1,0 +1,212 @@
+{% extends "templates/spawn.html" %}
+{% block main %}
+
+{{ super() }}
+<style>
+  thead { font-family: monospace; font-style: italic; }
+  form { display:grid; }
+  #curr_resource { position:absolute; bottom: 20px; right: 20px}
+  #usage_cont { border: solid black; border-radius: 20px;
+  text-align: center; background-color: #cdc;
+  box-shadow: 5px 5px 5px #888;}
+  #chart {position: absolute; top: 50px; left: 50px; width: 200px; height: 200px;}
+  table { border-spacing: 5px;  border-collapse: separate;
+  text-align:center;  margin-left: auto; margin-right: auto}
+  td,th { padding-left: 30px; }
+  #profile_cont { font-size: large; flex-direction: row; display:flex;
+  width: 90%; margin-left: auto; margin-right: auto}
+  #profile_cont select { box-shadow: 2px 2px 2px #888; flex-grow: 2;
+  margin-bottom: 5px;}
+  #profile_cont span { flex-grow: 4; }
+  #prealloc_message {margin-left:auto; margin-right:auto;
+  margin-top:6px; font-size:small;}
+  th { text-align:center; }
+  td input[type="number"] { margin-top: 10px; text-align:center;
+  border-radius: 10px;
+  border: 2px solid #555; width: 120px;}
+  td input[type="range"] {width: 150px;}
+</style>
+
+<svg id="chart"></svg>
+
+{% endblock %}
+
+{% block script %}
+<script type="module">
+  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+  // Function to fetch data from JSON endpoint
+  async function fetchData() {
+      const response = await fetch('https://jupyter.arnold-lab.com/hub/api/resources');
+      const data = await response.json();
+      return data;
+  }
+
+  // Function to create/update the bar plot
+  async function updatePlot() {
+      const data = await fetchData();
+      const svg = d3.select("#chart");
+
+      // Set up SVG dimensions
+      const width = 500;
+      const height = 300;
+      svg.attr("width", width).attr("height", height);
+
+      // Process data and update the plot
+      const bars = svg.selectAll("rect").data(data);
+
+      // Update existing bars
+      bars.attr("height", d => d.ram_used_gb)
+          .attr("width", 20) // or any desired width
+          .attr("fill", "red")
+          .attr("x", (d, i) => i * 25) // or any desired spacing
+          .attr("y", d => height - d.ram_used_gb);
+
+      // Enter new bars
+      bars.enter().append("rect")
+          .attr("height", d => d.ram_used_gb)
+          .attr("width", 20) // or any desired width
+          .attr("x", (d, i) => i * 25) // or any desired spacing
+          .attr("y", d => height - d.ram_used_gb);
+
+      // Exit old bars
+      bars.exit().remove();
+  }
+
+  // Initial plot update
+  updatePlot();
+
+  // Update plot every 10 seconds
+  ///setInterval(updatePlot, 1000);
+</script>
+
+
+<script type="module">
+  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+  const TICK_DURATION = 1000;
+
+  async function fetchData() {
+      const response = await fetch('https://jupyter.arnold-lab.com/hub/api/resources');
+      const data = await response.json();
+      return data;
+  }
+
+  function dancingBars(){
+      // We want consistent colouring and ordering
+      // Ordering will be used to multiply the offset
+      var group_map = {
+          //"ram_free_gb" : "red",
+          //"ram_usage_gb" : "blue",
+          //"ram_total_gb" : "darkgreen",
+          "ram_usage_percent" : "darkgreen",
+          "cpu_usage_percent" : "green",
+          //"cpu_count" : "orange"
+      }
+      
+      var group_map_keys = Object.keys(group_map)
+      
+      setInterval(async function(){
+          const data = await fetchData()         
+          let plot_array = []
+
+          for (let col_key in group_map){
+              plot_array.push({
+                  name: col_key,
+                  value: data[col_key],
+                  color: group_map[col_key]})
+          }
+          // Let's sort the entries by name, to keep the index somewhat consistent
+          // between transitions.
+          plot_array.sort( (a,b) => (a.name < b.name))
+          renderBarChartPromise(plot_array)
+      }, 10000)
+  }
+
+
+  function renderBarChartPromise(graphvals){
+      
+      return new Promise((resolve, reject) => {
+          var group = d3.select("#chart")
+          if (group.empty()){
+              group = svg.append("g").attr("id", "chartid")
+          }
+
+          let text = group.selectAll("text");
+          let rect = group.selectAll("rect");
+          
+          // Generate Chart
+          var chart4 = {
+              run : function (graphvals){
+
+                  const max_height = d3.max(graphvals, d => d.value);
+                  const label_offset_y = 10;
+                  
+                  rect = rect
+                      .data(graphvals, d => d.name)
+                      .join(
+                          enter => enter.append("rect")
+                              .attr("width", 50)
+                              .attr("height", 0)
+                            .attr("fill", (d) => d.color)
+                              .attr("y", 0)
+                              .attr("x", (d,i) => i * 50),
+                          update => update,
+                          exit => exit.call(rect => rect.transition().duration(TICK_DURATION).remove()
+                                           .attr("height", 0))
+                      )
+                      .call(rect => rect.transition().duration(TICK_DURATION)
+                            .attr("width", 50)
+                            .attr("height", (d) => d.value)
+                            .attr("fill", (d) => d.color)
+                            .attr("y", 0)
+                            .attr("x", (d,i) => i * 50))
+                  
+                  text = text
+                      .data(graphvals, d => d.name)
+                      .join(
+                          enter => enter.append("text")
+                              .attr("y", 0)
+                              .attr("dy", "0.35em")
+                              .attr("x", (d, i) => 25 + i * 50)
+                          //.style("text-anchor", "middle")
+                              .style("writing-mode", "vertical-rl")
+                              .style("color", "white")
+                              .text(d => d.name),
+                          update => update,
+                          exit => exit
+                              .call(text => text.transition().duration(TICK_DURATION).remove()
+                                    .attr("y", -100))
+                      )
+                      .call(text => text.transition().duration(TICK_DURATION)
+                            .attr("y", (d) => d.value + label_offset_y)
+                            .style("text-anchor", "right")
+                            .attr("x", (d, i) => 25 + i * 50))
+                  
+                  setTimeout(() => resolve(), TICK_DURATION)
+              }
+          };
+          chart4.run(graphvals);
+      })
+  }
+  
+  
+  async function renderBarChart(graphvals){
+      // hide UI
+      document.getElementsByClassName("left-side")[0].style.display = "none";
+      document.getElementById("stats").style.display = "none";
+      document.getElementById("mobileslider-cont").style.display = "none";
+      
+      // Clear SVG
+      var form = document.getElementById("form0")
+      var svg = primeSVG(form, clear=false)
+      
+      await renderBarChartPromise(graphvals)
+      console.log("rendered")
+  }
+  
+  dancingBars()  
+  
+</script>
+
+{{ super() }}
+{% endblock %}
+
