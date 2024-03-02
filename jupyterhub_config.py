@@ -6,8 +6,12 @@ from sys import path as PATH
 from os.path import join as pathjoin, exists as pathexists
 
 # MUST be set
-repository_location = "/home/memo/repos/_mtekman/jupyterhub_docker/";
+repository_location = "/home/memo/repos/_mtekman/jupyterhub-pharma253/";
+if not pathexists(repository_location):
+    print("Please set the repository_location properly.")
+    exit(255)
 PATH.append(repository_location)
+
 
 from DockerSystemProfileSpawner import DockerSystemProfileSpawner
 
@@ -78,6 +82,7 @@ if not pathexists(c.JupyterHub.template_paths):
     raise AssertionError("Template path '" + c.JupyterHub.template_paths + "' doesn't exist")
 
 c.JupyterHub.cleanup_servers = False
+c.JupyterHub.sysmon_interval = 20
 c.JupyterHub.port = 443
 c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
 c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
