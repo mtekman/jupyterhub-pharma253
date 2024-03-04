@@ -29,7 +29,7 @@
 </style>
 
 <!-- Load d3.js -->
-<script src="https://d3js.org/d3.v6.js"></script>
+    <script src="d3.v7.min.js"></script>
 
 <!-- Create a div where the graph will take place -->
     <div id="my_dataviz"></div>
@@ -152,18 +152,20 @@ function pullMetrics(){
         const packet = { "time" : time,
                          "cpu_percent" : metrics.user.cpu_percent[username],
                          "memory_rss_mb" : metrics.user.memory_rss_mb[username]}
+
         if (timescale_data.has(username)){
-            let arr = timescale_data.get(username)
-            if (arr.length > max_points){
+            // let arr = timescale_data.get(username)
+            // if (arr.length > max_points){
                 // merge last and second to last point
-                arr[0] = { "cpu_percent" : (arr[0].cpu_percent + arr[1].cpu_percent) / 2,
-                           "memory_rss_mb" : (arr[0].memory_rss_mb + arr[1].memory_rss_mb) / 2,
-                           "time" : (arr[0].time + arr[1].time) / 2
-                         }
-                arr.splice(1,1) // remove first
-            } else {
+            //     arr[0] = {
+            //         "cpu_percent" : (arr[0].cpu_percent + arr[1].cpu_percent) / 2,
+            //         "memory_rss_mb" : (arr[0].memory_rss_mb + arr[1].memory_rss_mb) / 2,
+            //         "time" : (arr[0].time + arr[1].time) / 2
+            //     }
+            //     arr.splice(1,1) // remove first
+            // } else {
                 timescale_data.get(username).push(packet)
-            }
+            // }
         } else {
             timescale_data.set(username, [packet])
             // Add as dropdown option in filter box
@@ -232,7 +234,7 @@ function renderData2(){
     // Update the axis ranges
     const x = d3.scaleLinear()
           .domain(d3.extent(filtered_data.get("all_processes"), d => d.time))
-          .range([ 0, width ]);
+          .range([ 0, width ])
 
     const y = d3.scaleLinear()
           .domain([0, d3.max(filtered_data.get("all_processes"), d => d.cpu_percent)])
@@ -272,9 +274,9 @@ function renderData2(){
 
             ,
             update => update,
-            exit => exit.call(lines => lines.transition().duration(500).remove())
+            exit => exit.call(lines => lines.transition().duration(0).remove())
         )
-        .call(lines => lines.transition().duration(500)
+        .call(lines => lines.transition().duration(0)
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -303,11 +305,36 @@ function renderData2(){
     svg.append("g").attr("id", "yaxis")
         .call(d3.axisLeft(y).ticks(5))
 
+    let ref_array = timescale_data.get("all_processes")
+    if (ref_array.length > 50){
+        var min_time = ref_array[ref_array.length - 49].time
+        
+        for (const [user, arrays] of timescale_data)
+        {
+            let data_before = arrays.filter(x => x.time < min_time)
+            let len_data = data_before.length
+            let data_summed = data_before
+                .reduce((acc, obj) => {
+                    acc.cpu_percent += obj.cpu_percent || 0;
+                    acc.memory_rss_mb += obj.memory_rss_mb || 0;
+                    return acc;
+                }, {cpu_percent: 0, memory_rss_mb: 0})
+
+            let data_avg = {
+                "time" : min_time,
+                "cpu_percent" : data_summed.cpu_percent / len_data,
+                "memory_rss_mb" : data_summed.memory_rss_mb / len_data
+            }
+            timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
+        }
+        // timer_plot.pause()
+        // timer_metric.pause()
+    }
+
 }
 
-
-var timer_metric = startTimer(pullMetrics, 1000)
-var timer_plot = startTimer(renderData2, 2000)
+var timer_metric = startTimer(pullMetrics, 100)
+var timer_plot = startTimer(renderData2, 100)
 
 pullMetrics()
 pullMetrics()
