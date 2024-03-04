@@ -13,11 +13,11 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         return(" ".join(
             ["<option value='{x}'></option>".format(x=x) for x in valranges]))
 
-    @staticmethod
-    def getCurrentSystemResources():
-        free_mem = round(virtual_memory()._asdict()["available"] / 1e9)
-        free_cpu = round(100 * (1- cpu_percent()))
-        return([free_mem, free_cpu])
+    ## @staticmethod
+    ## def getCurrentSystemResources():
+    ##     free_mem = round(virtual_memory()._asdict()["available"] / 1e9)
+    ##     free_cpu = round(100 * (1- cpu_percent()))
+    ##     return([free_mem, free_cpu])
     
     def ResourceSelect(self):
         """This function generates the HTML select options needed to
@@ -97,12 +97,8 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         self.max_cpu = max(tick_cpu)
 
         self.host_homedir_format_string = self.getUserProfileSubEntry("host_homedir_format_string")
-        free_mem, free_cpu = self.getCurrentSystemResources()
 
         return """
-        <div id="curr_resource">
-          The system currently is using {free_cpu}% CPU and has {free_mem} GB free
-        </div>
         <div id="profile_cont">
           <label for="profile">Usage:</label>
           {profile_select}
@@ -157,7 +153,6 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
                    prealloc_max_cpu=max_preallocate["cpu_guarantee"],
                    prealloc_max_mem=max_preallocate["mem_guarantee"],
                    max_cpu=self.max_cpu,   max_mem=self.max_mem,
-                   free_cpu=free_cpu,      free_mem=free_mem, 
                    cpus=default_cpus,      memg=default_memg)
 
     def validateResourceLimits(self, cpu_limit, mem_limit):
