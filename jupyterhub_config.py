@@ -2,8 +2,11 @@
 
 c = get_config()  #noqa
 
-from sys import path as PATH
+from base64 import b64encode
+from os import listdir
 from os.path import join as pathjoin, exists as pathexists
+from sys import path as PATH
+
 
 # MUST be set
 repository_location = "/home/memo/repos/_mtekman/jupyterhub-pharma253/";
@@ -17,7 +20,7 @@ from DockerSystemProfileSpawner import DockerSystemProfileSpawner
 
 resource_profiles = {
     ## These are maximum LIMITs to which a Docker Image can run.
-    ## - At the same time, you can PREALLOCATE resources, see the preallocate 
+    ## - At the same time, you can PREALLOCATE resources, see the preallocate
     ##   subentry in the user_profiles
     "Tiny"   : {"cpu_limit": 1,  "mem_limit": 2},
     "Small"  : {"cpu_limit": 2,  "mem_limit": 4},
@@ -81,11 +84,28 @@ c.JupyterHub.template_paths = pathjoin(repository_location, "templates")
 if not pathexists(c.JupyterHub.template_paths):
     raise AssertionError("Template path '" + c.JupyterHub.template_paths + "' doesn't exist")
 
+
+c.JupyterHub.template_vars = {}
+image_dir = pathjoin(c.JupyterHub.template_paths, "images")
+for fname in listdir(image_dir):
+    if fname.count(".") > 1:
+        raise AssertionError("Image name '{fname}' shouldn't have more than one dot")
+    image_key = "img_" + fname.split(".")[0]
+    ## Encode image into base64
+    with open(pathjoin(image_dir, fname), "rb") as imgfile:
+        c.JupyterHub.template_vars[image_key] = b64encode(imgfile.read()).decode('utf-8')
+
+
+
 c.JupyterHub.cleanup_servers = False
-c.JupyterHub.sysmon_interval = 20
-c.JupyterHub.port = 443
-c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
-c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
+c.JupyterHub.sysmon_interval = 2
+c.JupyterHub.ip = '127.0.0.1'
+##c.JupyterHub.port = 443
+##c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
+##c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
+
+
+
 
 c.JupyterHub.hub_ip = '172.17.0.1' ## This corresponds to the docker0 address
 
@@ -93,6 +113,6 @@ c.Spawner.default_url = '/lab'
 c.Authenticator.admin_users = ['memo']
 c.DockerSpawner.debug = True
 
-    
+
 ## DEBUG: sudo docker stop jupyter-memo; sudo docker container rm jupyter-memo; sudo jupyterhub
 # Config:1 ends here
