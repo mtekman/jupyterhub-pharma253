@@ -1,7 +1,8 @@
-{% extends "templates/spawn.html" %}
-{% block main %}
+<html>
+<!-- {% extends "templates/spawn.html" %} -->
+<!-- {% block main %} -->
 
-{{ super() }}
+<!-- {{ super() }} -->
 <style>
   thead { font-family: monospace; font-style: italic; }
   form { display:grid; }
@@ -27,186 +28,298 @@
   td input[type="range"] {width: 150px;}
 </style>
 
-<svg id="chart"></svg>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
 
-{% endblock %}
+<!-- Create a div where the graph will take place -->
+    <div id="my_dataviz"></div>
 
-{% block script %}
-<script type="module">
-  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-  // Function to fetch data from JSON endpoint
-  async function fetchData() {
-      const response = await fetch('https://jupyter.arnold-lab.com/hub/api/sysmon');
-      const data = await response.json();
-      return data;
+<div id="highlighted_user"></div>
+
+<div>
+    <select id="active_users" label="Show Users" multiple="true" onchange="renderData2()">
+  </select>
+</div>
+
+<!-- {% endblock %} -->
+
+<!-- {% block script %} -->
+
+<script>
+
+function generateFakeMetrics(){
+    const rand_frac = 1.5 + (Math.random() * 1.5)
+    const total_cpu_all = Math.random() * 100
+    const total_cpu_jpy = (total_cpu_all / rand_frac)  + (Math.random() * total_cpu_all / rand_frac);
+    const total_mem_all = Math.random() * 5000
+    const total_mem_jpy = (total_mem_all / rand_frac)  + (Math.random() * total_mem_all/ rand_frac);
+
+    var red = {
+        "time" : {
+            "cached": Date(), "now" : Date.now(), "update_interval" : 2,
+            "next_update" : 2, "last_update" : 8.6
+        },
+        "system" : {
+            "ram_free_gb" : 119,  "ram_used_gb" : 2.8, "ram_total_gb" : 202.3,
+            "ram_usage_percent" : 2.3, "cpu_usage_percent" : 2.1, "cpu_count" : 36
+        },
+        "user" : {
+            "cpu_percent" : {
+                "all_processes": total_cpu_all, "all_jupyter_users": total_cpu_jpy
+            },
+            "memory_rss_mb": {
+                "all_jupyter_users": total_mem_jpy, "all_processes": total_mem_all
+            }
+        }
+    }
+
+    var remaining_mem = total_mem_jpy
+    var remaining_cpu = total_cpu_jpy
+
+    var user_count = 0
+    while ((remaining_mem > 0) && (remaining_cpu > 0)){
+        let username = "user" + user_count
+        red["user"]["cpu_percent"][username] = 1 + Math.random() * remaining_cpu
+        red["user"]["memory_rss_mb"][username] = 1 + Math.random() * remaining_mem
+        remaining_cpu -= red["user"]["cpu_percent"][username]
+        remaining_mem -= red["user"]["memory_rss_mb"][username]
+        user_count += 1
+    }
+    return(red)
+}
+
+
+
+// set the dimensions and margins of the graph
+const margin = {top: 10, right: 30, bottom: 30, left: 60},
+      width = 460 - margin.left - margin.right,
+      height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+// Update the lines
+const stroke_width_user = 2
+const stroke_width_user_highlight = 6
+
+var style_map = new Map()
+style_map.set("all_processes", {"color" : '#e41a1c', "width" : 5 })
+style_map.set("all_jupyter_users", {"color" : '#377eb8', "width" : 4})
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
   }
+  return color;
+}
 
-  // Function to create/update the bar plot
-  async function updatePlot() {
-      const data = await fetchData();
-      const svg = d3.select("#chart");
+function startTimer(do_func, millisecs) {
+    var timer
+    obj = {};
+    obj.resume = function() {
+        timer = setInterval(do_func, millisecs);
+    };
+    obj.pause = function() {
+        clearInterval(timer);
+    };
+    obj.resume();
+    return obj;
+}
 
-      // Set up SVG dimensions
-      const width = 500;
-      const height = 300;
-      svg.attr("width", width).attr("height", height);
 
-      // Process data and update the plot
-      const bars = svg.selectAll("rect").data(data);
 
-      // Update existing bars
-      bars.attr("height", d => d.ram_used_gb)
-          .attr("width", 20) // or any desired width
-          .attr("fill", "red")
-          .attr("x", (d, i) => i * 25) // or any desired spacing
-          .attr("y", d => height - d.ram_used_gb);
+const max_points = 20
+const bin_size = 5
+// Needs to be a map of User values, with entries updated with timestamps
+// {"User1" : [{ "time": 123455, "cpu_percent" : 1.3 }, ... ]
+// Map.get("User1").push({ new_vals })
+var timescale_data = new Map()
 
-      // Enter new bars
-      bars.enter().append("rect")
-          .attr("height", d => d.ram_used_gb)
-          .attr("width", 20) // or any desired width
-          .attr("x", (d, i) => i * 25) // or any desired spacing
-          .attr("y", d => height - d.ram_used_gb);
 
-      // Exit old bars
-      bars.exit().remove();
-  }
+function pullMetrics(){
+    // Data are the metrics
+    const metrics = generateFakeMetrics()
+    const time = metrics.time.now
 
-  // Initial plot update
-  updatePlot();
+    for (username in metrics.user.cpu_percent){
+        const packet = { "time" : time,
+                         "cpu_percent" : metrics.user.cpu_percent[username],
+                         "memory_rss_mb" : metrics.user.memory_rss_mb[username]}
+        if (timescale_data.has(username)){
+            let arr = timescale_data.get(username)
+            if (arr.length > max_points){
+                // merge last and second to last point
+                arr[0] = { "cpu_percent" : (arr[0].cpu_percent + arr[1].cpu_percent) / 2,
+                           "memory_rss_mb" : (arr[0].memory_rss_mb + arr[1].memory_rss_mb) / 2,
+                           "time" : (arr[0].time + arr[1].time) / 2
+                         }
+                arr.splice(1,1) // remove first
+            } else {
+                timescale_data.get(username).push(packet)
+            }
+        } else {
+            timescale_data.set(username, [packet])
+            // Add as dropdown option in filter box
+            let opt = document.createElement("option")
+            opt.value = username
+            opt.innerText = username
+            opt.selected = true
+            document.getElementById("active_users").appendChild(opt)
+            // Add unique colouring
+            style_map.set(username, { "color" : getRandomColor(),
+                                      "width" : 2 })
+        }
+    }
+}
 
-  // Update plot every 10 seconds
-  ///setInterval(updatePlot, 1000);
+function smoothAndSubSample(map_data){
+    return(map_data)
+    if (points_max > 0){
+        // we filter the all_processes for time points we wish to merge
+        var allproc_array = filtered_data.get("all_processes")
+        var new_array = []
+        var points_plot = points_max
+        var i = 0
+        while (i <= points_actual){
+            new_array.append(allproc_array[allproc_array.length - i++])
+        }
+        points_plot -= points_actual
+
+        var i = (allproc_array.length - points_actual)  // we start from end
+        var size_of_points = floor(i / points_plot)
+        // If we have 95 points, and 15 points plot, then the first group will have 11 points not 6.
+        var size_of_points_first = size_of_points + (i - (size_of_points * points_plot))
+
+        while (i >= 0){
+            let sum = 0
+            let pnts = 0
+            while (pnts++ < size_of_points){
+                allproc_array[i]
+            }
+        }
+        new_array
+        for (const [user, arrays] of filtered_data) {
+        }
+    }
+}
+
+
+function renderData2(){
+    const points_max = 20 // show this many values at any given time
+    const points_actual = 5  // the first N points are true, the rest are subsampled.
+    
+    // For max points, the first
+    const hide_users = Array.from(document.getElementById("active_users").options)
+        .filter(x => x.selected == false).map(x => x.value)
+    
+    var new_style_map = new Map(style_map)
+    if (hide_users.length > 0){   
+        hide_users.forEach(user => {
+            new_style_map.set(user, { "color" : "#aaaaaa", "width" : 0.5 })
+        })
+    }
+
+    var filtered_data = new Map(timescale_data)
+    filtered_data = smoothAndSubSample(filtered_data)
+    
+    // Update the axis ranges
+    const x = d3.scaleLinear()
+          .domain(d3.extent(filtered_data.get("all_processes"), d => d.time))
+          .range([ 0, width ]);
+
+    const y = d3.scaleLinear()
+          .domain([0, d3.max(filtered_data.get("all_processes"), d => d.cpu_percent)])
+          .range([ height, 0 ]);
+    
+    let lines = svg.selectAll("path");
+    lines = lines
+        .data(filtered_data, (d,i) => d)
+        .join(
+            enter => enter
+                .append("path")
+                .attr("fill", "none")
+                .attr("stroke", d => new_style_map.get(d[0]).color )
+                .attr("stroke-width", d => new_style_map.get(d[0]).width)
+                .attr("d", function(d){
+                    return d3.line()
+                        .x(d => x(d.time))
+                        .y(d => y(d.cpu_percent))
+                        .curve(d3.curveBasis)(d[1])
+                })
+                .on("mouseover", function(ev){
+                    let path = ev.target
+                    let pathname = path.__data__[0]
+                    document.getElementById("highlighted_user").innerText = pathname
+                    path.style.strokeWidth = stroke_width_user_highlight
+                    timer_plot.pause()
+                })
+                .on("mouseout", function(ev){
+                    let path = ev.target
+                    let pathname = path.__data__[0]
+
+                    path.style.strokeWidth = new_style_map.get(pathname).width
+                    
+                    document.getElementById("highlighted_user").innerText = null
+                    timer_plot.resume()
+                })
+
+            ,
+            update => update,
+            exit => exit.call(lines => lines.transition().duration(500).remove())
+        )
+        .call(lines => lines.transition().duration(500)
+              .attr("fill", "none")
+              .attr("stroke", d => new_style_map.get(d[0]).color )
+              .attr("stroke-width", d => new_style_map.get(d[0]).width)
+              .attr("d", function(d){
+                    return d3.line()
+                        .x(d => x(d.time))
+                        .y(d => y(d.cpu_percent))
+                        .curve(d3.curveBasis)(d[1])
+              }))
+
+    // Initialize axes if not present
+    let xaxis_dom = document.getElementById("xaxis"),
+        yaxis_dom = document.getElementById("yaxis")
+
+    if (xaxis_dom != null){
+        xaxis_dom.remove()
+        yaxis_dom.remove()
+    }
+
+    svg.append("g").attr("id", "xaxis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d){
+            let dtime = new Date(d)
+            return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
+        }))
+    svg.append("g").attr("id", "yaxis")
+        .call(d3.axisLeft(y).ticks(5))
+
+}
+
+
+var timer_metric = startTimer(pullMetrics, 1000)
+var timer_plot = startTimer(renderData2, 2000)
+
+pullMetrics()
+pullMetrics()
+pullMetrics()
+renderData2()
+
+
+
+
 </script>
 
+<!-- {{ super() }} -->
+<!-- {% endblock %} -->
 
-<script type="module">
-  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-  const TICK_DURATION = 1000;
-
-  async function fetchData() {
-      const response = await fetch('https://jupyter.arnold-lab.com/hub/api/resources');
-      const data = await response.json();
-      return data;
-  }
-
-  function dancingBars(){
-      // We want consistent colouring and ordering
-      // Ordering will be used to multiply the offset
-      var group_map = {
-          //"ram_free_gb" : "red",
-          //"ram_usage_gb" : "blue",
-          //"ram_total_gb" : "darkgreen",
-          "ram_usage_percent" : "darkgreen",
-          "cpu_usage_percent" : "green",
-          //"cpu_count" : "orange"
-      }
-      
-      var group_map_keys = Object.keys(group_map)
-      
-      setInterval(async function(){
-          const data = await fetchData()         
-          let plot_array = []
-
-          for (let col_key in group_map){
-              plot_array.push({
-                  name: col_key,
-                  value: data[col_key],
-                  color: group_map[col_key]})
-          }
-          // Let's sort the entries by name, to keep the index somewhat consistent
-          // between transitions.
-          plot_array.sort( (a,b) => (a.name < b.name))
-          renderBarChartPromise(plot_array)
-      }, 10000)
-  }
-
-
-  function renderBarChartPromise(graphvals){
-      
-      return new Promise((resolve, reject) => {
-          var group = d3.select("#chart")
-          if (group.empty()){
-              group = svg.append("g").attr("id", "chartid")
-          }
-
-          let text = group.selectAll("text");
-          let rect = group.selectAll("rect");
-          
-          // Generate Chart
-          var chart4 = {
-              run : function (graphvals){
-
-                  const max_height = d3.max(graphvals, d => d.value);
-                  const label_offset_y = 10;
-                  
-                  rect = rect
-                      .data(graphvals, d => d.name)
-                      .join(
-                          enter => enter.append("rect")
-                              .attr("width", 50)
-                              .attr("height", 0)
-                            .attr("fill", (d) => d.color)
-                              .attr("y", 0)
-                              .attr("x", (d,i) => i * 50),
-                          update => update,
-                          exit => exit.call(rect => rect.transition().duration(TICK_DURATION).remove()
-                                           .attr("height", 0))
-                      )
-                      .call(rect => rect.transition().duration(TICK_DURATION)
-                            .attr("width", 50)
-                            .attr("height", (d) => d.value)
-                            .attr("fill", (d) => d.color)
-                            .attr("y", 0)
-                            .attr("x", (d,i) => i * 50))
-                  
-                  text = text
-                      .data(graphvals, d => d.name)
-                      .join(
-                          enter => enter.append("text")
-                              .attr("y", 0)
-                              .attr("dy", "0.35em")
-                              .attr("x", (d, i) => 25 + i * 50)
-                          //.style("text-anchor", "middle")
-                              .style("writing-mode", "vertical-rl")
-                              .style("color", "white")
-                              .text(d => d.name),
-                          update => update,
-                          exit => exit
-                              .call(text => text.transition().duration(TICK_DURATION).remove()
-                                    .attr("y", -100))
-                      )
-                      .call(text => text.transition().duration(TICK_DURATION)
-                            .attr("y", (d) => d.value + label_offset_y)
-                            .style("text-anchor", "right")
-                            .attr("x", (d, i) => 25 + i * 50))
-                  
-                  setTimeout(() => resolve(), TICK_DURATION)
-              }
-          };
-          chart4.run(graphvals);
-      })
-  }
-  
-  
-  async function renderBarChart(graphvals){
-      // hide UI
-      document.getElementsByClassName("left-side")[0].style.display = "none";
-      document.getElementById("stats").style.display = "none";
-      document.getElementById("mobileslider-cont").style.display = "none";
-      
-      // Clear SVG
-      var form = document.getElementById("form0")
-      var svg = primeSVG(form, clear=false)
-      
-      await renderBarChartPromise(graphvals)
-      console.log("rendered")
-  }
-  
-  dancingBars()  
-  
-</script>
-
-{{ super() }}
-{% endblock %}
-
+</html>
