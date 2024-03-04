@@ -88,8 +88,6 @@ function generateFakeMetrics(){
     return(red)
 }
 
-
-
 // set the dimensions and margins of the graph
 const margin = {top: 10, right: 30, bottom: 30, left: 60},
       width = 460 - margin.left - margin.right,
@@ -154,18 +152,7 @@ function pullMetrics(){
                          "memory_rss_mb" : metrics.user.memory_rss_mb[username]}
 
         if (timescale_data.has(username)){
-            // let arr = timescale_data.get(username)
-            // if (arr.length > max_points){
-                // merge last and second to last point
-            //     arr[0] = {
-            //         "cpu_percent" : (arr[0].cpu_percent + arr[1].cpu_percent) / 2,
-            //         "memory_rss_mb" : (arr[0].memory_rss_mb + arr[1].memory_rss_mb) / 2,
-            //         "time" : (arr[0].time + arr[1].time) / 2
-            //     }
-            //     arr.splice(1,1) // remove first
-            // } else {
-                timescale_data.get(username).push(packet)
-            // }
+            timescale_data.get(username).push(packet)
         } else {
             timescale_data.set(username, [packet])
             // Add as dropdown option in filter box
@@ -181,71 +168,82 @@ function pullMetrics(){
     }
 }
 
-function smoothAndSubSample(map_data){
-    return(map_data)
-    if (points_max > 0){
-        // we filter the all_processes for time points we wish to merge
-        var allproc_array = filtered_data.get("all_processes")
-        var new_array = []
-        var points_plot = points_max
-        var i = 0
-        while (i <= points_actual){
-            new_array.append(allproc_array[allproc_array.length - i++])
-        }
-        points_plot -= points_actual
+var hist_data = { "all_processes" : []}
 
-        var i = (allproc_array.length - points_actual)  // we start from end
-        var size_of_points = floor(i / points_plot)
-        // If we have 95 points, and 15 points plot, then the first group will have 11 points not 6.
-        var size_of_points_first = size_of_points + (i - (size_of_points * points_plot))
+function mergeHistory(n=100){
+    //Historical data gets merged into a single average, every n ticks
+    let ref_array = timescale_data.get("all_processes")
+    if (ref_array.length > n){
+        var min_time = ref_array[ref_array.length - Math.floor(n/2)].time
+        for (const [user, arrays] of timescale_data)
+        {
+            let data_before = arrays.filter(x => x.time < min_time)
+            let len_data = data_before.length
+            let data_summed = data_before
+                .reduce((acc, obj) => {
+                    acc.cpu_percent += obj.cpu_percent || 0;
+                    acc.memory_rss_mb += obj.memory_rss_mb || 0;
+                    return acc;
+                }, {cpu_percent: 0, memory_rss_mb: 0})
 
-        while (i >= 0){
-            let sum = 0
-            let pnts = 0
-            while (pnts++ < size_of_points){
-                allproc_array[i]
+            if (!(user in hist_data)){
+                hist_data[user] = []
             }
-        }
-        new_array
-        for (const [user, arrays] of filtered_data) {
+
+            let data_avg = {
+                "time" : min_time,
+                "cpu_percent" : (data_summed.cpu_percent / len_data) || 0,
+                "memory_rss_mb" : (data_summed.memory_rss_mb / len_data) || 0
+            }
+            hist_data[user].push(data_avg)
+            timescale_data.set(user, arrays.filter(x => x.time >= min_time))
         }
     }
 }
 
-
-function renderData2(){
-    const points_max = 20 // show this many values at any given time
-    const points_actual = 5  // the first N points are true, the rest are subsampled.
-    
-    // For max points, the first
-    const hide_users = Array.from(document.getElementById("active_users").options)
-        .filter(x => x.selected == false).map(x => x.value)
-    
-    var new_style_map = new Map(style_map)
-    if (hide_users.length > 0){   
-        hide_users.forEach(user => {
-            new_style_map.set(user, { "color" : "#aaaaaa", "width" : 0.5 })
-        })
-    }
-
-    var filtered_data = new Map(timescale_data)
-    filtered_data = smoothAndSubSample(filtered_data)
-    
-    // Update the axis ranges
-    const x = d3.scaleLinear()
-          .domain(d3.extent(filtered_data.get("all_processes"), d => d.time))
-          .range([ 0, width ])
-
-    const y = d3.scaleLinear()
-          .domain([0, d3.max(filtered_data.get("all_processes"), d => d.cpu_percent)])
-          .range([ height, 0 ]);
-    
-    let lines = svg.selectAll("path");
-    lines = lines
-        .data(filtered_data, (d,i) => d)
+function plotDataHistorical(new_style_map, x, y){
+    // Plot historical data
+    let old_lines = svg.selectAll("path.old")
+    old_lines = old_lines
+        .data(hist_data, (d,i) => d)
         .join(
             enter => enter
                 .append("path")
+                .attr("class", "old")
+                .attr("fill", "none")
+                .attr("stroke", d => new_style_map.get(d[0]).color)
+                .attr("stroke-width", d => new_style_map.get(d[0]).width)
+                .attr("d", function(d){
+                    return d3.line()
+                        .x(d => x(d.time))
+                        .y(d => y(d.cpu_percent))
+                        .curve(d3.curveBasis)(d[1])
+                }),
+            update => update,
+            exit => exit.call(old_lines => old_lines.transition().duration(0).remove())
+        )
+        .call(old_lines => old_lines.transition().duration(0)
+              .attr("fill", "none")
+              .attr("stroke", d => new_style_map.get(d[0]).color )
+              .attr("stroke-width", d => new_style_map.get(d[0]).width)
+              .attr("d", function(d){
+                  return d3.line()
+                      .x(d => x(d.time))
+                      .y(d => y(d.cpu_percent))
+                      .curve(d3.curveBasis)(d[1])
+              }))
+}
+
+
+function plotDataNew(new_style_map, x, y){
+    // Plot the current data
+    let new_lines = svg.selectAll("path.new")
+    new_lines = new_lines
+        .data(timescale_data, (d,i) => d)
+        .join(
+            enter => enter
+                .append("path")
+                .attr("class", "new")
                 .attr("fill", "none")
                 .attr("stroke", d => new_style_map.get(d[0]).color )
                 .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -267,16 +265,16 @@ function renderData2(){
                     let pathname = path.__data__[0]
 
                     path.style.strokeWidth = new_style_map.get(pathname).width
-                    
+
                     document.getElementById("highlighted_user").innerText = null
                     timer_plot.resume()
                 })
 
             ,
             update => update,
-            exit => exit.call(lines => lines.transition().duration(0).remove())
+            exit => exit.call(new_lines => new_lines.transition().duration(0).remove())
         )
-        .call(lines => lines.transition().duration(0)
+        .call(new_lines => new_lines.transition().duration(0)
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -287,54 +285,82 @@ function renderData2(){
                         .curve(d3.curveBasis)(d[1])
               }))
 
+}
+
+
+function renderData2(){
+    const points_max = 20 // show this many values at any given time
+    const points_actual = 5  // the first N points are true, the rest are subsampled.
+
+    // For max points, the first
+    const hide_users = Array.from(document.getElementById("active_users").options)
+        .filter(x => x.selected == false).map(x => x.value)
+
+    var new_style_map = new Map(style_map)
+    if (hide_users.length > 0){
+        hide_users.forEach(user => {
+            new_style_map.set(user, { "color" : "#aaaaaa", "width" : 0.5 })
+        })
+    }
+
+    mergeHistory(50)
+
+    //var filtered_data = new Map(timescale_data)
+    //filtered_data = smoothAndSubSample(timescale_data)
+
+    // Update the axis ranges
+    const xnew = d3.scaleLinear()
+          .domain(d3.extent(timescale_data.get("all_processes"), d => d.time))
+          .range([ 0, width ])
+
+    const xold = d3.scaleLinear()
+          .domain(d3.extent(hist_data["all_processes"], d => d.time))
+          .range([ 0, width ])
+
+    
+    const y = d3.scaleLinear()
+          .domain([0, d3.max(
+              // Y-axis also takes historical data into account
+              hist_data["all_processes"].concat(timescale_data.get("all_processes")),
+              d => d.cpu_percent)
+                  ]).range([ height, 0 ]);
+
+    
+    //plotDataHistorical(new_style_map, xold, y)
+    plotDataNew(new_style_map, xnew, y)
+
     // Initialize axes if not present
-    let xaxis_dom = document.getElementById("xaxis"),
+    let xnew_dom = document.getElementById("xaxis-new"),
+        xold_dom = document.getElementById("xaxis-old"),
         yaxis_dom = document.getElementById("yaxis")
 
-    if (xaxis_dom != null){
-        xaxis_dom.remove()
+    if (xnew_dom != null){
+        xnew_dom.remove()
+        xold_dom.remove()
         yaxis_dom.remove()
     }
 
-    svg.append("g").attr("id", "xaxis")
+    // xnew
+    svg.append("g").attr("id", "xaxis-new")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x).ticks(5).tickFormat(function(d){
+        .call(d3.axisBottom(xnew).ticks(5).tickFormat(function(d){
             let dtime = new Date(d)
             return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
         }))
-    svg.append("g").attr("id", "yaxis")
-        .call(d3.axisLeft(y).ticks(5))
-
-    let ref_array = timescale_data.get("all_processes")
-    if (ref_array.length > 50){
-        var min_time = ref_array[ref_array.length - 49].time
-        
-        for (const [user, arrays] of timescale_data)
-        {
-            let data_before = arrays.filter(x => x.time < min_time)
-            let len_data = data_before.length
-            let data_summed = data_before
-                .reduce((acc, obj) => {
-                    acc.cpu_percent += obj.cpu_percent || 0;
-                    acc.memory_rss_mb += obj.memory_rss_mb || 0;
-                    return acc;
-                }, {cpu_percent: 0, memory_rss_mb: 0})
-
-            let data_avg = {
-                "time" : min_time,
-                "cpu_percent" : data_summed.cpu_percent / len_data,
-                "memory_rss_mb" : data_summed.memory_rss_mb / len_data
-            }
-            timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
-        }
-        // timer_plot.pause()
-        // timer_metric.pause()
-    }
+    // xold
+    svg.append("g").attr("id", "xaxis-old")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(xold).ticks(5).tickFormat(function(d){
+            let dtime = new Date(d)
+            return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
+        }))
+    
+    svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
 
 }
 
-var timer_metric = startTimer(pullMetrics, 100)
-var timer_plot = startTimer(renderData2, 100)
+var timer_metric = startTimer(pullMetrics, 500)
+var timer_plot = startTimer(renderData2, 500)
 
 pullMetrics()
 pullMetrics()
