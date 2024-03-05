@@ -77,12 +77,16 @@ function generateFakeMetrics(){
     var remaining_cpu = total_cpu_jpy
 
     var user_count = 0
-    while ((remaining_mem > 0) && (remaining_cpu > 0)){
+    while ((remaining_mem > 0) && (remaining_cpu > 0))
+    {
         let username = "user" + user_count
+
         red["user"]["cpu_percent"][username] = 1 + Math.random() * remaining_cpu
         red["user"]["memory_rss_mb"][username] = 1 + Math.random() * remaining_mem
+
         remaining_cpu -= red["user"]["cpu_percent"][username]
         remaining_mem -= red["user"]["memory_rss_mb"][username]
+
         user_count += 1
     }
     return(red)
@@ -168,7 +172,8 @@ function pullMetrics(){
     }
 }
 
-var hist_data = { "all_processes" : []}
+var hist_data = new Map()
+hist_data.set("all_processes", [])
 
 function mergeHistory(n=100){
     //Historical data gets merged into a single average, every n ticks
@@ -186,16 +191,19 @@ function mergeHistory(n=100){
                     return acc;
                 }, {cpu_percent: 0, memory_rss_mb: 0})
 
-            if (!(user in hist_data)){
-                hist_data[user] = []
-            }
-
             let data_avg = {
                 "time" : min_time,
                 "cpu_percent" : (data_summed.cpu_percent / len_data) || 0,
                 "memory_rss_mb" : (data_summed.memory_rss_mb / len_data) || 0
             }
-            hist_data[user].push(data_avg)
+
+            if (hist_data.has(user)){
+                hist_data.get(user).push(data_avg)
+            } else {
+                hist_data.set(user, [data_avg])
+            }
+
+            // Shorten all histories
             timescale_data.set(user, arrays.filter(x => x.time >= min_time))
         }
     }
@@ -272,9 +280,9 @@ function plotDataNew(new_style_map, x, y){
 
             ,
             update => update,
-            exit => exit.call(new_lines => new_lines.transition().duration(0).remove())
+            exit => exit.call(new_lines => new_lines.transition().duration(100).remove())
         )
-        .call(new_lines => new_lines.transition().duration(0)
+        .call(new_lines => new_lines.transition().duration(100)
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -303,30 +311,35 @@ function renderData2(){
         })
     }
 
-    mergeHistory(50)
+    mergeHistory(20)
 
     //var filtered_data = new Map(timescale_data)
     //filtered_data = smoothAndSubSample(timescale_data)
+    const ref_hist = hist_data.get("all_processes")
+    const ref_new = timescale_data.get("all_processes")
+
+    const len_hist = ref_hist.length * 5
+    const len_new = width - len_hist
+    //const width_hist = width * len_hist / len
 
     // Update the axis ranges
-    const xnew = d3.scaleLinear()
-          .domain(d3.extent(timescale_data.get("all_processes"), d => d.time))
-          .range([ 0, width ])
-
     const xold = d3.scaleLinear()
-          .domain(d3.extent(hist_data["all_processes"], d => d.time))
-          .range([ 0, width ])
+          .domain(d3.extent(ref_hist, d => d.time))
+          .range([ 0, len_hist ])
 
-    
+    const xnew = d3.scaleLinear()
+          .domain(d3.extent(ref_new, d => d.time))
+          .range([ len_hist, width ])
+
     const y = d3.scaleLinear()
           .domain([0, d3.max(
               // Y-axis also takes historical data into account
-              hist_data["all_processes"].concat(timescale_data.get("all_processes")),
+              ref_hist.concat(ref_new),
               d => d.cpu_percent)
                   ]).range([ height, 0 ]);
 
-    
-    //plotDataHistorical(new_style_map, xold, y)
+
+    plotDataHistorical(new_style_map, xold, y)
     plotDataNew(new_style_map, xnew, y)
 
     // Initialize axes if not present
@@ -354,7 +367,7 @@ function renderData2(){
             let dtime = new Date(d)
             return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
         }))
-    
+
     svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
 
 }
