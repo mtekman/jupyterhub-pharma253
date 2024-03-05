@@ -105,8 +105,6 @@ c.JupyterHub.ip = '127.0.0.1'
 ##c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
 
 
-
-
 c.JupyterHub.hub_ip = '172.17.0.1' ## This corresponds to the docker0 address
 
 c.Spawner.default_url = '/lab'

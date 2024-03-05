@@ -26,6 +26,14 @@
   border-radius: 10px;
   border: 2px solid #555; width: 120px;}
   td input[type="range"] {width: 150px;}
+  #active_users {
+      position: absolute; top: 0px; left: 0px
+  }
+  .xaxis .tick text {
+      text-anchor : end;
+      transform: translateY(5px) rotate(-90deg);
+  }
+
 </style>
 
 <!-- Load d3.js -->
@@ -177,10 +185,10 @@ function pullMetrics(){
 var hist_data = new Map()
 hist_data.set("all_processes", [])
 
-function squashDataOlderThan(last_secs = 10){
+function squashDataOlderThan(last_ms = 1000){
     //Historical data gets merged into a single average, every n ticks
     let ref_array = timescale_data.get("all_processes")
-    var min_time = Date.now() - (last_secs*1000)
+    var min_time = Date.now() - (last_ms)
     //if (ref_array.filter(x => x.time < min_time).length > 20){
 
         for (const [user, arrays] of timescale_data)
@@ -213,59 +221,73 @@ function squashDataOlderThan(last_secs = 10){
     //}
 }
 
+  function calculateDpoints(d,x,y){
+      return d3.line()
+          .x(d => x(d.time))
+          .y(d => y(d.cpu_percent))
+          .curve(d3.curveBasis)(d[1])
+  }
+   
 function plotDataTo(classname, data, new_style_map, x, y){
     // Plot the current data
     let lines = svg.selectAll("path." + classname)
     lines = lines
-        .data(data, (d,i) => d)
-        .join(
-            enter => enter
-                .append("path")
-                .attr("class", classname)
-                .attr("fill", "none")
-                .attr("stroke", d => new_style_map.get(d[0]).color )
-                .attr("stroke-width", d => new_style_map.get(d[0]).width)
-                .attr("d", function(d){
-                    return d3.line()
-                        .x(d => x(d.time))
-                        .y(d => y(d.cpu_percent))
-                        .curve(d3.curveBasis)(d[1])
-                })
-                .on("mouseover", function(ev){
-                    let path = ev.target
-                    let pathname = path.__data__[0]
-                    document.getElementById("highlighted_user").innerText = pathname
-                    path.style.strokeWidth = stroke_width_user_highlight
-                    timer_plot.pause()
-                })
-                .on("mouseout", function(ev){
-                    let path = ev.target
-                    let pathname = path.__data__[0]
-
-                    path.style.strokeWidth = new_style_map.get(pathname).width
-
-                    document.getElementById("highlighted_user").innerText = null
-                    timer_plot.resume()
-                })
-
-            ,
-            update => update,
-            exit => exit.call(lines => lines.transition().duration(100).remove())
-        )
-        .call(lines => lines.transition().duration(100)
+        .data(data, function(grp_arr, ind, whole){
+            return(ind)
+        })
+        .join(enter => enter
+              .append("path")
+              .attr("class", classname)
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
-              .attr("d", function(d){
-                    return d3.line()
-                        .x(d => x(d.time))
-                        .y(d => y(d.cpu_percent))
-                        .curve(d3.curveBasis)(d[1])
-              }))
+              .attr("d", d => calculateDpoints(d,x,y))
+              .on("mouseover", function(ev){
+                  let path = ev.target
+                  let pathname = path.__data__[0]
+                  document.getElementById("highlighted_user").innerText = pathname
+                  path.style.strokeWidth = stroke_width_user_highlight
+                  timer_plot.pause()
+              })
+              .on("mouseout", function(ev){
+                  let path = ev.target
+                  let pathname = path.__data__[0]                  
+                  path.style.strokeWidth = new_style_map.get(pathname).width                  
+                  document.getElementById("highlighted_user").innerText = null
+                  timer_plot.resume()
+              }),
+              update => update,
+              function(exit){
+                  //console.log("exit", exit)
+                  return(exit.call(lines => lines.remove().attr("d" ,"") ))
+              })
+        .call(lines => lines.transition().duration(trans_time)
+              .attr("fill", "none")
+              .attr("stroke", d => new_style_map.get(d[0]).color )
+              .attr("stroke-width", d => new_style_map.get(d[0]).width)
+              .attr("d", d => calculateDpoints(d,x,y)))
 
 }
 
+var fetch_every = 500,
+    plot_every = 500,
+    trans_time = 250,
+    squash_every = 5000,
+    hist_space = 10
 
+  
+  
+  
+function formatDate(d){
+    let now = new Date(d)
+    let hours = String(now.getHours()).padStart(2, '0');
+    let minutes = String(now.getMinutes()).padStart(2, '0');
+    let seconds = String(now.getSeconds()).padStart(2, '0');
+    //return(`${hours}:${minutes}:${seconds}`);
+    return(`${minutes}:${seconds}`);
+}
+
+  
 function doPlot(){
     const points_max = 20 // show this many values at any given time
     const points_actual = 5  // the first N points are true, the rest are subsampled.
@@ -286,18 +308,33 @@ function doPlot(){
     const ref_hist = hist_data.get("all_processes")
     const ref_new = timescale_data.get("all_processes")
 
-    const len_hist = ref_hist.length * 2
-    const len_new = width / 2
-
     let timenow = new Date()
+    
+    var len_hist = ref_hist.length * hist_space
+    if (len_hist > width){
+        len_hist = width
+    }
+
+    // Free space divided by letter spacing
+    var how_many_new_to_plot = Math.floor((width - len_hist) / hist_space)
+
+    var filtered_data = new Map()
+    for (var [user, arrays] of timescale_data)
+    {
+        var last_hist = []
+        if (hist_data.has(user)){
+            last_hist = hist_data.get(user).slice(-1) || []
+        }
+        filtered_data.set(user, last_hist.concat(arrays.slice(-how_many_new_to_plot)))
+    }
 
     // Update the axis ranges
     const xold = d3.scaleLinear()
           .domain(d3.extent(ref_hist, d => d.time))
-          .range([ 0, len_hist ])
+          .range([ 0, len_hist])
 
     const xnew = d3.scaleLinear()
-          .domain([timenow - 10000, timenow])
+          .domain(d3.extent(filtered_data.get("all_processes"), d => d.time))
           .range([ len_hist, width ])
 
     const y = d3.scaleLinear()
@@ -309,7 +346,9 @@ function doPlot(){
 
 
     plotDataTo("old", hist_data, new_style_map, xold, y)
-    plotDataTo("new", timescale_data, new_style_map, xnew, y)
+    if (how_many_new_to_plot > 0){
+        plotDataTo("new", filtered_data, new_style_map, xnew, y)
+    }
 
     // Initialize axes if not present
     let xnew_dom = document.getElementById("xaxis-new"),
@@ -324,30 +363,22 @@ function doPlot(){
 
     // xnew
     svg.append("g").attr("id", "xaxis-new")
+        .attr("class", "xaxis")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xnew).ticks(5).tickFormat(function(d){
-            let dtime = new Date(d)
-            return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
-        }))
+        .call(d3.axisBottom(xnew).ticks(5).tickFormat(formatDate))
     // xold
     svg.append("g").attr("id", "xaxis-old")
+        .attr("class", "xaxis")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xold).ticks(5).tickFormat(function(d){
-            let dtime = new Date(d)
-            return(dtime.getHours() + ":"  + dtime.getMinutes() + ":" + dtime.getSeconds())
-        }))
+        .call(d3.axisBottom(xold).ticks(Math.floor(len_hist/hist_space)+1).tickFormat(formatDate))
 
     svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
-
 }
 
-var timer_metric = startTimer(pullMetrics, 1000)
-var timer_plot = startTimer(doPlot, 1000)
-var history_plot = startTimer(function(){squashDataOlderThan(5)}, 5000)
+var timer_metric = startTimer(pullMetrics, fetch_every)
+var timer_plot = startTimer(doPlot, plot_every)
+var history_plot = startTimer(function(){squashDataOlderThan(squash_every)}, squash_every)
 
-
-pullMetrics()
-pullMetrics()
 pullMetrics()
 doPlot()
 
