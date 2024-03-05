@@ -189,7 +189,7 @@ const Timers = {
         return(Timers._db[name])
     },
 
-    newTimer: function(name, do_func, millisecs, startnow=true) {
+    newTimer: function(name, do_func, millisecs) {
         var timer
         obj = {};
         obj.resume = function() {
@@ -198,9 +198,7 @@ const Timers = {
         obj.pause = function() {
             clearInterval(timer);
         };
-        if (startnow){
-            obj.resume();
-        }
+        obj.resume()
         Timers._db[name] = obj;
     }
 }
@@ -290,11 +288,11 @@ class Plot {
 
     size_of_letter = 15
 
-    constructor(name, margin, width, height,
-                plot_every, trans_time_new, trans_time_hist){
+    constructor(name, margin, width, height, ytype="cpu_percent"){
         this.name = name
         this.width = width
         this.height = height
+        this.ytype = ytype
         this.svg = d3.select("#" + name) //"#my_dataviz")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -302,16 +300,14 @@ class Plot {
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
         this.initAxes(width, height)
+    }
 
+    start(plot_every, trans_time_new, trans_time_hist){
         var parent = this
         Timers.newTimer(name, function(){
             parent.render(trans_time_new, trans_time_hist)
         }, plot_every)
-    }
-
-    start(){
         this.render()
-        Timers.get(this.name).resume()
     }
 
     initAxes(width, height){
@@ -354,24 +350,34 @@ class Plot {
         this.svg.select("#" + this.name + "_yaxis").call(d3.axisLeft(y).ticks(5))
     }
 
-    calculateAxes(historical_data, incoming_data, hist_width){
+    calculateAxes(historical_ref, incoming_ref, hist_width){
         // Update the axis ranges
-        const xold = d3.scaleLinear().domain(d3.extent(historical_data, d => d.time))
+        const xold = d3.scaleLinear().domain(d3.extent(historical_ref, d => d.time))
               .range([ 0, hist_width])
 
         const xnew = d3.scaleLinear()
-              .domain(d3.extent(incoming_data.get("all_processes"), d => d.time))
+              .domain(d3.extent(incoming_ref, d => d.time))
               .range([ hist_width, this.width ])
 
-        const y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
+        let y;
+        if (this.ytype === "cpu_percent"){
+            y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
+        } else {
+            // Assume RAM
+            y = d3.scaleLinear()
+                .domain([0, d3.max(
+                    historical_ref.concat(incoming_ref),
+                    d => d.memory_rss_mb)])
+                .range([ this.height, 0 ]);
+        }
 
         return([xold,xnew,y])
     }
 
-    static calculateDpoints(d, x, y, docurve=false){
+    static calculateDpoints(d, x, y, ykey="cpu_percent", docurve=false){
         let crv = d3.line()
             .x(d => x(d.time))
-            .y(d => y(d.cpu_percent))
+            .y(d => y(d[ykey]))
 
         if (docurve){
             crv = crv.curve(d3.curveBasis)
@@ -402,7 +408,8 @@ class Plot {
                   .attr("fill", "none")
                   .attr("stroke", d => new_style_map.get(d[0]).color )
                   .attr("stroke-width", d => new_style_map.get(d[0]).width)
-                  .attr("d", d => Plot.calculateDpoints(d,x,y, docurve))
+                  .attr("d", d => Plot.calculateDpoints(d, x, y,
+                                                       this.ytype, docurve))
                   .on("mouseover", function(ev){
                       let path = ev.target
                       let pathname = path.__data__[0]
@@ -426,7 +433,8 @@ class Plot {
                   .attr("fill", "none")
                   .attr("stroke", d => new_style_map.get(d[0]).color )
                   .attr("stroke-width", d => new_style_map.get(d[0]).width)
-                  .attr("d", d => Plot.calculateDpoints(d,x,y, docurve)))
+                  .attr("d", d => Plot.calculateDpoints(d, x, y,
+                                                       this.ytype, docurve)))
     }
 
     render(trans_time_new, trans_time_hist)
@@ -448,8 +456,9 @@ class Plot {
         // Free space divided by letter spacing
         var how_many_to_plot = Math.floor((this.width - hist_width) / this.size_of_letter)
         const filtered_data = Smooth.headTimescale(how_many_to_plot)
+        const ref_filt = filtered_data.get("all_processes")
 
-        const [xold, xnew, y] = this.calculateAxes(ref_hist, filtered_data, hist_width)
+        const [xold, xnew, y] = this.calculateAxes(ref_hist, ref_filt, hist_width)
         this.updateAxes(hist_width, xold, xnew, y)
 
         var new_style_map = Style.generateNewStyleMap(
@@ -489,14 +498,12 @@ window.onload = function(){
           height = 400 - margin_cpu.top - margin_cpu.bottom
 
     // // CPU plot
-    var p1 = new Plot("cpu", margin_cpu, width, height,
-                       plot_every, trans_time_new, trans_time_hist)
-     p1.start()
+    var p1 = new Plot("cpu", margin_cpu, width, height, "cpu_percent")
+    p1.start(plot_every, trans_time_new, trans_time_hist)
 
     // RAM plot
-    var p2 = new Plot("ram", margin_cpu, width, height,
-                      plot_every, trans_time_new, trans_time_hist)
-    p2.start()
+    var p2 = new Plot("ram", margin_cpu, width, height, "memory_rss_mb")
+    p2.start(plot_every, trans_time_new, trans_time_hist)
 
 }
 
