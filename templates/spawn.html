@@ -39,8 +39,8 @@
 <!-- Load d3.js -->
     <script src="d3.v7.min.js"></script>
 
-<!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
+    <div id="cpu"></div>
+    <div id="ram"></div>
 
 <div id="highlighted_user"></div>
 
@@ -189,7 +189,7 @@ const Timers = {
         return(Timers._db[name])
     },
 
-    newTimer: function(name, do_func, millisecs) {
+    newTimer: function(name, do_func, millisecs, startnow=true) {
         var timer
         obj = {};
         obj.resume = function() {
@@ -198,7 +198,9 @@ const Timers = {
         obj.pause = function() {
             clearInterval(timer);
         };
-        obj.resume();
+        if (startnow){
+            obj.resume();
+        }
         Timers._db[name] = obj;
     }
 }
@@ -284,33 +286,39 @@ const Smooth = {
     }
 }
 
-const Plot = {
+class Plot {
 
-    height : -1,
-    width : -1,
-    svg : null,
-    size_of_letter : 15, // size of a single character for tick labels
+    size_of_letter = 15
 
-    init: function(margin, width, height){
-        // append the svg object to the body of the page
-        Plot.svg = d3.select("#my_dataviz")
-              .append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-              .append("g")
-              .attr("transform", `translate(${margin.left},${margin.top})`);
+    constructor(name, margin, width, height,
+                plot_every, trans_time_new, trans_time_hist){
+        this.name = name
+        this.width = width
+        this.height = height
+        this.svg = d3.select("#" + name) //"#my_dataviz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+        this.initAxes(width, height)
 
-        Plot.initAxes(width, height)
+        var parent = this
+        Timers.newTimer(name, function(){
+            parent.render(trans_time_new, trans_time_hist)
+        }, plot_every)
+    }
 
-        Plot.width = width
-        Plot.height = height
-    },
+    start(){
+        this.render()
+        Timers.get(this.name).resume()
+    }
 
-    initAxes : function(width, height){
+    initAxes(width, height){
         // Initialize axes if not present
-        let xnew_dom = document.getElementById("xaxis-new"),
-            xold_dom = document.getElementById("xaxis-old"),
-            yaxis_dom = document.getElementById("yaxis")
+        let xnew_dom = document.getElementById(this.name + "_xaxis-new"),
+            xold_dom = document.getElementById(this.name + "_xaxis-old"),
+            yaxis_dom = document.getElementById(this.name + "_yaxis")
 
         if (xnew_dom != null){
             xnew_dom.remove()
@@ -319,50 +327,48 @@ const Plot = {
         }
 
         // xold
-        Plot.svg.append("g").attr("id", "xaxis-old")
+        this.svg.append("g").attr("id", this.name + "_xaxis-old")
             .attr("class", "xaxis")
             .attr("transform", `translate(0, ${height})`)
 
         // xnew
-        Plot.svg.append("g").attr("id", "xaxis-new")
+        this.svg.append("g").attr("id", this.name + "_xaxis-new")
             .attr("class", "xaxis")
             .attr("transform", `translate(0, ${height})`)
         // y
-        Plot.svg.append("g").attr("id", "yaxis")
-    },
+        this.svg.append("g").attr("id", this.name + "_yaxis")
+    }
 
-    updateAxes : function(hist_width, xold, xnew, y){
+    updateAxes(hist_width, xold, xnew, y){
         // Update the axis ranges
-        let len_hist_items = Math.floor(hist_width / (1.5 * Plot.size_of_letter))
+        let len_hist_items = Math.floor(hist_width / (1.5 * this.size_of_letter))
         let len_ref_items = 2
 
         // xold
-        Plot.svg.select("#xaxis-old")
+        this.svg.select("#" + this.name + "_xaxis-old")
             .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Plot.formatDate))
-
         // xnew
-        Plot.svg.select("#xaxis-new")
+        this.svg.select("#" + this.name + "_xaxis-new")
             .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Plot.formatDate))
-
         // y
-        Plot.svg.select("#yaxis").call(d3.axisLeft(y).ticks(5))
-    },
+        this.svg.select("#" + this.name + "_yaxis").call(d3.axisLeft(y).ticks(5))
+    }
 
-    calculateAxes: function(historical_data, incoming_data, hist_width){
+    calculateAxes(historical_data, incoming_data, hist_width){
         // Update the axis ranges
         const xold = d3.scaleLinear().domain(d3.extent(historical_data, d => d.time))
               .range([ 0, hist_width])
 
         const xnew = d3.scaleLinear()
               .domain(d3.extent(incoming_data.get("all_processes"), d => d.time))
-              .range([ hist_width, Plot.width ])
+              .range([ hist_width, this.width ])
 
-        const y = d3.scaleLinear().domain([0, 100]).range([ Plot.height, 0 ]);
+        const y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
 
         return([xold,xnew,y])
-    },
+    }
 
-    calculateDpoints: function(d,x,y, docurve=false){
+    static calculateDpoints(d, x, y, docurve=false){
         let crv = d3.line()
             .x(d => x(d.time))
             .y(d => y(d.cpu_percent))
@@ -371,21 +377,21 @@ const Plot = {
             crv = crv.curve(d3.curveBasis)
         }
         return(crv(d[1]))
-    },
+    }
 
-    formatDate: function(d){
+    static formatDate(d){
         let now = new Date(d)
         let hours = String(now.getHours()).padStart(2, '0');
         let minutes = String(now.getMinutes()).padStart(2, '0');
         let seconds = String(now.getSeconds()).padStart(2, '0');
         //return(`${hours}:${minutes}:${seconds}`);
         return(`${minutes}:${seconds}`);
-    },
+    }
 
-    plotDataTo : function(classname, new_style_map, x, y,
-                          trans_time, data, docurve=false){
+    plotDataTo(classname, new_style_map, x, y,
+               trans_time, data, docurve=false){
         // Plot the current data
-        let lines = Plot.svg.selectAll("path." + classname)
+        let lines = this.svg.selectAll("path." + classname)
         lines = lines
             .data(data, function(grp_arr, ind, whole){
                 return(ind)
@@ -421,40 +427,40 @@ const Plot = {
                   .attr("stroke", d => new_style_map.get(d[0]).color )
                   .attr("stroke-width", d => new_style_map.get(d[0]).width)
                   .attr("d", d => Plot.calculateDpoints(d,x,y, docurve)))
-    },
+    }
 
-    render: function(trans_time_new, trans_time_hist)
+    render(trans_time_new, trans_time_hist)
     {
         const ref_hist = Metrics.hist_data.get("all_processes")
-        const hist_width_limit = 0.8 * Plot.width
+        const hist_width_limit = 0.8 * this.width
         // We smooth the history data if it's taking up 80% of the screen
         // but we let it build up across the screen first before smoothing.
-        var hist_width = ref_hist.length * Plot.size_of_letter;  // build up
+        var hist_width = ref_hist.length * this.size_of_letter;  // build up
         if (Smooth.begin_smoothing_history || (hist_width > hist_width_limit))
         {
             Smooth.begin_smoothing_history = true
             hist_width = hist_width_limit   // hold fixed once smoothing starts
 
-            let approx_items = Math.floor(hist_width_limit / Plot.size_of_letter)
+            let approx_items = Math.floor(hist_width_limit / this.size_of_letter)
             Smooth.smoothHistory(approx_items)
         }
 
         // Free space divided by letter spacing
-        var how_many_to_plot = Math.floor((Plot.width - hist_width) / Plot.size_of_letter)
+        var how_many_to_plot = Math.floor((this.width - hist_width) / this.size_of_letter)
         const filtered_data = Smooth.headTimescale(how_many_to_plot)
 
-        const [xold, xnew, y] = Plot.calculateAxes(ref_hist, filtered_data, hist_width)
-        Plot.updateAxes(hist_width, xold, xnew, y)
+        const [xold, xnew, y] = this.calculateAxes(ref_hist, filtered_data, hist_width)
+        this.updateAxes(hist_width, xold, xnew, y)
 
         var new_style_map = Style.generateNewStyleMap(
             Array.from(Selector.user_active.options)
                 .filter(x => x.selected == false).map(x => x.value)
         )
 
-        Plot.plotDataTo("old", new_style_map, xold, y, trans_time_hist,
-                        Metrics.hist_data, docurve=true)
-        Plot.plotDataTo("new", new_style_map, xnew, y, trans_time_new,
-                        filtered_data, docurve=false)
+        this.plotDataTo("old", new_style_map, xold, y, trans_time_hist,
+                        Metrics.hist_data, true)
+        this.plotDataTo("new", new_style_map, xnew, y, trans_time_new,
+                        filtered_data, false)
     }
 }
 
@@ -462,12 +468,6 @@ const Plot = {
 window.onload = function(){
     Style.init()
     Metrics.init()
-
-    const margin = {top: 10, right: 30, bottom: 30, left: 60},
-          width = 460 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom
-
-    Plot.init(margin, width, height)
 
     const squash_every = 1000
     const trans_time_new = 150
@@ -477,15 +477,27 @@ window.onload = function(){
 
     Timers.newTimer("populate", Metrics.populateTimeScale,
                     fetch_every)
-    Timers.newTimer("render", function(){
-        Plot.render(trans_time_new, trans_time_hist)
-    }, plot_every)
     Timers.newTimer("squash", function(){
         Smooth.squashDataOlderThan(squash_every)
     }, squash_every)
 
     Metrics.populateTimeScale()
-    Plot.render()
+
+    const margin_cpu = {top: 10, right: 30, bottom: 30, left: 60},
+          margin_ram = {top: 60, right: 30, bottom: 80, left: 60},
+          width = 460 - margin_cpu.left - margin_cpu.right,
+          height = 400 - margin_cpu.top - margin_cpu.bottom
+
+    // // CPU plot
+    var p1 = new Plot("cpu", margin_cpu, width, height,
+                       plot_every, trans_time_new, trans_time_hist)
+     p1.start()
+
+    // RAM plot
+    var p2 = new Plot("ram", margin_cpu, width, height,
+                      plot_every, trans_time_new, trans_time_hist)
+    p2.start()
+
 }
 
 
