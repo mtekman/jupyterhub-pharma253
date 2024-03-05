@@ -37,7 +37,7 @@
 <div id="highlighted_user"></div>
 
 <div>
-    <select id="active_users" label="Show Users" multiple="true" onchange="renderData2()">
+    <select id="active_users" label="Show Users" multiple="true" onchange="doPlot()">
   </select>
 </div>
 
@@ -166,8 +166,10 @@ function pullMetrics(){
             opt.selected = true
             document.getElementById("active_users").appendChild(opt)
             // Add unique colouring
-            style_map.set(username, { "color" : getRandomColor(),
-                                      "width" : 2 })
+            if (!(style_map.has(username))){
+                style_map.set(username, { "color" : getRandomColor(),
+                                          "width" : 2 })
+            }
         }
     }
 }
@@ -175,7 +177,7 @@ function pullMetrics(){
 var hist_data = new Map()
 hist_data.set("all_processes", [])
 
-function mergeHistory(last_secs = 10){
+function squashDataOlderThan(last_secs = 10){
     //Historical data gets merged into a single average, every n ticks
     let ref_array = timescale_data.get("all_processes")
     var min_time = Date.now() - (last_secs*1000)
@@ -211,49 +213,15 @@ function mergeHistory(last_secs = 10){
     //}
 }
 
-function plotDataHistorical(new_style_map, x, y){
-    // Plot historical data
-    let old_lines = svg.selectAll("path.old")
-    old_lines = old_lines
-        .data(hist_data, (d,i) => d)
-        .join(
-            enter => enter
-                .append("path")
-                .attr("class", "old")
-                .attr("fill", "none")
-                .attr("stroke", d => new_style_map.get(d[0]).color)
-                .attr("stroke-width", d => new_style_map.get(d[0]).width)
-                .attr("d", function(d){
-                    return d3.line()
-                        .x(d => x(d.time))
-                        .y(d => y(d.cpu_percent))
-                        .curve(d3.curveBasis)(d[1])
-                }),
-            update => update,
-            exit => exit.call(old_lines => old_lines.transition().duration(0).remove())
-        )
-        .call(old_lines => old_lines.transition().duration(0)
-              .attr("fill", "none")
-              .attr("stroke", d => new_style_map.get(d[0]).color )
-              .attr("stroke-width", d => new_style_map.get(d[0]).width)
-              .attr("d", function(d){
-                  return d3.line()
-                      .x(d => x(d.time))
-                      .y(d => y(d.cpu_percent))
-                      .curve(d3.curveBasis)(d[1])
-              }))
-}
-
-
-function plotDataNew(new_style_map, x, y){
+function plotDataTo(classname, data, new_style_map, x, y){
     // Plot the current data
-    let new_lines = svg.selectAll("path.new")
-    new_lines = new_lines
-        .data(timescale_data, (d,i) => d)
+    let lines = svg.selectAll("path." + classname)
+    lines = lines
+        .data(data, (d,i) => d)
         .join(
             enter => enter
                 .append("path")
-                .attr("class", "new")
+                .attr("class", classname)
                 .attr("fill", "none")
                 .attr("stroke", d => new_style_map.get(d[0]).color )
                 .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -282,9 +250,9 @@ function plotDataNew(new_style_map, x, y){
 
             ,
             update => update,
-            exit => exit.call(new_lines => new_lines.transition().duration(100).remove())
+            exit => exit.call(lines => lines.transition().duration(100).remove())
         )
-        .call(new_lines => new_lines.transition().duration(100)
+        .call(lines => lines.transition().duration(100)
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
@@ -298,7 +266,7 @@ function plotDataNew(new_style_map, x, y){
 }
 
 
-function renderData2(){
+function doPlot(){
     const points_max = 20 // show this many values at any given time
     const points_actual = 5  // the first N points are true, the rest are subsampled.
 
@@ -340,8 +308,8 @@ function renderData2(){
                   ]).range([ height, 0 ]);
 
 
-    plotDataHistorical(new_style_map, xold, y)
-    plotDataNew(new_style_map, xnew, y)
+    plotDataTo("old", hist_data, new_style_map, xold, y)
+    plotDataTo("new", timescale_data, new_style_map, xnew, y)
 
     // Initialize axes if not present
     let xnew_dom = document.getElementById("xaxis-new"),
@@ -374,14 +342,14 @@ function renderData2(){
 }
 
 var timer_metric = startTimer(pullMetrics, 1000)
-var timer_plot = startTimer(renderData2, 1000)
-var history_plot = startTimer(function(){mergeHistory(5)}, 5000)
+var timer_plot = startTimer(doPlot, 1000)
+var history_plot = startTimer(function(){squashDataOlderThan(5)}, 5000)
 
 
 pullMetrics()
 pullMetrics()
 pullMetrics()
-renderData2()
+doPlot()
 
 
 
