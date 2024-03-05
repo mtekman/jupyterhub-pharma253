@@ -342,18 +342,17 @@ function doPlot(){
 
     let timenow = new Date()
     
-    var len_hist = ref_hist.length * hist_space;
-    if (begin_smoothing_history || (len_hist > hist_width_limit)){
-        len_hist = hist_width_limit
+    var hist_width = ref_hist.length * hist_space;
+    if (begin_smoothing_history || (hist_width > hist_width_limit)){
+        hist_width = hist_width_limit
         begin_smoothing_history = true
-        console.log("YI")
         let estimate_items_in_desired_width = Math.floor(hist_width_limit / hist_space)
         smoothHistory(estimate_items_in_desired_width)
     }
 
 
     // Free space divided by letter spacing
-    var how_many_new_to_plot = Math.floor((width - len_hist) / hist_space)
+    var how_many_new_to_plot = Math.floor((width - hist_width) / hist_space)
 
     var filtered_data = new Map()
     for (var [user, arrays] of timescale_data)
@@ -368,11 +367,11 @@ function doPlot(){
     // Update the axis ranges
     const xold = d3.scaleLinear()
           .domain(d3.extent(ref_hist, d => d.time))
-          .range([ 0, len_hist])
+          .range([ 0, hist_width])
 
     const xnew = d3.scaleLinear()
           .domain(d3.extent(filtered_data.get("all_processes"), d => d.time))
-          .range([ len_hist, width ])
+          .range([ hist_width, width ])
 
     const y = d3.scaleLinear()
           .domain([0, 100]) /*d3.max(
@@ -398,16 +397,19 @@ function doPlot(){
         yaxis_dom.remove()
     }
 
+    let len_hist_items = Math.floor(hist_width / (1.5 * hist_space))
+    let len_ref_items = 2
+    
+    // xold    
+    svg.append("g").attr("id", "xaxis-old")
+        .attr("class", "xaxis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(formatDate))
     // xnew
     svg.append("g").attr("id", "xaxis-new")
         .attr("class", "xaxis")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xnew).ticks(2).tickFormat(formatDate))
-    // xold
-    svg.append("g").attr("id", "xaxis-old")
-        .attr("class", "xaxis")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xold).ticks(Math.floor(len_hist/hist_space)-1).tickFormat(formatDate))
+        .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(formatDate))
 
     svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
 }
