@@ -175,11 +175,12 @@ function pullMetrics(){
 var hist_data = new Map()
 hist_data.set("all_processes", [])
 
-function mergeHistory(n=100){
+function mergeHistory(last_secs = 10){
     //Historical data gets merged into a single average, every n ticks
     let ref_array = timescale_data.get("all_processes")
-    if (ref_array.length > n){
-        var min_time = ref_array[ref_array.length - Math.floor(n/2)].time
+    var min_time = Date.now() - (last_secs*1000)
+    //if (ref_array.filter(x => x.time < min_time).length > 20){
+
         for (const [user, arrays] of timescale_data)
         {
             let data_before = arrays.filter(x => x.time < min_time)
@@ -203,10 +204,11 @@ function mergeHistory(n=100){
                 hist_data.set(user, [data_avg])
             }
 
-            // Shorten all histories
+            // Shorten all histories, but use last value of hist as starting point
+            //timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
             timescale_data.set(user, arrays.filter(x => x.time >= min_time))
         }
-    }
+    //}
 }
 
 function plotDataHistorical(new_style_map, x, y){
@@ -311,16 +313,15 @@ function renderData2(){
         })
     }
 
-    mergeHistory(20)
-
     //var filtered_data = new Map(timescale_data)
     //filtered_data = smoothAndSubSample(timescale_data)
     const ref_hist = hist_data.get("all_processes")
     const ref_new = timescale_data.get("all_processes")
 
-    const len_hist = ref_hist.length * 5
-    const len_new = width - len_hist
-    //const width_hist = width * len_hist / len
+    const len_hist = ref_hist.length * 2
+    const len_new = width / 2
+
+    let timenow = new Date()
 
     // Update the axis ranges
     const xold = d3.scaleLinear()
@@ -328,7 +329,7 @@ function renderData2(){
           .range([ 0, len_hist ])
 
     const xnew = d3.scaleLinear()
-          .domain(d3.extent(ref_new, d => d.time))
+          .domain([timenow - 10000, timenow])
           .range([ len_hist, width ])
 
     const y = d3.scaleLinear()
@@ -372,8 +373,10 @@ function renderData2(){
 
 }
 
-var timer_metric = startTimer(pullMetrics, 500)
-var timer_plot = startTimer(renderData2, 500)
+var timer_metric = startTimer(pullMetrics, 1000)
+var timer_plot = startTimer(renderData2, 1000)
+var history_plot = startTimer(function(){mergeHistory(5)}, 5000)
+
 
 pullMetrics()
 pullMetrics()
