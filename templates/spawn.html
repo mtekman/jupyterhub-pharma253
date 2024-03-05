@@ -4,56 +4,71 @@
 
 <!-- {{ super() }} -->
 <style>
-  thead { font-family: monospace; font-style: italic; }
-  form { display:grid; }
-  #curr_resource { position:absolute; bottom: 20px; right: 20px}
-  #usage_cont { border: solid black; border-radius: 20px;
-  text-align: center; background-color: #cdc;
-  box-shadow: 5px 5px 5px #888;}
-  #chart {position: absolute; top: 50px; left: 50px; width: 200px; height: 200px;}
-  table { border-spacing: 5px;  border-collapse: separate;
-  text-align:center;  margin-left: auto; margin-right: auto}
-  td,th { padding-left: 30px; }
-  #profile_cont { font-size: large; flex-direction: row; display:flex;
-  width: 90%; margin-left: auto; margin-right: auto}
-  #profile_cont select { box-shadow: 2px 2px 2px #888; flex-grow: 2;
-  margin-bottom: 5px;}
-  #profile_cont span { flex-grow: 4; }
-  #prealloc_message {margin-left:auto; margin-right:auto;
-  margin-top:6px; font-size:small;}
-  th { text-align:center; }
-  td input[type="number"] { margin-top: 10px; text-align:center;
-  border-radius: 10px;
-  border: 2px solid #555; width: 120px;}
-  td input[type="range"] {width: 150px;}
-  #active_users {
-      position: absolute; top: 0px; left: 0px
-  }
-  .xaxis .tick text {
-      text-anchor : end;
-      transform: translate(-12px, 8px) rotate(-90deg);
-  }
+    thead { font-family: monospace; font-style: italic; }
+    form { display:grid; }
+    #curr_resource { position:absolute; bottom: 20px; right: 20px}
+    #usage_cont { border: solid black; border-radius: 20px;
+    text-align: center; background-color: #cdc;
+    box-shadow: 5px 5px 5px #888;}
+    #chart {position: absolute; top: 50px; left: 50px; width: 200px; height: 200px;}
+    table { border-spacing: 5px;  border-collapse: separate;
+    text-align:center;  margin-left: auto; margin-right: auto}
+    td,th { padding-left: 30px; }
+    #profile_cont { font-size: large; flex-direction: row; display:flex;
+    width: 90%; margin-left: auto; margin-right: auto}
+    #profile_cont select { box-shadow: 2px 2px 2px #888; flex-grow: 2;
+    margin-bottom: 5px;}
+    #profile_cont span { flex-grow: 4; }
+    #prealloc_message {margin-left:auto; margin-right:auto;
+    margin-top:6px; font-size:small;}
+    th { text-align:center; }
+    td input[type="number"] { margin-top: 10px; text-align:center;
+    border-radius: 10px;
+    border: 2px solid #555; width: 120px;}
+    td input[type="range"] {width: 150px;}
+    #active_users {
+    position: absolute; top: 0px; left: 0px
+    }
+    .xaxis .tick text {
+    text-anchor : end;
+    transform: translate(-12px, 8px) rotate(-90deg);
+    }
+    #plotgraph {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    }
+
+    #plotcont svg {
+    display: block;
+    margin: auto;
+    }
+    #plotcont svg:nth-child(1) {
+    margin-top: -30px;
+    }
 
 </style>
 
 <!-- Load d3.js -->
-    <script src="d3.v7.min.js"></script>
+<script src="d3.v7.min.js" ></script>
 
-    <div id="cpu"></div>
-    <div id="ram"></div>
-
-<div id="highlighted_user"></div>
-
-<div>
-    <select id="active_users" label="Show Users" multiple="true" onchange="Plot.render()">
-  </select>
+<div id="plotgraph" >
+    <div id="plotcont" >
+        <div id="cpu"></div><div id="ram"></div>
+    </div>
+    <div id="highlighted_user"></div>
+    <div>
+        <select id="active_users" label="Show Users" multiple="true" >
+            <!-- onchange="Plot.render()" -->
+        </select>
+    </div>
 </div>
 
 <!-- {% endblock %} -->
 
 <!-- {% block script %} -->
 
-<script>
+<script type="text/javascript" >
 
 // Methods
 const Metrics = {
@@ -260,9 +275,10 @@ const Smooth = {
                         "cpu_percent" : (valA.cpu_percent + valB.cpu_percent) / 2,
                         "memory_rss_mb" : (valA.memory_rss_mb + valB.memory_rss_mb) / 2
                     })
+                    //new_arr.push(valB)
                 }
                 // Set time for first and last to match limits of original, for continuity
-                new_arr[0] = arrays[0]
+                new_arr[0].time = arrays[0].time
                 new_arr[new_arr.length-1] = arrays[arrays.length-1]
                 Metrics.hist_data.set(user, new_arr)
             }
@@ -288,11 +304,13 @@ class Plot {
 
     size_of_letter = 15
 
-    constructor(name, margin, width, height, ytype="cpu_percent"){
+    constructor(name, margin, width, height,
+                ytype="cpu_percent", show_xticks=true){
         this.name = name
         this.width = width
         this.height = height
         this.ytype = ytype
+        this.show_xticks = show_xticks
         this.svg = d3.select("#" + name) //"#my_dataviz")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -300,14 +318,6 @@ class Plot {
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
         this.initAxes(width, height)
-    }
-
-    start(plot_every, trans_time_new, trans_time_hist){
-        var parent = this
-        Timers.newTimer(name, function(){
-            parent.render(trans_time_new, trans_time_hist)
-        }, plot_every)
-        this.render()
     }
 
     initAxes(width, height){
@@ -341,11 +351,13 @@ class Plot {
         let len_ref_items = 2
 
         // xold
-        this.svg.select("#" + this.name + "_xaxis-old")
-            .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Plot.formatDate))
-        // xnew
-        this.svg.select("#" + this.name + "_xaxis-new")
-            .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Plot.formatDate))
+        if (this.show_xticks){
+            this.svg.select("#" + this.name + "_xaxis-old")
+                .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Plot.formatDate))
+            // xnew
+            this.svg.select("#" + this.name + "_xaxis-new")
+                .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Plot.formatDate))
+        }
         // y
         this.svg.select("#" + this.name + "_yaxis").call(d3.axisLeft(y).ticks(5))
     }
@@ -361,7 +373,12 @@ class Plot {
 
         let y;
         if (this.ytype === "cpu_percent"){
-            y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
+            //y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
+            y = d3.scaleLinear()
+                .domain([0, d3.max(
+                    historical_ref.concat(incoming_ref),
+                    d => d[this.ytype])])
+                .range([ this.height, 0 ]);
         } else {
             // Assume RAM
             y = d3.scaleLinear()
@@ -492,19 +509,19 @@ window.onload = function(){
 
     Metrics.populateTimeScale()
 
-    const margin_cpu = {top: 10, right: 30, bottom: 30, left: 60},
-          margin_ram = {top: 60, right: 30, bottom: 80, left: 60},
-          width = 460 - margin_cpu.left - margin_cpu.right,
-          height = 400 - margin_cpu.top - margin_cpu.bottom
+    const margin = {top: 5, right: 30, bottom: 40, left: 60}
+    const width = 460 - margin.left - margin.right
+    const height = 200 - margin.top - margin.bottom
 
     // // CPU plot
-    var p1 = new Plot("cpu", margin_cpu, width, height, "cpu_percent")
-    p1.start(plot_every, trans_time_new, trans_time_hist)
-
+    var p1 = new Plot("cpu", margin, width, height, "cpu_percent", show_xticks=false)
     // RAM plot
-    var p2 = new Plot("ram", margin_cpu, width, height, "memory_rss_mb")
-    p2.start(plot_every, trans_time_new, trans_time_hist)
-
+    var p2 = new Plot("ram", margin, width, height, "memory_rss_mb")
+    // They share a common Timer
+    Timers.newTimer("render", function(){
+        p1.render(trans_time_new, trans_time_hist)
+        p2.render(trans_time_new, trans_time_hist)
+    }, plot_every)
 }
 
 
