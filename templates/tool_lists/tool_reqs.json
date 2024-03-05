@@ -1,0 +1,2447 @@
+[
+  {
+    "name": "__default__",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "AccurateMassSearch",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "AdditiveSeries",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "BaselineFilter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "CONVERTER_bedgraph_to_bigwig",
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "CVInspector",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "CompNovo",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "CompNovoCID",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ConsensusID",
+    "cores": 1,
+    "mem": 58
+  },
+  {
+    "name": "ConsensusMapNormalizer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "DeMeanderize",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "Decharger",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "DecoyDatabase",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "Digestor",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "DigestorMotif",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "EICExtractor",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "EMBOSS: fuzztran39",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "ERPairFinder",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FFEval",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FalseDiscoveryRate",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderCentroided",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderIsotopeWavelet",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderMRM",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderMetabo",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderMultiplex",
+    "cores": 8,
+    "mem": 8
+  },
+  {
+    "name": "FeatureFinderSuperHirn",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureLinkerLabeled",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureLinkerUnlabeled",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FeatureLinkerUnlabeledQT",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FidoAdapter",
+    "cores": 8,
+    "mem": 8
+  },
+  {
+    "name": "FileConverter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FileFilter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FileInfo",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "FileMerger",
+    "cores": 4,
+    "mem": 16
+  },
+  {
+    "name": "HighResPrecursorMassCorrector",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDConflictResolver",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDEvaluator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDExtractor",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDFileConverter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDFilter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDMapper",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDMassAccuracy",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDMerger",
+    "cores": 1,
+    "mem": 30
+  },
+  {
+    "name": "IDPosteriorErrorProbability",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDRTCalibration",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IDSplitter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ITRAQAnalyzer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ImageCreator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "InclusionExclusionListCreator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "InternalCalibration",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "IsobaricAnalyzer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "LabeledEval",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MRMMapper",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MRMPairFinder",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "msgfplus",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "MSGFPlusAdapter",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "mass_spectrometry_imaging_segmentations",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "mass_spectrometry_imaging_combine",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "msi_ion_images",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "msi_spectra_plot",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "MSSimulator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapAlignerIdentification",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapAlignerPoseClustering",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapAlignerSpectrum",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapAlignmentEvaluation",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapNormalizer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapRTTransformer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MapStatistics",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MassCalculator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MassTraceExtractor",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MyriMatchAdapter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "MzTabExporter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "mothur_align_check",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_align_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_amova",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_anosim",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_bin_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_bellerophon",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_ccode",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_check",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_perseus",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_pintail",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_slayer",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chimera_uchime",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_chop_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_classify_otu",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_classify_rf",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_classify_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_classify_tree",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_clearcut",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_cluster",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_cluster_classic",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_cluster_fragments",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_cluster_split",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_collect_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_collect_single",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_consensus_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_cooccurrence",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_corr_axes",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_count_groups",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_count_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_create_database",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_degap_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_deunique_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_deunique_tree",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_dist_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_dist_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_fastq_info",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_filter_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_filter_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_communitytype",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_coremicrobiome",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_dists",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_group",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_groups",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_label",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_lineage",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_mimarkspackage",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_otulabels",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_otulist",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_oturep",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_otus",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_rabund",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_relabund",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_sabund",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_get_sharedseqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_hcluster",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_heatmap_bin",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_heatmap_sim",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_homova",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_indicator",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_lefse",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_libshuff",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_list_otulabels",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_list_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_biom",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_contigs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_design",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_fastq",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_group",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_lefse",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_lookup",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_make_sra",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_mantel",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_merge_files",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_merge_groups",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_merge_sfffiles",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_merge_taxsummary",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_metastats",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_mimarks_attributes",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_nmds",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_normalize_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_otu_association",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_otu_hierarchy",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_pairwise_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_parse_list",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_parsimony",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_pca",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_pcoa",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_pcr_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_phylo_diversity",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_phylotype",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_pre_cluster",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_primer_design",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_rarefaction_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_rarefaction_single",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_dists",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_groups",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_lineage",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_otulabels",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_otus",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_rare",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_remove_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_reverse_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_screen_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_sens_spec",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_seq_error",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_sffinfo",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_shhh_flows",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_shhh_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_sort_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_split_abund",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_split_groups",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_sub_sample",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_summary_qual",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_summary_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_summary_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_summary_single",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_summary_tax",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_tree_shared",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_trim_flows",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_trim_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_unifrac_unweighted",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_unifrac_weighted",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_unique_seqs",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "mothur_venn",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "NSPDK_candidateClust",
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "NoiseFilterGaussian",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "NoiseFilterSGolay",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OMSSAAdapter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathAnalyzer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathChromatogramExtractor",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathConfidenceScoring",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathDIAPreScoring",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathDecoyGenerator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathFeatureXMLToTSV",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathRTNormalizer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "OpenSwathRewriteToFeatureXML",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PTModel",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PTPredict",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PeakPickerHiRes",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PeakPickerWavelet",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PepNovoAdapter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PeptideIndexer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PicardASMetrics",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "PicardGCBiasMetrics",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "PicardHsMetrics",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "PicardInsertSize",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "PrecursorIonSelector",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "PrecursorMassCorrector",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ProteinInference",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ProteinQuantifier",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "ProteinResolver",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "RNPxl",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "RTEvaluation",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "RTModel",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "RTPredict",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "Resampler",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SeedListGenerator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SemanticValidator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SequenceCoverageCalculator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpecLibCreator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpecLibSearcher",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterBernNorm",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterMarkerMower",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterNLargest",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterNormalizer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterParentPeakMower",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterScaler",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterSqrtMower",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterThresholdMower",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraFilterWindowMower",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "SpectraMerger",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "TMTAnalyzer",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "TOFCalibration",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "TextExporter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "TransformationEvaluation",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "XMLValidator",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "XTandemAdapter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "antismash",
+    "cores": 12,
+    "mem": 120
+  },
+  {
+    "name": "bam-to-wig",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "bamCompare_deepTools",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "bamCorrelate_deepTools",
+    "cores": 12,
+    "mem": 120
+  },
+  {
+    "name": "bamCoverage_deepTools",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "bamFingerprint",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "bctools_extract_alignment_ends",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "bedtools_intersectbed",
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "bedtools_intersectbed_bam",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "bedtools_mergebed",
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "bedtools_sortbed",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "bfast_wrapper",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "bg_diamond",
+    "cores": 6,
+    "mem": 90
+  },
+  {
+    "name": "bg_diamond_makedb",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "bgchem_fragment_merger",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "bigwig_to_bedgraph",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "bismark_bowtie",
+    "cores": 6,
+    "mem": 30
+  },
+  {
+    "name": "bismark_bowtie2",
+    "cores": 6,
+    "mem": 30
+  },
+  {
+    "name": "blast2go",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "blockbuster",
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "blockclust",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "bowtie2",
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "bwa",
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "bwa_mem",
+    "cores": 8,
+    "mem": 60
+  },
+  {
+    "name": "bwa_mem_index_builder_data_manager",
+    "cores": null,
+    "mem": 120
+  },
+  {
+    "name": "bwameth_index_builder_data_manager",
+    "cores": null,
+    "mem": 120
+  },
+  {
+    "name": "bwameth",
+    "cores": 8,
+    "mem": 24
+  },
+  {
+    "name": "bwtool-lift",
+    "cores": null,
+    "mem": 80
+  },
+  {
+    "name": "mass_spectrometry_imaging_preprocessing",
+    "cores": null,
+    "mem": 110
+  },
+  {
+    "name": "mass_spectrometry_imaging_ion_images",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "mass_spectrometry_imaging_qc",
+    "cores": null,
+    "mem": 110
+  },
+  {
+    "name": "mass_spectrometry_imaging_filtering",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "metaspades",
+    "cores": 10,
+    "mem": 110
+  },
+  {
+    "name": "megahit",
+    "cores": 10,
+    "mem": 110
+  },
+  {
+    "name": "charts",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "computeMatrix",
+    "cores": null,
+    "mem": 80
+  },
+  {
+    "name": "correctGCBias",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "crispr_recognition_tool",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "ctb_np-likeness-calculator",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "ctb_online_data_fetch",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "ctb_openmg",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "ctb_pubchem_download_as_smiles",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "cuffcompare",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "cuffdiff",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "cufflinks",
+    "cores": 12,
+    "mem": 30
+  },
+  {
+    "name": "cuffnorm",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "cuffquant",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "data_manager_gemini_download",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "data_manager_humann2_download",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "data_manager_snpeff_databases",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "data_manager_snpeff_download",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bamCompare",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bamCorrelate",
+    "cores": 12,
+    "mem": 90
+  },
+  {
+    "name": "deeptools_bamCoverage",
+    "cores": 12,
+    "mem": 48
+  },
+  {
+    "name": "deeptools_bamFingerprint",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bam_compare",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_bam_coverage",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_bam_pe_fragmentsize",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_bigwigCompare",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bigwigCorrelate",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "deeptools_bigwig_compare",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_computeGCBias",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_computeMatrix",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_compute_gc_bias",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_compute_matrix",
+    "cores": 12,
+    "mem": 30
+  },
+  {
+    "name": "deeptools_correctGCBias",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_correct_gc_bias",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_heatmapper",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "deeptools_multi_bam_summary",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_multi_bigwig_summary",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "deeptools_plot_correlation",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "deeptools_plot_coverage",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "deeptools_plot_fingerprint",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "deeptools_plot_heatmap",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "deeptools_plot_pca",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "deeptools_plot_profile",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "deeptools_profiler",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "demo2D00",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "dexseq_count",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "diamond_database_builder",
+    "cores": 12,
+    "mem": 90
+  },
+  {
+    "name": "dt_profiler",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "eukaryotic_ncbi_submission",
+    "cores": 24,
+    "mem": 24
+  },
+  {
+    "name": "fastq_dump",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "fastqc",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "featurecounts",
+    "cores": 8,
+    "mem": 8
+  },
+  {
+    "name": "feebayes",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "flashlfq",
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "flexbar",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_no_split",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_split_RR_bcs",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_split_RYYR_bcs",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "freebayes",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "gatk2_base_recalibrator",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_depth_of_coverage",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_haplotype_caller",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_indel_realigner",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "gatk2_print_reads",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_realigner_target_creator",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_reduce_reads",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_unified_genotyper",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_annotator",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_apply_recalibration",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_combine",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_eval",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_filtration",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "gatk2_variant_recalibrator",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_select",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_validate",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "gatk_picard_index_builder",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "gemini_load",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "hammock_1.0",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "heatmapper",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "heatmapper_deepTools",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "hicexplorer_hicbuildmatrix",
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "hicexplorer_hiccorrectmatrix",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicfindtads",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicplotmatrix",
+    "cores": null,
+    "mem": 80
+  },
+  {
+    "name": "hicexplorer_hicplottads",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicsummatrices",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicpca",
+    "cores": 12,
+    "mem": 60
+  },
+  {
+    "name": "hicexplorer_hicmergematrixbins",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hictransform",
+    "cores": 12,
+    "mem": 60
+  },
+  {
+    "name": "hicexplorer_hicplotviewpoint",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "hisat",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "hisat2",
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "hisat2_index_builder_data_manager",
+    "cores": 12,
+    "mem": 180
+  },
+  {
+    "name": "hmmer_hmmsearch",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "htseq_count",
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "humann2",
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "infernal_cmbuild",
+    "cores": 20,
+    "mem": 20
+  },
+  {
+    "name": "interproscan",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "iqtree",
+    "cores": 12,
+    "mem": null
+  },
+  {
+    "name": "iterative_map_pipeline",
+    "cores": null,
+    "mem": 60
+  },
+  {
+    "name": "je_clip",
+    "cores": 8,
+    "mem": null
+  },
+  {
+    "name": "je_demultiplex",
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "je_demultiplex_illu",
+    "cores": 8,
+    "mem": null
+  },
+  {
+    "name": "je_markdupes",
+    "cores": 8,
+    "mem": null
+  },
+  {
+    "name": "join1",
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "jq",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "kallisto_quant",
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "lastz_wrapper_2",
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "macs2_bdgdiff",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "macs2_callpeak",
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "maldi_quant_preprocessing",
+    "cores": null,
+    "mem": 249
+  },
+  {
+    "name": "megablast_wrapper",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "meme_dreme",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "merge_pcr_duplicates.py",
+    "cores": null,
+    "mem": 4
+  },
+  {
+    "name": "methtools_calling",
+    "cores": 12,
+    "mem": 40
+  },
+  {
+    "name": "methtools_filter",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "methtools_plot",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "metilene",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "minced",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "proteomics_moff",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "mmbios01",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "mmbios02",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "mmbios03",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "morpheus",
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "naive_variant_caller",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "ncbi_makeblastdb",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "nspdk_sparse",
+    "cores": null,
+    "mem": 16
+  },
+  {
+    "name": "numeric_clustering",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "peakachu",
+    "cores": null,
+    "mem": 16
+  },
+  {
+    "name": "peptide_shaker",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "picard_ARRG",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_AddOrReplaceReadGroups",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_BamIndexStats",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_CASM",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_CollectInsertSizeMetrics",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_CollectRnaSeqMetrics",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_DownsampleSam",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_EstimateLibraryComplexity",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_NormalizeFasta",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_FilterSamReads",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_FixMateInformation",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_FastqToSam",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_MarkDuplicates",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_MergeSamFiles",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_QualityScoreDistribution",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_ReorderSam",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_ReplaceSamHeader",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_SamToFastq",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "picard_SortSam",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "picard_index_builder_data_manager",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "piranha",
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "preproc",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "prokaryotic_ncbi_submission",
+    "cores": 24,
+    "mem": 24
+  },
+  {
+    "name": "prokka",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "proteomics_search_msgfplus_1",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "r_correlation_matrix",
+    "cores": null,
+    "mem": 80
+  },
+  {
+    "name": "rbc_mirdeep2_mapper",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "rcas",
+    "cores": 4,
+    "mem": 16
+  },
+  {
+    "name": "rgEstLibComp",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "rgPicFixMate",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "rgPicardMarkDups",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "rm_spurious_events.py",
+    "cores": null,
+    "mem": 4
+  },
+  {
+    "name": "rna_star",
+    "cores": 12,
+    "mem": 100
+  },
+  {
+    "name": "rna_star_index_builder_data_manager",
+    "cores": 12,
+    "mem": 160
+  },
+  {
+    "name": "rnbeads",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "rsem_calculate_expression",
+    "cores": null,
+    "mem": 16
+  },
+  {
+    "name": "rseqc_bam2wig",
+    "cores": 8,
+    "mem": 16
+  },
+  {
+    "name": "sailfish",
+    "cores": 6,
+    "mem": 60
+  },
+  {
+    "name": "salmon",
+    "cores": 6,
+    "mem": 60
+  },
+  {
+    "name": "sam_merge2",
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "search_gui",
+    "cores": 6,
+    "mem": 12
+  },
+  {
+    "name": "secretbt2test",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "segemehl",
+    "cores": null,
+    "mem": 80
+  },
+  {
+    "name": "show_2D_image_reshape",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "show_3D_image_reshape",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "show_3D_surface_plot",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "signalp3",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "smooth_running_window",
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "snippy",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff_databases",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff_download",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_annotate",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_caseControl",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_filter",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_geneSets",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_int",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "spades",
+    "cores": 12,
+    "mem": 180
+  },
+  {
+    "name": "structurefold",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "rnaspades",
+    "cores": 12,
+    "mem": 90
+  },
+  {
+    "name": "stringtie",
+    "cores": null,
+    "mem": 25
+  },
+  {
+    "name": "t_coffee",
+    "cores": null,
+    "mem": null
+  },
+  {
+    "name": "tophat2",
+    "cores": 12,
+    "mem": 90
+  },
+  {
+    "name": "tp_easyjoin_tool",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "tp_multijoin_tool",
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "tp_uniq_tool",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "trimmomatic",
+    "cores": 6,
+    "mem": 12
+  },
+  {
+    "name": "trinity",
+    "cores": 6,
+    "mem": 220
+  },
+  {
+    "name": "umi_tools_group",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "umi_tools_dedup",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "unicycler",
+    "cores": 12,
+    "mem": 180
+  },
+  {
+    "name": "varscan",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "velvetg",
+    "cores": 4,
+    "mem": 32
+  },
+  {
+    "name": "velveth",
+    "cores": 4,
+    "mem": 16
+  },
+  {
+    "name": "vsearch_search",
+    "cores": null,
+    "mem": 80
+  }
+]
