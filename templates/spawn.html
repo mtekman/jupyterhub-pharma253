@@ -31,7 +31,7 @@
   }
   .xaxis .tick text {
       text-anchor : end;
-      transform: translateY(5px) rotate(-90deg);
+      transform: translate(-12px, 8px) rotate(-90deg);
   }
 
 </style>
@@ -185,10 +185,11 @@ function pullMetrics(){
 var hist_data = new Map()
 hist_data.set("all_processes", [])
 
-function squashDataOlderThan(last_ms = 1000){
+function squashDataOlderThan(last_ms = 1000){    
     //Historical data gets merged into a single average, every n ticks
+    
     let ref_array = timescale_data.get("all_processes")
-    var min_time = Date.now() - (last_ms)
+    var min_time = Date.now() - last_ms
     //if (ref_array.filter(x => x.time < min_time).length > 20){
 
         for (const [user, arrays] of timescale_data)
@@ -215,20 +216,48 @@ function squashDataOlderThan(last_ms = 1000){
             }
 
             // Shorten all histories, but use last value of hist as starting point
-            //timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
-            timescale_data.set(user, arrays.filter(x => x.time >= min_time))
+            timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
+            //timescale_data.set(user, arrays.filter(x => x.time >= min_time))
         }
-    //}
 }
 
-  function calculateDpoints(d,x,y){
-      return d3.line()
-          .x(d => x(d.time))
-          .y(d => y(d.cpu_percent))
-          .curve(d3.curveBasis)(d[1])
+function smoothHistory(hist_limit = 25){
+    let ref_hist = hist_data.get("all_processes")
+    if (ref_hist.length > hist_limit){
+        for (const [user, arrays] of hist_data)
+        {
+            var new_arr = []
+            for (let i=1; i < arrays.length; i += 2){
+                let valA = arrays[i-1]
+                let valB = arrays[i]
+                
+                new_arr.push({
+                    "time": (valA.time + valB.time) / 2,
+                    "cpu_percent" : (valA.cpu_percent + valB.cpu_percent) / 2,
+                    "memory_rss_mb" : (valA.memory_rss_mb + valB.memory_rss_mb) / 2
+                })
+            }
+            // Set time for first and last to match limits of original, for continuity
+            new_arr[0] = arrays[0]
+            new_arr[new_arr.length-1] = arrays[arrays.length-1]
+            hist_data.set(user, new_arr)
+        }
+    }
+}
+
+
+function calculateDpoints(d,x,y, docurve=false){
+    let crv = d3.line()
+        .x(d => x(d.time))
+        .y(d => y(d.cpu_percent))
+
+    if (docurve){
+        crv = crv.curve(d3.curveBasis)
+    }
+    return(crv(d[1]))
   }
    
-function plotDataTo(classname, data, new_style_map, x, y){
+function plotDataTo(classname, data, new_style_map, x, y, trans_time, docurve=false){
     // Plot the current data
     let lines = svg.selectAll("path." + classname)
     lines = lines
@@ -241,7 +270,7 @@ function plotDataTo(classname, data, new_style_map, x, y){
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
-              .attr("d", d => calculateDpoints(d,x,y))
+              .attr("d", d => calculateDpoints(d,x,y, docurve))
               .on("mouseover", function(ev){
                   let path = ev.target
                   let pathname = path.__data__[0]
@@ -265,15 +294,17 @@ function plotDataTo(classname, data, new_style_map, x, y){
               .attr("fill", "none")
               .attr("stroke", d => new_style_map.get(d[0]).color )
               .attr("stroke-width", d => new_style_map.get(d[0]).width)
-              .attr("d", d => calculateDpoints(d,x,y)))
+              .attr("d", d => calculateDpoints(d,x,y, docurve)))
 
 }
 
 var fetch_every = 500,
     plot_every = 500,
-    trans_time = 250,
-    squash_every = 5000,
-    hist_space = 10
+    trans_time_hist = 0,
+    trans_time_new = 150,
+    squash_every = 1000,
+    hist_space = 10,
+    begin_smoothing_history = false;
 
   
   
@@ -307,13 +338,19 @@ function doPlot(){
     //filtered_data = smoothAndSubSample(timescale_data)
     const ref_hist = hist_data.get("all_processes")
     const ref_new = timescale_data.get("all_processes")
+    const hist_width_limit = 0.8 * width
 
     let timenow = new Date()
     
-    var len_hist = ref_hist.length * hist_space
-    if (len_hist > width){
-        len_hist = width
+    var len_hist = ref_hist.length * hist_space;
+    if (begin_smoothing_history || (len_hist > hist_width_limit)){
+        len_hist = hist_width_limit
+        begin_smoothing_history = true
+        console.log("YI")
+        let estimate_items_in_desired_width = Math.floor(hist_width_limit / hist_space)
+        smoothHistory(estimate_items_in_desired_width)
     }
+
 
     // Free space divided by letter spacing
     var how_many_new_to_plot = Math.floor((width - len_hist) / hist_space)
@@ -338,16 +375,16 @@ function doPlot(){
           .range([ len_hist, width ])
 
     const y = d3.scaleLinear()
-          .domain([0, d3.max(
+          .domain([0, 100]) /*d3.max(
               // Y-axis also takes historical data into account
-              ref_hist.concat(ref_new),
-              d => d.cpu_percent)
-                  ]).range([ height, 0 ]);
+              ref_hist,
+              d => d.cpu_percent)*/
+          .range([ height, 0 ]);
 
 
-    plotDataTo("old", hist_data, new_style_map, xold, y)
+    plotDataTo("old", hist_data, new_style_map, xold, y, trans_time_hist, docurve=true)
     if (how_many_new_to_plot > 0){
-        plotDataTo("new", filtered_data, new_style_map, xnew, y)
+        plotDataTo("new", filtered_data, new_style_map, xnew, y, trans_time_new, docurve=false)
     }
 
     // Initialize axes if not present
@@ -365,12 +402,12 @@ function doPlot(){
     svg.append("g").attr("id", "xaxis-new")
         .attr("class", "xaxis")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xnew).ticks(5).tickFormat(formatDate))
+        .call(d3.axisBottom(xnew).ticks(2).tickFormat(formatDate))
     // xold
     svg.append("g").attr("id", "xaxis-old")
         .attr("class", "xaxis")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xold).ticks(Math.floor(len_hist/hist_space)+1).tickFormat(formatDate))
+        .call(d3.axisBottom(xold).ticks(Math.floor(len_hist/hist_space)-1).tickFormat(formatDate))
 
     svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
 }
