@@ -45,7 +45,7 @@
 <div id="highlighted_user"></div>
 
 <div>
-    <select id="active_users" label="Show Users" multiple="true" onchange="doPlot()">
+    <select id="active_users" label="Show Users" multiple="true" onchange="Plot.render()">
   </select>
 </div>
 
@@ -133,7 +133,7 @@ const Metrics = {
                 opt.value = username
                 opt.innerText = username
                 opt.selected = true
-                document.getElementById("active_users").appendChild(opt)
+                Selector.user_active.appendChild(opt)
                 // Add unique colouring
                 if (!(Style.style_map.has(username))){
                     Style.style_map.set(username, { "color" : Style.getRandomColor(),
@@ -142,6 +142,11 @@ const Metrics = {
             }
         }
     }
+}
+
+const Selector = {
+    user_highlight : document.getElementById("highlighted_user"),
+    user_active : document.getElementById("active_users")
 }
 
 const Style = {
@@ -173,12 +178,18 @@ const Style = {
             })
         }
         return(new_style_map)
-    }    
+    }
 }
 
 const Timers = {
 
-    newTimer: function(do_func, millisecs) {
+    _db : {}, // internal database of all timers
+
+    get : function(name){
+        return(Timers._db[name])
+    },
+
+    newTimer: function(name, do_func, millisecs) {
         var timer
         obj = {};
         obj.resume = function() {
@@ -188,7 +199,7 @@ const Timers = {
             clearInterval(timer);
         };
         obj.resume();
-        return obj;
+        Timers._db[name] = obj;
     }
 }
 
@@ -269,8 +280,8 @@ const Smooth = {
             }
             filtered_data.set(user, last_hist.concat(arrays.slice(-how_many_to_plot)))
         }
-        return(filtered_data)    
-    }    
+        return(filtered_data)
+    }
 }
 
 const Plot = {
@@ -278,6 +289,7 @@ const Plot = {
     height : -1,
     width : -1,
     svg : null,
+    size_of_letter : 15, // size of a single character for tick labels
 
     init: function(margin, width, height){
         // append the svg object to the body of the page
@@ -288,12 +300,66 @@ const Plot = {
               .append("g")
               .attr("transform", `translate(${margin.left},${margin.top})`);
 
+        Plot.initAxes(width, height)
+
         Plot.width = width
         Plot.height = height
     },
 
-    initAxes : function(){
+    initAxes : function(width, height){
+        // Initialize axes if not present
+        let xnew_dom = document.getElementById("xaxis-new"),
+            xold_dom = document.getElementById("xaxis-old"),
+            yaxis_dom = document.getElementById("yaxis")
 
+        if (xnew_dom != null){
+            xnew_dom.remove()
+            xold_dom.remove()
+            yaxis_dom.remove()
+        }
+
+        // xold
+        Plot.svg.append("g").attr("id", "xaxis-old")
+            .attr("class", "xaxis")
+            .attr("transform", `translate(0, ${height})`)
+
+        // xnew
+        Plot.svg.append("g").attr("id", "xaxis-new")
+            .attr("class", "xaxis")
+            .attr("transform", `translate(0, ${height})`)
+        // y
+        Plot.svg.append("g").attr("id", "yaxis")
+    },
+
+    updateAxes : function(hist_width, xold, xnew, y){
+        // Update the axis ranges
+        let len_hist_items = Math.floor(hist_width / (1.5 * Plot.size_of_letter))
+        let len_ref_items = 2
+
+        // xold
+        Plot.svg.select("#xaxis-old")
+            .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Plot.formatDate))
+
+        // xnew
+        Plot.svg.select("#xaxis-new")
+            .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Plot.formatDate))
+
+        // y
+        Plot.svg.select("#yaxis").call(d3.axisLeft(y).ticks(5))
+    },
+
+    calculateAxes: function(historical_data, incoming_data, hist_width){
+        // Update the axis ranges
+        const xold = d3.scaleLinear().domain(d3.extent(historical_data, d => d.time))
+              .range([ 0, hist_width])
+
+        const xnew = d3.scaleLinear()
+              .domain(d3.extent(incoming_data.get("all_processes"), d => d.time))
+              .range([ hist_width, Plot.width ])
+
+        const y = d3.scaleLinear().domain([0, 100]).range([ Plot.height, 0 ]);
+
+        return([xold,xnew,y])
     },
 
     calculateDpoints: function(d,x,y, docurve=false){
@@ -307,20 +373,6 @@ const Plot = {
         return(crv(d[1]))
     },
 
-    calculateAxes: function(historical_data, incoming_data, hist_width){
-        // Update the axis ranges
-        const xold = d3.scaleLinear().domain(d3.extent(historical_data, d => d.time))
-              .range([ 0, hist_width])
-        
-        const xnew = d3.scaleLinear()
-              .domain(d3.extent(incoming_data.get("all_processes"), d => d.time))
-              .range([ hist_width, Plot.width ])
-        
-        const y = d3.scaleLinear().domain([0, 100]).range([ Plot.height, 0 ]);
-
-        return([xold,xnew,y])
-    },
-    
     formatDate: function(d){
         let now = new Date(d)
         let hours = String(now.getHours()).padStart(2, '0');
@@ -330,8 +382,8 @@ const Plot = {
         return(`${minutes}:${seconds}`);
     },
 
-    plotDataTo : function(classname, data, new_style_map, x, y,
-                          trans_time, docurve=false){
+    plotDataTo : function(classname, new_style_map, x, y,
+                          trans_time, data, docurve=false){
         // Plot the current data
         let lines = Plot.svg.selectAll("path." + classname)
         lines = lines
@@ -348,16 +400,16 @@ const Plot = {
                   .on("mouseover", function(ev){
                       let path = ev.target
                       let pathname = path.__data__[0]
-                      document.getElementById("highlighted_user").innerText = pathname
-                      path.style.strokeWidth = stroke_width_user_highlight
-                      timer_plot.pause()
+                      Selector.user_highlight.innerText = pathname
+                      path.style.strokeWidth = Style.stroke_width_user_highlight
+                      Timers.get("render").pause()
                   })
                   .on("mouseout", function(ev){
                       let path = ev.target
                       let pathname = path.__data__[0]
                       path.style.strokeWidth = new_style_map.get(pathname).width
-                      document.getElementById("highlighted_user").innerText = null
-                      timer_plot.resume()
+                      Selector.user_highlight.innerText = null
+                      Timers.get("render").resume()
                   }),
                   update => update,
                   function(exit){
@@ -369,73 +421,41 @@ const Plot = {
                   .attr("stroke", d => new_style_map.get(d[0]).color )
                   .attr("stroke-width", d => new_style_map.get(d[0]).width)
                   .attr("d", d => Plot.calculateDpoints(d,x,y, docurve)))
-    }
-}
+    },
 
-
-function doPlot(hist_space, trans_time_new, trans_time_hist)
-{
-    const ref_hist = Metrics.hist_data.get("all_processes")
-    const hist_width_limit = 0.8 * Plot.width
-
-    var hist_width = ref_hist.length * hist_space;
-    
-    if (Smooth.begin_smoothing_history || (hist_width > hist_width_limit))
+    render: function(trans_time_new, trans_time_hist)
     {
-        Smooth.begin_smoothing_history = true
-        hist_width = hist_width_limit
-        
-        let estimate_items_in_desired_width = Math.floor(hist_width_limit / hist_space)
-        Smooth.smoothHistory(estimate_items_in_desired_width)
+        const ref_hist = Metrics.hist_data.get("all_processes")
+        const hist_width_limit = 0.8 * Plot.width
+        // We smooth the history data if it's taking up 80% of the screen
+        // but we let it build up across the screen first before smoothing.
+        var hist_width = ref_hist.length * Plot.size_of_letter;  // build up
+        if (Smooth.begin_smoothing_history || (hist_width > hist_width_limit))
+        {
+            Smooth.begin_smoothing_history = true
+            hist_width = hist_width_limit   // hold fixed once smoothing starts
+
+            let approx_items = Math.floor(hist_width_limit / Plot.size_of_letter)
+            Smooth.smoothHistory(approx_items)
+        }
+
+        // Free space divided by letter spacing
+        var how_many_to_plot = Math.floor((Plot.width - hist_width) / Plot.size_of_letter)
+        const filtered_data = Smooth.headTimescale(how_many_to_plot)
+
+        const [xold, xnew, y] = Plot.calculateAxes(ref_hist, filtered_data, hist_width)
+        Plot.updateAxes(hist_width, xold, xnew, y)
+
+        var new_style_map = Style.generateNewStyleMap(
+            Array.from(Selector.user_active.options)
+                .filter(x => x.selected == false).map(x => x.value)
+        )
+
+        Plot.plotDataTo("old", new_style_map, xold, y, trans_time_hist,
+                        Metrics.hist_data, docurve=true)
+        Plot.plotDataTo("new", new_style_map, xnew, y, trans_time_new,
+                        filtered_data, docurve=false)
     }
-
-    // Free space divided by letter spacing
-    var how_many_to_plot = Math.floor((Plot.width - hist_width) / hist_space)
-    const filtered_data = Smooth.headTimescale(how_many_to_plot)
-
-    // Update the axis ranges
-    const [xold, xnew, y] = Plot.calculateAxes(ref_hist, filtered_data, hist_width)
-
-
-    var new_style_map = Style.generateNewStyleMap(
-        Array.from(document.getElementById("active_users").options)
-            .filter(x => x.selected == false).map(x => x.value)
-    )
-    
-    Plot.plotDataTo("old", Metrics.hist_data,
-                    new_style_map, xold, y,
-                    trans_time_hist, docurve=true)
-    Plot.plotDataTo("new", filtered_data,
-                    new_style_map, xnew, y,
-                    trans_time_new, docurve=false)
-
-    // Initialize axes if not present
-    let xnew_dom = document.getElementById("xaxis-new"),
-        xold_dom = document.getElementById("xaxis-old"),
-        yaxis_dom = document.getElementById("yaxis")
-
-    if (xnew_dom != null){
-        xnew_dom.remove()
-        xold_dom.remove()
-        yaxis_dom.remove()
-    }
-
-    let len_hist_items = Math.floor(hist_width / (1.5 * hist_space))
-    let len_ref_items = 2
-
-    // xold
-    Plot.svg.append("g").attr("id", "xaxis-old")
-        .attr("class", "xaxis")
-        .attr("transform", `translate(0, ${Plot.height})`)
-        .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Plot.formatDate))
-
-    // xnew
-    Plot.svg.append("g").attr("id", "xaxis-new")
-        .attr("class", "xaxis")
-        .attr("transform", `translate(0, ${Plot.height})`)
-        .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Plot.formatDate))
-
-    Plot.svg.append("g").attr("id", "yaxis").call(d3.axisLeft(y).ticks(5))
 }
 
 
@@ -445,31 +465,28 @@ window.onload = function(){
 
     const margin = {top: 10, right: 30, bottom: 30, left: 60},
           width = 460 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom;
+          height = 400 - margin.top - margin.bottom
 
     Plot.init(margin, width, height)
 
     const squash_every = 1000
-    const hist_space = 15
     const trans_time_new = 150
     const trans_time_hist = 0
     const plot_every = 500
     const fetch_every = 500
 
-
-    var timer_metric = Timers.newTimer(Metrics.populateTimeScale, fetch_every)
-    var timer_plot = Timers.newTimer(function(){doPlot(hist_space, trans_time_new, trans_time_hist)}, plot_every)
-    var history_plot = Timers.newTimer(function(){Smooth.squashDataOlderThan(squash_every)}, squash_every)
+    Timers.newTimer("populate", Metrics.populateTimeScale,
+                    fetch_every)
+    Timers.newTimer("render", function(){
+        Plot.render(trans_time_new, trans_time_hist)
+    }, plot_every)
+    Timers.newTimer("squash", function(){
+        Smooth.squashDataOlderThan(squash_every)
+    }, squash_every)
 
     Metrics.populateTimeScale()
-    doPlot()
-
+    Plot.render()
 }
-
-
-
-
-
 
 
 
