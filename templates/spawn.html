@@ -47,19 +47,42 @@ td input[type="range"] {width: 150px;}
     margin-top: -30px;
 }
 
+div.myselect_item {
+    display: flex;
+    flex-direction: row;
+}
+
+span.spacer {
+    flex-grow: 100;
+}
+
+
 div.myspecs {
+    flex-grow: 2;
     display:flex;
     flex-direction: row;
 }
 
-div.myspecs span {
-    flex-grow: 1;
+div.myspecs > span {
+    border: 1px solid grey;
+    background-color: blueviolet;
+    margin: 3px;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+div.myspecs > span:empty {
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
 
-div.myspecs:nth-child(2) {
+div.myspecs:nth-child(1) {
     flex-grow: 10;
 }
+
+
 
 </style>
 
@@ -708,7 +731,7 @@ const Page = {
                     return("")
                 }
                 if (Array.isArray(val)){
-                    return(prefix + val[0] + " - " + val[1])
+                    return(prefix + " " + val[0] + " - " + val[1])
                 }
                 return(prefix + " " + val)
             }
