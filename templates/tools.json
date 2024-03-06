@@ -1,7415 +1,6772 @@
 tool_requirements = [
   {
-    "name": "accuratemasssearch",
+    "name": "AccurateMassSearch",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "additiveseries",
-    "cores": [
-      4,
-      20
-    ],
-    "mem": [
-      8,
-      12
-    ],
-    "parent_group": null
-  },
-  {
-    "name": "baselinefilter",
+    "name": "AdditiveSeries",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "converter_bedgraph_to_bigwig",
+    "name": "AdditiveSeries",
+    "cores": 20,
+    "mem": 12
+  },
+  {
+    "name": "BaselineFilter",
+    "cores": 4,
+    "mem": 8
+  },
+  {
+    "name": "CONVERTER_bedgraph_to_bigwig",
     "cores": null,
-    "mem": 8,
-    "parent_group": "con"
+    "mem": 8
   },
   {
-    "name": "cvinspector",
+    "name": "CVInspector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "compnovo",
+    "name": "CompNovo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "comp"
+    "mem": 8
   },
   {
-    "name": "compnovocid",
+    "name": "CompNovoCID",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "comp"
+    "mem": 8
   },
   {
-    "name": "consensusid",
+    "name": "ConsensusID",
     "cores": 1,
-    "mem": 58,
-    "parent_group": "con"
+    "mem": 58
   },
   {
-    "name": "consensusmapnormalizer",
+    "name": "ConsensusMapNormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "con"
+    "mem": 8
   },
   {
-    "name": "demeanderize",
+    "name": "DeMeanderize",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "decharger",
+    "name": "Decharger",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "decoydatabase",
+    "name": "DecoyDatabase",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "digestor",
+    "name": "Digestor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "digestormotif",
+    "name": "DigestorMotif",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "eicextractor",
+    "name": "EICExtractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "emboss: fuzztran39",
+    "name": "EMBOSS: fuzztran39",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
-    "name": "erpairfinder",
+    "name": "ERPairFinder",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "extract genomic dna 1",
+    "name": "Extract genomic DNA 1",
     "cores": 3,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
-    "name": "ffeval",
+    "name": "FFEval",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "falsediscoveryrate",
+    "name": "FalseDiscoveryRate",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "featurefindercentroided",
+    "name": "FeatureFinderCentroided",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurefinderisotopewavelet",
+    "name": "FeatureFinderIsotopeWavelet",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurefindermrm",
+    "name": "FeatureFinderMRM",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurefindermetabo",
+    "name": "FeatureFinderMetabo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurefindermultiplex",
+    "name": "FeatureFinderMultiplex",
     "cores": 8,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurefindersuperhirn",
+    "name": "FeatureFinderSuperHirn",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurefinder"
+    "mem": 8
   },
   {
-    "name": "featurelinkerlabeled",
+    "name": "FeatureLinkerLabeled",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurelinker"
+    "mem": 8
   },
   {
-    "name": "featurelinkerunlabeled",
+    "name": "FeatureLinkerUnlabeled",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurelinker"
+    "mem": 8
   },
   {
-    "name": "featurelinkerunlabeledqt",
+    "name": "FeatureLinkerUnlabeledQT",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "featurelinker"
+    "mem": 8
   },
   {
-    "name": "fidoadapter",
+    "name": "FidoAdapter",
     "cores": 8,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "fileconverter",
+    "name": "FileConverter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "file"
+    "mem": 8
   },
   {
-    "name": "filefilter",
+    "name": "FileFilter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "file"
+    "mem": 8
   },
   {
-    "name": "fileinfo",
+    "name": "FileInfo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "file"
+    "mem": 8
   },
   {
-    "name": "filemerger",
+    "name": "FileMerger",
     "cores": 4,
-    "mem": 16,
-    "parent_group": "file"
+    "mem": 16
   },
   {
-    "name": "heatmap",
-    "cores": [],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "heatmap"
+    "name": "Heatmap",
+    "cores": null,
+    "mem": 12
   },
   {
-    "name": "highresprecursormasscorrector",
+    "name": "HighResPrecursorMassCorrector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idconflictresolver",
+    "name": "IDConflictResolver",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idevaluator",
+    "name": "IDEvaluator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idextractor",
+    "name": "IDExtractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idfileconverter",
+    "name": "IDFileConverter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idfilter",
+    "name": "IDFilter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idmapper",
+    "name": "IDMapper",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "idm"
+    "mem": 8
   },
   {
-    "name": "idmassaccuracy",
+    "name": "IDMassAccuracy",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "idm"
+    "mem": 8
   },
   {
-    "name": "idmerger",
+    "name": "IDMerger",
     "cores": 1,
-    "mem": 30,
-    "parent_group": "idm"
+    "mem": 30
   },
   {
-    "name": "idposteriorerrorprobability",
+    "name": "IDPosteriorErrorProbability",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idrtcalibration",
+    "name": "IDRTCalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "idsplitter",
+    "name": "IDSplitter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "itraqanalyzer",
+    "name": "ITRAQAnalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "imagecreator",
+    "name": "ImageCreator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "inclusionexclusionlistcreator",
+    "name": "InclusionExclusionListCreator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "internalcalibration",
+    "name": "InternalCalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "inter"
+    "mem": 8
   },
   {
-    "name": "isobaricanalyzer",
+    "name": "IsobaricAnalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "labeledeval",
+    "name": "LabeledEval",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "mrmmapper",
+    "name": "MRMMapper",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "mrmpairfinder",
+    "name": "MRMPairFinder",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "msgfplusadapter",
+    "name": "MSGFPlusAdapter",
     "cores": 10,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
-    "name": "mssimulator",
+    "name": "MSSimulator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mss"
+    "mem": 8
   },
   {
-    "name": "mapaligneridentification",
+    "name": "MapAlignerIdentification",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mapaligner"
+    "mem": 8
   },
   {
-    "name": "mapalignerposeclustering",
+    "name": "MapAlignerPoseClustering",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mapaligner"
+    "mem": 8
   },
   {
-    "name": "mapalignerspectrum",
+    "name": "MapAlignerSpectrum",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mapaligner"
+    "mem": 8
   },
   {
-    "name": "mapalignmentevaluation",
+    "name": "MapAlignmentEvaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mapalign"
+    "mem": 8
   },
   {
-    "name": "mapnormalizer",
+    "name": "MapNormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "map"
+    "mem": 8
   },
   {
-    "name": "maprttransformer",
+    "name": "MapRTTransformer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "map"
+    "mem": 8
   },
   {
-    "name": "mapstatistics",
+    "name": "MapStatistics",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "map"
+    "mem": 8
   },
   {
-    "name": "masscalculator",
+    "name": "MassCalculator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mass"
+    "mem": 8
   },
   {
-    "name": "masstraceextractor",
+    "name": "MassTraceExtractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "mass"
+    "mem": 8
   },
   {
-    "name": "myrimatchadapter",
+    "name": "MyriMatchAdapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "mztabexporter",
+    "name": "MzTabExporter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "nspdk_candidateclust",
+    "name": "NSPDK_candidateClust",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
-    "name": "noisefiltergaussian",
+    "name": "NoiseFilterGaussian",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "noisefiltersgolay",
+    "name": "NoiseFilterSGolay",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "omssaadapter",
+    "name": "OMSSAAdapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "openswathanalyzer",
+    "name": "OpenSwathAnalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathchromatogramextractor",
+    "name": "OpenSwathChromatogramExtractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathconfidencescoring",
+    "name": "OpenSwathConfidenceScoring",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathdiaprescoring",
+    "name": "OpenSwathDIAPreScoring",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathdecoygenerator",
+    "name": "OpenSwathDecoyGenerator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathfeaturexmltotsv",
+    "name": "OpenSwathFeatureXMLToTSV",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathrtnormalizer",
+    "name": "OpenSwathRTNormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathrewritetofeaturexml",
+    "name": "OpenSwathRewriteToFeatureXML",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openswath"
+    "mem": 8
   },
   {
-    "name": "openswathworkflow",
+    "name": "OpenSwathWorkflow",
     "cores": null,
-    "mem": 156,
-    "parent_group": "openswath"
+    "mem": 156
   },
   {
-    "name": "ptmodel",
+    "name": "PTModel",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "ptpredict",
+    "name": "PTPredict",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "peakpickerhires",
+    "name": "PeakPickerHiRes",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "peak"
+    "mem": 8
   },
   {
-    "name": "peakpickerwavelet",
+    "name": "PeakPickerWavelet",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "peak"
+    "mem": 8
   },
   {
-    "name": "pepnovoadapter",
+    "name": "PepNovoAdapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "pep"
+    "mem": 8
   },
   {
-    "name": "peptideindexer",
+    "name": "PeptideIndexer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "peptide"
+    "mem": 8
   },
   {
-    "name": "picardasmetrics",
+    "name": "PicardASMetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picardgcbiasmetrics",
+    "name": "PicardGCBiasMetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picardhsmetrics",
+    "name": "PicardHsMetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picardinsertsize",
+    "name": "PicardInsertSize",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "precursorionselector",
+    "name": "PrecursorIonSelector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "pre"
+    "mem": 8
   },
   {
-    "name": "precursormasscorrector",
+    "name": "PrecursorMassCorrector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "pre"
+    "mem": 8
   },
   {
-    "name": "proteininference",
+    "name": "ProteinInference",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "protein"
+    "mem": 8
   },
   {
-    "name": "proteinquantifier",
+    "name": "ProteinQuantifier",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "protein"
+    "mem": 8
   },
   {
-    "name": "proteinresolver",
+    "name": "ProteinResolver",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "protein"
+    "mem": 8
   },
   {
-    "name": "qccalculator",
+    "name": "QCCalculator",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "rnalien",
-    "cores": [
-      10,
-      10
-    ],
-    "mem": [],
-    "parent_group": "rna"
+    "name": "RNAlien",
+    "cores": 10,
+    "mem": null
   },
   {
-    "name": "rnpxl",
+    "name": "RNPxl",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "rtevaluation",
+    "name": "RTEvaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "rtmodel",
+    "name": "RTModel",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "rtpredict",
+    "name": "RTPredict",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "resampler",
+    "name": "Resampler",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "seedlistgenerator",
+    "name": "SeedListGenerator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "semanticvalidator",
+    "name": "SemanticValidator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "sequencecoveragecalculator",
+    "name": "SequenceCoverageCalculator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "seq"
+    "mem": 8
   },
   {
-    "name": "speclibcreator",
+    "name": "SpecLibCreator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spec"
+    "mem": 8
   },
   {
-    "name": "speclibsearcher",
+    "name": "SpecLibSearcher",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spec"
+    "mem": 8
   },
   {
-    "name": "spectrafilterbernnorm",
+    "name": "SpectraFilterBernNorm",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafiltermarkermower",
+    "name": "SpectraFilterMarkerMower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilternlargest",
+    "name": "SpectraFilterNLargest",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilternormalizer",
+    "name": "SpectraFilterNormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilterparentpeakmower",
+    "name": "SpectraFilterParentPeakMower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilterscaler",
+    "name": "SpectraFilterScaler",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafiltersqrtmower",
+    "name": "SpectraFilterSqrtMower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilterthresholdmower",
+    "name": "SpectraFilterThresholdMower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectrafilterwindowmower",
+    "name": "SpectraFilterWindowMower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectrafilter"
+    "mem": 8
   },
   {
-    "name": "spectramerger",
+    "name": "SpectraMerger",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "spectra"
+    "mem": 8
   },
   {
-    "name": "tmtanalyzer",
+    "name": "TMTAnalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "tofcalibration",
+    "name": "TOFCalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "textexporter",
+    "name": "TextExporter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "text"
+    "mem": 8
   },
   {
-    "name": "transformationevaluation",
+    "name": "TransformationEvaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "trans"
+    "mem": 8
   },
   {
-    "name": "xmlvalidator",
+    "name": "XMLValidator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "xtandemadapter",
+    "name": "XTandemAdapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
-    "name": "__data_fetch__",
+    "name": "__DATA_FETCH__",
     "cores": 1,
-    "mem": 0.3,
-    "parent_group": null
+    "mem": 0.3
   },
   {
-    "name": "__set_metadata__",
+    "name": "__SET_METADATA__",
     "cores": 1,
-    "mem": 0.3,
-    "parent_group": null
+    "mem": 0.3
   },
   {
-    "name": "abims_camera_annotatediffreport",
+    "name": "abims_CAMERA_annotateDiffreport",
     "cores": null,
-    "mem": 32,
-    "parent_group": "abims"
+    "mem": 32
   },
   {
-    "name": "abims_xcms_fillpeaks",
+    "name": "abims_xcms_fillPeaks",
     "cores": null,
-    "mem": 32,
-    "parent_group": "abims"
+    "mem": 32
   },
   {
     "name": "abims_xcms_retcor",
     "cores": null,
-    "mem": 32,
-    "parent_group": "abims"
+    "mem": 32
   },
   {
     "name": "abricate",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": null
+    "mem": 30.4
   },
   {
     "name": "abyss",
     "cores": 20,
-    "mem": 70,
-    "parent_group": null
+    "mem": 70
   },
   {
     "name": "alevin",
     "cores": 8,
-    "mem": 92,
-    "parent_group": null
+    "mem": 92
   },
   {
     "name": "alphafold2",
     "cores": 10,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "anndata_export",
     "cores": 4,
-    "mem": null,
-    "parent_group": "anndata"
+    "mem": null
+  },
+  {
+    "name": "anndata_import",
+    "cores": null,
+    "mem": "input_size * 10"
   },
   {
     "name": "anndata_import",
     "cores": 4,
-    "mem": "input_size * 10",
-    "parent_group": "anndata"
+    "mem": null
+  },
+  {
+    "name": "anndata_inspect",
+    "cores": null,
+    "mem": 15.2
   },
   {
     "name": "anndata_inspect",
     "cores": 4,
-    "mem": 15.2,
-    "parent_group": "anndata"
+    "mem": null
   },
   {
     "name": "anndata_manipulate",
     "cores": 4,
-    "mem": null,
-    "parent_group": "anndata"
+    "mem": null
   },
   {
     "name": "antismash",
-    "cores": [
-      10,
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      120,
-      120
-    ],
-    "parent_group": "antismash"
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "antismash",
+    "cores": 10,
+    "mem": 120
+  },
+  {
+    "name": "antismash",
+    "cores": 12,
+    "mem": 120
   },
   {
     "name": "askomics",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "augustus",
     "cores": null,
-    "mem": 30,
-    "parent_group": null
+    "mem": 30
   },
   {
     "name": "autodock_vina",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "bam-to-wig",
     "cores": null,
-    "mem": 20,
-    "parent_group": "bam"
+    "mem": 20
   },
   {
-    "name": "bamcompare_deeptools",
+    "name": "bamCompare_deepTools",
     "cores": null,
-    "mem": 10,
-    "parent_group": "bamco"
+    "mem": 10
   },
   {
-    "name": "bamcorrelate_deeptools",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      120,
-      120
-    ],
-    "parent_group": "bamco"
+    "name": "bamCorrelate_deepTools",
+    "cores": 10,
+    "mem": 120
   },
   {
-    "name": "bamcoverage_deeptools",
+    "name": "bamCorrelate_deepTools",
+    "cores": 12,
+    "mem": 120
+  },
+  {
+    "name": "bamCoverage_deepTools",
     "cores": null,
-    "mem": 10,
-    "parent_group": "bamco"
+    "mem": 10
   },
   {
-    "name": "bamfingerprint",
+    "name": "bamFingerprint",
     "cores": null,
-    "mem": 10,
-    "parent_group": "bam"
+    "mem": 10
   },
   {
     "name": "bam_iobio",
     "cores": null,
-    "mem": 4,
-    "parent_group": "bam"
+    "mem": 4
   },
   {
     "name": "bandage",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "barrnap",
     "cores": 3,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "bbtools_callvariants",
     "cores": null,
-    "mem": 15,
-    "parent_group": null
+    "mem": 15
   },
   {
     "name": "bcftools_mpileup",
     "cores": 7,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "bcftools_norm",
     "cores": 2,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "bedtools",
-    "cores": [],
-    "mem": [
-      8,
-      15,
-      20,
-      40
-    ],
-    "parent_group": "bedtools"
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "bedtools",
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "bedtools",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "bedtools",
+    "cores": null,
+    "mem": 40
   },
   {
     "name": "bedtools_intersectbed",
-    "cores": [],
-    "mem": [
-      15,
-      20
-    ],
-    "parent_group": "bedtools"
+    "cores": null,
+    "mem": 15
+  },
+  {
+    "name": "bedtools_intersectbed",
+    "cores": null,
+    "mem": 20
   },
   {
     "name": "bedtools_intersectbed_bam",
     "cores": null,
-    "mem": 20,
-    "parent_group": "bedtools"
+    "mem": 20
   },
   {
     "name": "bedtools_mergebed",
     "cores": null,
-    "mem": 15,
-    "parent_group": "bedtools"
+    "mem": 15
   },
   {
     "name": "bedtools_sortbed",
     "cores": null,
-    "mem": 20,
-    "parent_group": "bedtools"
+    "mem": 20
   },
   {
     "name": "bedtools_subtractbed",
     "cores": null,
-    "mem": 8,
-    "parent_group": "bedtools"
+    "mem": 8
   },
   {
     "name": "bellerophon",
     "cores": 8,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "bfast_wrapper",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": null
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "bfast_wrapper",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "bg_diamond",
     "cores": 6,
-    "mem": 90,
-    "parent_group": "bg_diamond"
+    "mem": 90
   },
   {
     "name": "bg_diamond_makedb",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "bg_diamond"
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "bg_diamond_makedb",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "bgchem_fragment_merger",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": null
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "bgchem_fragment_merger",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "bigwig_to_bedgraph",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "bio3d_pca",
     "cores": null,
-    "mem": 64,
-    "parent_group": "bio3d"
+    "mem": 64
   },
   {
     "name": "bio3d_pca_visualize",
     "cores": null,
-    "mem": 64,
-    "parent_group": "bio3d"
+    "mem": 64
   },
   {
     "name": "bio3d_rmsd",
-    "cores": [],
-    "mem": [
-      64,
-      90
-    ],
-    "parent_group": "bio3d_rms"
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "bio3d_rmsd",
+    "cores": null,
+    "mem": 90
   },
   {
     "name": "bio3d_rmsf",
-    "cores": [],
-    "mem": [
-      64,
-      90
-    ],
-    "parent_group": "bio3d_rms"
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "bio3d_rmsf",
+    "cores": null,
+    "mem": 90
   },
   {
     "name": "bionano_scaffold",
     "cores": 24,
-    "mem": 250,
-    "parent_group": "bio"
+    "mem": 250
   },
   {
     "name": "biosigner",
     "cores": null,
-    "mem": 12,
-    "parent_group": "bio"
+    "mem": 12
   },
   {
     "name": "bismark",
-    "cores": [
-      4,
-      6
-    ],
-    "mem": [
-      12,
-      30
-    ],
-    "parent_group": "bismark"
+    "cores": 4,
+    "mem": 12
+  },
+  {
+    "name": "bismark",
+    "cores": 6,
+    "mem": 30
   },
   {
     "name": "bismark_bowtie",
     "cores": 6,
-    "mem": 30,
-    "parent_group": "bismark"
+    "mem": 30
   },
   {
     "name": "bismark_bowtie2",
     "cores": 6,
-    "mem": 30,
-    "parent_group": "bismark"
+    "mem": 30
   },
   {
     "name": "blast2go",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "blast_parser",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "blockbuster",
     "cores": null,
-    "mem": 64,
-    "parent_group": null
+    "mem": 64
   },
   {
     "name": "blockclust",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "bowtie2",
     "cores": 8,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "bowtie2_index_builder_data_manager",
     "cores": 16,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "busco",
     "cores": 16,
-    "mem": 80,
-    "parent_group": null
+    "mem": 80
   },
   {
     "name": "bwa",
-    "cores": [
-      8,
-      8
-    ],
-    "mem": [
-      20,
-      30
-    ],
-    "parent_group": "bwa"
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "bwa",
+    "cores": 8,
+    "mem": 30
   },
   {
     "name": "bwa_mem",
-    "cores": [
-      8,
-      8
-    ],
-    "mem": [
-      30,
-      60
-    ],
-    "parent_group": "bwa_mem"
+    "cores": 8,
+    "mem": 30
+  },
+  {
+    "name": "bwa_mem",
+    "cores": 8,
+    "mem": 60
   },
   {
     "name": "bwa_mem2",
     "cores": 8,
-    "mem": 30,
-    "parent_group": "bwa_mem"
+    "mem": 30
+  },
+  {
+    "name": "bwa_mem_index_builder_data_manager",
+    "cores": null,
+    "mem": 48
+  },
+  {
+    "name": "bwa_mem_index_builder_data_manager",
+    "cores": null,
+    "mem": 120
   },
   {
     "name": "bwa_mem_index_builder_data_manager",
     "cores": 12,
-    "mem": [
-      48,
-      120,
-      48
-    ],
-    "parent_group": "bwa_mem_index_builder_data_manager"
+    "mem": 48
   },
   {
     "name": "bwameth",
     "cores": 8,
-    "mem": 24,
-    "parent_group": "bwameth"
+    "mem": 24
+  },
+  {
+    "name": "bwameth_index_builder_data_manager",
+    "cores": null,
+    "mem": 48
+  },
+  {
+    "name": "bwameth_index_builder_data_manager",
+    "cores": null,
+    "mem": 120
   },
   {
     "name": "bwameth_index_builder_data_manager",
     "cores": 12,
-    "mem": [
-      48,
-      120,
-      92
-    ],
-    "parent_group": "bwameth_index_builder_data_manager"
+    "mem": 92
   },
   {
     "name": "bwtool-lift",
     "cores": null,
-    "mem": 80,
-    "parent_group": null
+    "mem": 80
   },
   {
     "name": "cactus_cactus",
     "cores": 30,
-    "mem": 250,
-    "parent_group": null
+    "mem": 250
   },
   {
     "name": "camera_annotate",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "canu",
     "cores": 20,
-    "mem": 92,
-    "parent_group": null
+    "mem": 92
   },
   {
     "name": "cardinal_classification",
-    "cores": [],
-    "mem": [
-      90,
-      128
-    ],
-    "parent_group": "cardinal"
+    "cores": null,
+    "mem": 90
+  },
+  {
+    "name": "cardinal_classification",
+    "cores": null,
+    "mem": 128
   },
   {
     "name": "cardinal_colocalization",
     "cores": null,
-    "mem": 90,
-    "parent_group": "cardinal"
+    "mem": 90
   },
   {
     "name": "cardinal_combine",
     "cores": null,
-    "mem": 92,
-    "parent_group": "cardinal"
+    "mem": 92
   },
   {
     "name": "cardinal_data_exporter",
     "cores": null,
-    "mem": 200,
-    "parent_group": "cardinal"
+    "mem": 200
   },
   {
     "name": "cardinal_filtering",
     "cores": null,
-    "mem": 60,
-    "parent_group": "cardinal"
+    "mem": 60
   },
   {
     "name": "cardinal_mz_images",
     "cores": null,
-    "mem": 20,
-    "parent_group": "cardinal"
+    "mem": 20
+  },
+  {
+    "name": "cardinal_preprocessing",
+    "cores": null,
+    "mem": 110
   },
   {
     "name": "cardinal_preprocessing",
     "cores": 4,
-    "mem": [
-      110,
-      110
-    ],
-    "parent_group": "cardinal"
+    "mem": 110
   },
   {
     "name": "cardinal_quality_report",
     "cores": null,
-    "mem": 180,
-    "parent_group": "cardinal"
+    "mem": 180
   },
   {
     "name": "cardinal_segmentations",
     "cores": null,
-    "mem": 92,
-    "parent_group": "cardinal"
+    "mem": 92
   },
   {
     "name": "cardinal_single_ion_segmentation",
     "cores": null,
-    "mem": 90,
-    "parent_group": "cardinal"
+    "mem": 90
   },
   {
     "name": "cardinal_spectra_plots",
     "cores": null,
-    "mem": 32,
-    "parent_group": "cardinal"
+    "mem": 32
   },
   {
     "name": "cat_bins",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "cat_contigs",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "cdhit",
     "cores": 4,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "cellxgene",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "cesm",
     "cores": 16,
-    "mem": 128,
-    "parent_group": null
+    "mem": 128
   },
   {
     "name": "charts",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "cherri_eval",
     "cores": 1,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "cherri_train",
     "cores": 1,
-    "mem": 40,
-    "parent_group": null
+    "mem": 40
   },
   {
     "name": "chipseeker",
     "cores": null,
-    "mem": 8,
-    "parent_group": "chi"
+    "mem": 8
   },
   {
     "name": "chira_extract",
-    "cores": [
-      4,
-      24
-    ],
-    "mem": [
-      60,
-      100
-    ],
-    "parent_group": "chira"
+    "cores": 4,
+    "mem": 60
+  },
+  {
+    "name": "chira_extract",
+    "cores": 24,
+    "mem": 100
   },
   {
     "name": "chira_map",
-    "cores": [
-      6,
-      10
-    ],
-    "mem": [
-      90,
-      80
-    ],
-    "parent_group": "chira"
+    "cores": 6,
+    "mem": 90
+  },
+  {
+    "name": "chira_map",
+    "cores": 10,
+    "mem": 80
   },
   {
     "name": "chira_merge",
     "cores": 1,
-    "mem": 60,
-    "parent_group": "chira"
+    "mem": 60
   },
   {
     "name": "chira_quantify",
     "cores": 1,
-    "mem": 60,
-    "parent_group": "chira"
+    "mem": 60
   },
   {
     "name": "circgraph",
     "cores": null,
-    "mem": 10,
-    "parent_group": "circ"
+    "mem": 10
   },
   {
     "name": "circos",
-    "cores": [],
-    "mem": [
-      10,
-      19
-    ],
-    "parent_group": "circ"
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "circos",
+    "cores": null,
+    "mem": 19.0
   },
   {
     "name": "climate_notebook",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "clustalw",
     "cores": null,
-    "mem": 34,
-    "parent_group": null
+    "mem": 34
   },
   {
-    "name": "computematrix",
+    "name": "computeMatrix",
     "cores": null,
-    "mem": 80,
-    "parent_group": "comp"
+    "mem": 80
   },
   {
     "name": "concoct",
     "cores": 10,
-    "mem": 48,
-    "parent_group": "con"
+    "mem": 48
   },
   {
-    "name": "correctgcbias",
+    "name": "correctGCBias",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "create_tool_recommendation_model",
     "cores": 16,
-    "mem": 160,
-    "parent_group": null
+    "mem": 160
   },
   {
     "name": "crispr_recognition_tool",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "cshl_fastx_collapser",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "ctb_np-likeness-calculator",
     "cores": null,
-    "mem": 12,
-    "parent_group": "ctb"
+    "mem": 12
   },
   {
     "name": "ctb_online_data_fetch",
     "cores": null,
-    "mem": 10,
-    "parent_group": "ctb"
+    "mem": 10
   },
   {
     "name": "ctb_openmg",
     "cores": null,
-    "mem": 20,
-    "parent_group": "ctb"
+    "mem": 20
   },
   {
     "name": "ctb_pubchem_download_as_smiles",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "ctb"
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "ctb_pubchem_download_as_smiles",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "cuffcompare",
     "cores": null,
-    "mem": 10,
-    "parent_group": "cuff"
+    "mem": 10
   },
   {
     "name": "cuffdiff",
-    "cores": [
-      6,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "cuff"
+    "cores": 6,
+    "mem": 40
+  },
+  {
+    "name": "cuffdiff",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "cufflinks",
-    "cores": [
-      6,
-      12
-    ],
-    "mem": [
-      30,
-      30
-    ],
-    "parent_group": "cuff"
+    "cores": 6,
+    "mem": 30
+  },
+  {
+    "name": "cufflinks",
+    "cores": 12,
+    "mem": 30
   },
   {
     "name": "cuffmerge",
     "cores": null,
-    "mem": 8,
-    "parent_group": "cuff"
+    "mem": 8
   },
   {
     "name": "cuffnorm",
-    "cores": [
-      6,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "cuff"
+    "cores": 6,
+    "mem": 20
+  },
+  {
+    "name": "cuffnorm",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "cuffquant",
-    "cores": [
-      6,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "cuff"
+    "cores": 6,
+    "mem": 20
+  },
+  {
+    "name": "cuffquant",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "cutadapt",
     "cores": 5,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "data_manager_build_kraken2_database",
     "cores": 1,
-    "mem": 64,
-    "parent_group": "data_manager"
+    "mem": 64
   },
   {
     "name": "data_manager_cat",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_diamond_database_builder",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_eggnog_mapper_abspath",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_funannotate",
     "cores": 1,
-    "mem": 64,
-    "parent_group": "data_manager"
+    "mem": 64
   },
   {
     "name": "data_manager_gemini_download",
     "cores": null,
-    "mem": 20,
-    "parent_group": "data_manager"
+    "mem": 20
   },
   {
     "name": "data_manager_humann2_database_downloader",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_humann2_download",
     "cores": null,
-    "mem": 25,
-    "parent_group": "data_manager"
+    "mem": 25
   },
   {
     "name": "data_manager_humann_database_downloader",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_interproscan",
     "cores": 5,
-    "mem": null,
-    "parent_group": "data_manager"
+    "mem": null
   },
   {
     "name": "data_manager_metaphlan_database_downloader",
     "cores": 12,
-    "mem": 92,
-    "parent_group": "data_manager"
+    "mem": 92
   },
   {
     "name": "data_manager_metaphlan_download",
     "cores": 12,
-    "mem": 92,
-    "parent_group": "data_manager"
+    "mem": 92
   },
   {
     "name": "data_manager_snpeff_databases",
     "cores": null,
-    "mem": 12,
-    "parent_group": "data_manager"
+    "mem": 12
   },
   {
     "name": "data_manager_snpeff_download",
     "cores": null,
-    "mem": 12,
-    "parent_group": "data_manager"
+    "mem": 12
   },
   {
     "name": "datamash_transpose",
     "cores": null,
-    "mem": 8,
-    "parent_group": "data"
+    "mem": 8
   },
   {
     "name": "deeptools",
-    "cores": [
-      10,
-      10,
-      10,
-      10,
-      10
-    ],
-    "mem": [
-      20,
-      25,
-      12,
-      24,
-      40,
-      48,
-      90
-    ],
-    "parent_group": "deeptools"
+    "cores": null,
+    "mem": 20
   },
   {
-    "name": "deeptools_bamcompare",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools",
+    "cores": null,
+    "mem": 25
   },
   {
-    "name": "deeptools_bamcorrelate",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      90
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools",
+    "cores": 10,
+    "mem": 12
   },
   {
-    "name": "deeptools_bamcoverage",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      48,
-      48
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools",
+    "cores": 10,
+    "mem": 24
   },
   {
-    "name": "deeptools_bamfingerprint",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools",
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "deeptools",
+    "cores": 10,
+    "mem": 48
+  },
+  {
+    "name": "deeptools",
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "deeptools_bamCompare",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bamCompare",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bamCorrelate",
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "deeptools_bamCorrelate",
+    "cores": 12,
+    "mem": 90
+  },
+  {
+    "name": "deeptools_bamCoverage",
+    "cores": 10,
+    "mem": 48
+  },
+  {
+    "name": "deeptools_bamCoverage",
+    "cores": 12,
+    "mem": 48
+  },
+  {
+    "name": "deeptools_bamFingerprint",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bamFingerprint",
+    "cores": 12,
+    "mem": 12
   },
   {
     "name": "deeptools_bam_compare",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_bam_compare",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_bam_coverage",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_bam_coverage",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_bam_pe_fragmentsize",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
   },
   {
-    "name": "deeptools_bigwigcompare",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools_bam_pe_fragmentsize",
+    "cores": 12,
+    "mem": 24
   },
   {
-    "name": "deeptools_bigwigcorrelate",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools_bigwigCompare",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bigwigCompare",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "deeptools_bigwigCorrelate",
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "deeptools_bigwigCorrelate",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "deeptools_bigwig_compare",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
   },
   {
-    "name": "deeptools_computegcbias",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools_bigwig_compare",
+    "cores": 12,
+    "mem": 24
   },
   {
-    "name": "deeptools_computematrix",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools_computeGCBias",
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_computeGCBias",
+    "cores": 12,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_computeMatrix",
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_computeMatrix",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_compute_gc_bias",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_compute_gc_bias",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_compute_matrix",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      30,
-      30
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 30
   },
   {
-    "name": "deeptools_correctgcbias",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "name": "deeptools_compute_matrix",
+    "cores": 12,
+    "mem": 30
+  },
+  {
+    "name": "deeptools_correctGCBias",
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_correctGCBias",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_correct_gc_bias",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_correct_gc_bias",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_heatmapper",
     "cores": null,
-    "mem": 25,
-    "parent_group": "deeptools"
+    "mem": 25
   },
   {
     "name": "deeptools_multi_bam_summary",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "deeptools_multi_bam_summary",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "deeptools_multi_bigwig_summary",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "deeptools"
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "deeptools_multi_bigwig_summary",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "deeptools_plot_correlation",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deeptools_plot_coverage",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deeptools_plot_fingerprint",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deeptools_plot_heatmap",
     "cores": null,
-    "mem": 25,
-    "parent_group": "deeptools"
+    "mem": 25
   },
   {
     "name": "deeptools_plot_pca",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deeptools_plot_profile",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deeptools_profiler",
     "cores": null,
-    "mem": 20,
-    "parent_group": "deeptools"
+    "mem": 20
   },
   {
     "name": "deepvariant",
     "cores": null,
-    "mem": 10,
-    "parent_group": "deep"
+    "mem": 10
   },
   {
     "name": "default",
     "cores": 1,
-    "mem": "cores * 3.8",
-    "parent_group": null
+    "mem": "cores * 3.8"
   },
   {
-    "name": "demo2d00",
+    "name": "demo2D00",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "deseq2",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
+  },
+  {
+    "name": "dexseq",
+    "cores": null,
+    "mem": 25
   },
   {
     "name": "dexseq",
     "cores": 8,
-    "mem": 25,
-    "parent_group": "dexseq"
+    "mem": null
   },
   {
     "name": "dexseq_count",
     "cores": null,
-    "mem": 25,
-    "parent_group": "dexseq"
+    "mem": 25
   },
   {
     "name": "diamond",
-    "cores": [
-      6,
-      10
-    ],
-    "mem": [
-      90,
-      40
-    ],
-    "parent_group": "diamond"
+    "cores": 6,
+    "mem": 90
+  },
+  {
+    "name": "diamond",
+    "cores": 10,
+    "mem": 40
   },
   {
     "name": "diamond_database_builder",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      90
-    ],
-    "parent_group": "diamond"
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "diamond_database_builder",
+    "cores": 12,
+    "mem": 90
   },
   {
     "name": "dimspy_align_samples",
     "cores": 4,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "dimspy_blank_filter",
     "cores": null,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "dimspy_missing_values_sample_filter",
     "cores": null,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "dimspy_process_scans",
     "cores": 4,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "dimspy_replicate_filter",
     "cores": 4,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "dimspy_sample_filter",
     "cores": null,
-    "mem": 12,
-    "parent_group": "dimspy"
+    "mem": 12
   },
   {
     "name": "disco",
     "cores": 8,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "drep_compare",
     "cores": 8,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "drep_dereplicate",
     "cores": 16,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "dt_profiler",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "edger",
     "cores": null,
-    "mem": 19,
-    "parent_group": null
+    "mem": 19.0
   },
   {
     "name": "eggnog_mapper",
     "cores": 8,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "emboss_5",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "encyclopedia_prosit_csv_to_library",
     "cores": null,
-    "mem": 40,
-    "parent_group": null
+    "mem": 40
   },
   {
     "name": "ethercalc",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "eukaryotic_ncbi_submission",
     "cores": 24,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "exonerate",
     "cores": 30,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "fasta_stats",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "fast"
+    "mem": 11.4
   },
   {
     "name": "fasterq_dump",
     "cores": 8,
-    "mem": null,
-    "parent_group": "fast"
+    "mem": null
   },
   {
     "name": "fastp",
     "cores": 4,
-    "mem": null,
-    "parent_group": "fast"
+    "mem": null
   },
   {
     "name": "fastq_dump",
     "cores": null,
-    "mem": 20,
-    "parent_group": "fastq"
+    "mem": 20
   },
   {
     "name": "fastq_groomer",
     "cores": null,
-    "mem": 7.6,
-    "parent_group": "fastq"
+    "mem": 7.6
   },
   {
     "name": "fastq_paired_end_deinterlacer",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": "fastq_paired_end"
+    "mem": 30.4
   },
   {
     "name": "fastq_paired_end_interlacer",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": "fastq_paired_end"
+    "mem": 30.4
   },
   {
     "name": "fastq_paired_end_joiner",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "fastq_paired_end"
+    "mem": 11.4
+  },
+  {
+    "name": "fastqc",
+    "cores": null,
+    "mem": 20
   },
   {
     "name": "fastqc",
     "cores": 8,
-    "mem": 20,
-    "parent_group": "fastq"
+    "mem": null
   },
   {
     "name": "fasttree",
     "cores": null,
-    "mem": 30,
-    "parent_group": "fast"
+    "mem": 30
   },
   {
     "name": "fastx_collapser",
     "cores": null,
-    "mem": 16,
-    "parent_group": "fast"
+    "mem": 16
   },
   {
     "name": "featurecounts",
-    "cores": [
-      2,
-      8,
-      8
-    ],
-    "mem": [
-      8,
-      8,
-      18
-    ],
-    "parent_group": "featurecounts"
+    "cores": 2,
+    "mem": 8
+  },
+  {
+    "name": "featurecounts",
+    "cores": 8,
+    "mem": 8
+  },
+  {
+    "name": "featurecounts",
+    "cores": 8,
+    "mem": 18
   },
   {
     "name": "feebayes",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "fee"
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "feebayes",
+    "cores": 12,
+    "mem": 12
   },
   {
     "name": "feelnc",
     "cores": null,
-    "mem": 12,
-    "parent_group": "fee"
+    "mem": 12
   },
   {
     "name": "filtlong",
     "cores": null,
-    "mem": 50,
-    "parent_group": "fil"
+    "mem": 50
   },
   {
     "name": "flashlfq",
-    "cores": [],
-    "mem": [
-      32,
-      64,
-      90
-    ],
-    "parent_group": "flashlfq"
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "flashlfq",
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "flashlfq",
+    "cores": null,
+    "mem": 90
   },
   {
     "name": "flexbar",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "flexbar"
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "flexbar",
+    "cores": 12,
+    "mem": 12
   },
   {
     "name": "flexbar_no_split",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "flexbar"
+    "cores": 10,
+    "mem": 12
   },
   {
-    "name": "flexbar_split_rr_bcs",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "flexbar_split"
+    "name": "flexbar_no_split",
+    "cores": 12,
+    "mem": 12
   },
   {
-    "name": "flexbar_split_ryyr_bcs",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "flexbar_split"
+    "name": "flexbar_split_RR_bcs",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_split_RR_bcs",
+    "cores": 12,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_split_RYYR_bcs",
+    "cores": 10,
+    "mem": 12
+  },
+  {
+    "name": "flexbar_split_RYYR_bcs",
+    "cores": 12,
+    "mem": 12
   },
   {
     "name": "flye",
-    "cores": [
-      20,
-      20
-    ],
-    "mem": [
-      24,
-      60
-    ],
-    "parent_group": null
+    "cores": 20,
+    "mem": 24
+  },
+  {
+    "name": "flye",
+    "cores": 20,
+    "mem": 60
   },
   {
     "name": "freebayes",
-    "cores": [
-      10,
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      120,
-      12
-    ],
-    "parent_group": "freebayes"
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "freebayes",
+    "cores": 10,
+    "mem": 120
+  },
+  {
+    "name": "freebayes",
+    "cores": 12,
+    "mem": 12
   },
   {
     "name": "funannotate_annotate",
     "cores": 8,
-    "mem": 40,
-    "parent_group": "funannotate"
+    "mem": 40
   },
   {
     "name": "funannotate_clean",
     "cores": 8,
-    "mem": 40,
-    "parent_group": "funannotate"
+    "mem": 40
   },
   {
     "name": "funannotate_predict",
     "cores": 12,
-    "mem": 12,
-    "parent_group": "funannotate"
+    "mem": 12
+  },
+  {
+    "name": "gatk2",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "gatk2",
+    "cores": null,
+    "mem": 24
   },
   {
     "name": "gatk2",
     "cores": 10,
-    "mem": [
-      10,
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "mem": 24
   },
   {
     "name": "gatk2_base_recalibrator",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_base_recalibrator",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_depth_of_coverage",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_depth_of_coverage",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_haplotype_caller",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_haplotype_caller",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_indel_realigner",
     "cores": null,
-    "mem": 10,
-    "parent_group": "gatk2"
+    "mem": 10
   },
   {
     "name": "gatk2_print_reads",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_print_reads",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_realigner_target_creator",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_re"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_realigner_target_creator",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_reduce_reads",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_re"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_reduce_reads",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_unified_genotyper",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_unified_genotyper",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_annotator",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_annotator",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_apply_recalibration",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_apply_recalibration",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_combine",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_combine",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_eval",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_eval",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_filtration",
     "cores": null,
-    "mem": 10,
-    "parent_group": "gatk2_variant"
+    "mem": 10
   },
   {
     "name": "gatk2_variant_recalibrator",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_recalibrator",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_select",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_select",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk2_variant_validate",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      24,
-      24
-    ],
-    "parent_group": "gatk2_variant"
+    "cores": 10,
+    "mem": 24
+  },
+  {
+    "name": "gatk2_variant_validate",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "gatk_picard_index_builder",
     "cores": null,
-    "mem": 12,
-    "parent_group": "gatk"
+    "mem": 12
   },
   {
     "name": "gecko",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": null
+    "mem": 30.4
   },
   {
     "name": "gemini_inheritance",
     "cores": 4,
-    "mem": null,
-    "parent_group": "gemini"
+    "mem": null
   },
   {
     "name": "gemini_load",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "gemini"
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "gemini_load",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "generate_count_matrix",
     "cores": null,
-    "mem": 7.6,
-    "parent_group": null
+    "mem": 7.6
   },
   {
     "name": "geoexplorer",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "get_online_data",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "get_pubchem",
     "cores": 10,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "gffread",
     "cores": null,
-    "mem": 34.2,
-    "parent_group": null
+    "mem": 34.2
   },
   {
     "name": "ggplot2_heatmap2",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "glassgo",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "gmx_em",
     "cores": 16,
-    "mem": 8,
-    "parent_group": "gmx"
+    "mem": 8
   },
   {
     "name": "gmx_fep",
     "cores": 16,
-    "mem": 8,
-    "parent_group": "gmx"
+    "mem": 8
   },
   {
     "name": "gmx_sim",
-    "cores": [
-      8,
-      16
-    ],
-    "mem": 8,
-    "parent_group": "gmx"
+    "cores": 8,
+    "mem": null
+  },
+  {
+    "name": "gmx_sim",
+    "cores": 16,
+    "mem": 8
   },
   {
     "name": "graphclust_nspdk",
-    "cores": [],
-    "mem": [
-      16,
-      32
-    ],
-    "parent_group": "graphclust"
+    "cores": null,
+    "mem": 16
+  },
+  {
+    "name": "graphclust_nspdk",
+    "cores": null,
+    "mem": 32
   },
   {
     "name": "graphclust_preprocessing",
     "cores": null,
-    "mem": 10,
-    "parent_group": "graphclust"
+    "mem": 10
   },
   {
     "name": "graphprot_predict_profile",
     "cores": null,
-    "mem": 16,
-    "parent_group": "graph"
+    "mem": 16
   },
   {
     "name": "gsc_scran_normalize",
     "cores": 1,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "guacamole_desktop",
     "cores": 2,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "gubbins",
     "cores": 16,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "hammock",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "hammock_1.0",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
+  },
+  {
+    "name": "heatmap",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "heatmapper",
     "cores": null,
-    "mem": 25,
-    "parent_group": "heatmap"
+    "mem": 25
   },
   {
-    "name": "heatmapper_deeptools",
+    "name": "heatmapper_deepTools",
     "cores": null,
-    "mem": 25,
-    "parent_group": "heatmap"
+    "mem": 25
   },
   {
     "name": "hicbrowser",
     "cores": null,
-    "mem": 4,
-    "parent_group": "hic"
+    "mem": 4
   },
   {
     "name": "hicexplorer_chicaggregatestatistic",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicdifferentialtest",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicplotviewpoint",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicqualitycontrol",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicsignificantinteractions",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicviewpoint",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_chicviewpointbackgroundmodel",
     "cores": 20,
-    "mem": 60,
-    "parent_group": "hicexplorer"
+    "mem": 60
   },
   {
     "name": "hicexplorer_hicaggregatecontacts",
     "cores": null,
-    "mem": 12,
-    "parent_group": "hicexplorer"
+    "mem": 12
   },
   {
     "name": "hicexplorer_hicbuildmatrix",
-    "cores": [
-      10,
-      10,
-      10
-    ],
-    "mem": [
-      90,
-      110,
-      160
-    ],
-    "parent_group": "hicexplorer"
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "hicexplorer_hicbuildmatrix",
+    "cores": 10,
+    "mem": 110
+  },
+  {
+    "name": "hicexplorer_hicbuildmatrix",
+    "cores": 10,
+    "mem": 160
   },
   {
     "name": "hicexplorer_hiccorrectmatrix",
-    "cores": [],
-    "mem": [
-      20,
-      64
-    ],
-    "parent_group": "hicexplorer"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hiccorrectmatrix",
+    "cores": null,
+    "mem": 64
   },
   {
     "name": "hicexplorer_hiccorrelate",
     "cores": null,
-    "mem": 20,
-    "parent_group": "hicexplorer"
+    "mem": 20
   },
   {
     "name": "hicexplorer_hicfindtads",
     "cores": null,
-    "mem": 20,
-    "parent_group": "hicexplorer"
+    "mem": 20
   },
   {
     "name": "hicexplorer_hicmergematrixbins",
-    "cores": [],
-    "mem": [
-      20,
-      80
-    ],
-    "parent_group": "hicexplorer"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicmergematrixbins",
+    "cores": null,
+    "mem": 80
   },
   {
     "name": "hicexplorer_hicpca",
-    "cores": [
-      10,
-      10,
-      12
-    ],
-    "mem": [
-      60,
-      150,
-      60
-    ],
-    "parent_group": "hicexplorer"
+    "cores": 10,
+    "mem": 60
+  },
+  {
+    "name": "hicexplorer_hicpca",
+    "cores": 10,
+    "mem": 150
+  },
+  {
+    "name": "hicexplorer_hicpca",
+    "cores": 12,
+    "mem": 60
   },
   {
     "name": "hicexplorer_hicplotmatrix",
-    "cores": [],
-    "mem": [
-      32,
-      64,
-      80
-    ],
-    "parent_group": "hicexplorer"
+    "cores": null,
+    "mem": 32
+  },
+  {
+    "name": "hicexplorer_hicplotmatrix",
+    "cores": null,
+    "mem": 64
+  },
+  {
+    "name": "hicexplorer_hicplotmatrix",
+    "cores": null,
+    "mem": 80
   },
   {
     "name": "hicexplorer_hicplottads",
-    "cores": [],
-    "mem": [
-      20,
-      64
-    ],
-    "parent_group": "hicexplorer"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicplottads",
+    "cores": null,
+    "mem": 64
   },
   {
     "name": "hicexplorer_hicplotviewpoint",
     "cores": null,
-    "mem": 12,
-    "parent_group": "hicexplorer"
+    "mem": 12
   },
   {
     "name": "hicexplorer_hicsummatrices",
-    "cores": [],
-    "mem": [
-      20,
-      64
-    ],
-    "parent_group": "hicexplorer"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "hicexplorer_hicsummatrices",
+    "cores": null,
+    "mem": 64
   },
   {
     "name": "hicexplorer_hictransform",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      60,
-      60
-    ],
-    "parent_group": "hicexplorer"
+    "cores": 10,
+    "mem": 60
+  },
+  {
+    "name": "hicexplorer_hictransform",
+    "cores": 12,
+    "mem": 60
   },
   {
     "name": "hicup_mapper",
     "cores": 6,
-    "mem": 24,
-    "parent_group": "hic"
+    "mem": 24
   },
   {
     "name": "hifiadapterfilt",
     "cores": 12,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "hifiasm",
     "cores": 20,
-    "mem": 120,
-    "parent_group": null
+    "mem": 120
   },
   {
     "name": "higlass",
     "cores": 5,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "hisat",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "hisat"
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "hisat",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "hisat2",
     "cores": 8,
-    "mem": 20,
-    "parent_group": "hisat2"
+    "mem": 20
   },
   {
     "name": "hisat2_index_builder_data_manager",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      180,
-      180
-    ],
-    "parent_group": "hisat2"
+    "cores": 10,
+    "mem": 180
+  },
+  {
+    "name": "hisat2_index_builder_data_manager",
+    "cores": 12,
+    "mem": 180
   },
   {
     "name": "hmmer_hmmsearch",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "htseq_count",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "humann",
     "cores": 6,
-    "mem": 90,
-    "parent_group": "humann"
+    "mem": 90
+  },
+  {
+    "name": "humann2",
+    "cores": null,
+    "mem": 8
   },
   {
     "name": "humann2",
     "cores": 6,
-    "mem": [
-      8,
-      90
-    ],
-    "parent_group": "humann"
+    "mem": 90
   },
   {
     "name": "hybpiper",
     "cores": 8,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "hyphy_absrel",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_absrel",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_bgm",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_bgm",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_busted",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_busted",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_fade",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_fade",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_fel",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_fel",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_fubar",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_fubar",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_gard",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_gard",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_meme",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_meme",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_prime",
     "cores": 20,
-    "mem": null,
-    "parent_group": "hyphy"
+    "mem": null
   },
   {
     "name": "hyphy_relax",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_relax",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_slac",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_slac",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hyphy_sm19",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      10,
-      10
-    ],
-    "parent_group": "hyphy"
+    "cores": 10,
+    "mem": 10
+  },
+  {
+    "name": "hyphy_sm19",
+    "cores": 20,
+    "mem": 10
   },
   {
     "name": "hypo",
     "cores": 8,
-    "mem": 50,
-    "parent_group": "hyp"
+    "mem": 50
   },
   {
     "name": "idr_download_by_ids",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "infernal",
     "cores": 10,
-    "mem": 20,
-    "parent_group": "infernal"
+    "mem": 20
   },
   {
     "name": "infernal_cmbuild",
-    "cores": [
-      10,
-      20
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "infernal_cm"
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "infernal_cmbuild",
+    "cores": 20,
+    "mem": 20
   },
   {
     "name": "infernal_cmsearch",
     "cores": 10,
-    "mem": 20,
-    "parent_group": "infernal_cm"
+    "mem": 20
   },
   {
     "name": "instagraal",
     "cores": 1,
-    "mem": 30,
-    "parent_group": null
+    "mem": 30
   },
   {
     "name": "interproscan",
-    "cores": [
-      6,
-      8,
-      12
-    ],
-    "mem": [
-      40,
-      40,
-      40
-    ],
-    "parent_group": "interproscan"
+    "cores": 6,
+    "mem": 40
+  },
+  {
+    "name": "interproscan",
+    "cores": 8,
+    "mem": 40
+  },
+  {
+    "name": "interproscan",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "ip_projective_transformation",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "iqtree",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [],
-    "parent_group": null
+    "cores": 10,
+    "mem": null
+  },
+  {
+    "name": "iqtree",
+    "cores": 12,
+    "mem": null
   },
   {
     "name": "iterative_map_pipeline",
     "cores": null,
-    "mem": 60,
-    "parent_group": null
+    "mem": 60
   },
   {
     "name": "ivar_consensus",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": "ivar"
+    "mem": 30.4
   },
   {
     "name": "ivar_trim",
     "cores": 8,
-    "mem": null,
-    "parent_group": "ivar"
+    "mem": null
   },
   {
     "name": "ivar_variants",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": "ivar"
+    "mem": 30.4
   },
   {
     "name": "jbrowse",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": null
+    "mem": 11.4
   },
   {
     "name": "je_clip",
     "cores": 8,
-    "mem": null,
-    "parent_group": "je"
+    "mem": null
   },
   {
     "name": "je_demultiplex",
     "cores": 8,
-    "mem": 20,
-    "parent_group": "je"
+    "mem": 20
   },
   {
     "name": "je_demultiplex_illu",
     "cores": 8,
-    "mem": null,
-    "parent_group": "je"
+    "mem": null
   },
   {
     "name": "je_markdupes",
     "cores": 8,
-    "mem": null,
-    "parent_group": "je"
+    "mem": null
   },
   {
     "name": "jellyfish",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "join",
     "cores": null,
-    "mem": 19,
-    "parent_group": "join"
+    "mem": 19.0
   },
   {
     "name": "join1",
-    "cores": [],
-    "mem": [
-      8,
-      18
-    ],
-    "parent_group": "join"
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "join1",
+    "cores": null,
+    "mem": 18
   },
   {
     "name": "jupyter_notebook",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
+  },
+  {
+    "name": "kallisto_index_builder_data_manager",
+    "cores": null,
+    "mem": 92
   },
   {
     "name": "kallisto_index_builder_data_manager",
     "cores": 12,
-    "mem": [
-      92,
-      92
-    ],
-    "parent_group": "kallisto"
+    "mem": 92
   },
   {
     "name": "kallisto_quant",
     "cores": 8,
-    "mem": 20,
-    "parent_group": "kallisto"
+    "mem": 20
   },
   {
     "name": "kc_align",
     "cores": 3,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "keras_train_and_eval",
-    "cores": [
-      4,
-      10
-    ],
-    "mem": [],
-    "parent_group": null
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "keras_train_and_eval",
+    "cores": 10,
+    "mem": null
   },
   {
     "name": "khmer_abundance_distribution_single",
     "cores": 8,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "kraken",
-    "cores": [],
-    "mem": [
-      90,
-      128
-    ],
-    "parent_group": "kraken"
+    "cores": null,
+    "mem": 90
+  },
+  {
+    "name": "kraken",
+    "cores": null,
+    "mem": 128
   },
   {
     "name": "kraken2",
     "cores": 2,
-    "mem": 70,
-    "parent_group": "kraken"
+    "mem": 70
   },
   {
     "name": "kraken2_build_database",
     "cores": 16,
-    "mem": null,
-    "parent_group": "kraken"
+    "mem": null
   },
   {
     "name": "kraken_database_builder",
     "cores": null,
-    "mem": 200,
-    "parent_group": "kraken"
+    "mem": 200
   },
   {
     "name": "krona_text",
     "cores": null,
-    "mem": 26.6,
-    "parent_group": null
+    "mem": 26.6
   },
   {
     "name": "lastz",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "lastz_wrapper_2",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "limma_voom",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "lofreq_call",
     "cores": 2,
-    "mem": 8,
-    "parent_group": "lofreq"
+    "mem": 8
   },
   {
     "name": "lofreq_filter",
     "cores": null,
-    "mem": 15.2,
-    "parent_group": "lofreq"
+    "mem": 15.2
   },
   {
     "name": "lofreq_indelqual",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "lofreq"
+    "mem": 11.4
   },
   {
     "name": "lofreq_viterbi",
     "cores": 4,
-    "mem": null,
-    "parent_group": "lofreq"
+    "mem": null
   },
   {
     "name": "lotus2",
     "cores": 4,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "lumpy_prep",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "lumpy_sv",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "macs2",
-    "cores": [],
-    "mem": [
-      10,
-      15
-    ],
-    "parent_group": "macs2"
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "macs2",
+    "cores": null,
+    "mem": 15
   },
   {
     "name": "macs21",
     "cores": null,
-    "mem": 34.2,
-    "parent_group": "macs2"
+    "mem": 34.2
   },
   {
     "name": "macs2_bdgdiff",
     "cores": null,
-    "mem": 10,
-    "parent_group": "macs2"
+    "mem": 10
   },
   {
     "name": "macs2_callpeak",
     "cores": null,
-    "mem": 15,
-    "parent_group": "macs2"
+    "mem": 15
+  },
+  {
+    "name": "mafft",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "mafft",
     "cores": 8,
-    "mem": 12,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "maker",
     "cores": 12,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "maldi_quant_peak_detection",
     "cores": null,
-    "mem": 180,
-    "parent_group": "maldi_quant"
+    "mem": 180
   },
   {
     "name": "maldi_quant_preprocessing",
-    "cores": [],
-    "mem": [
-      249,
-      400
-    ],
-    "parent_group": "maldi_quant"
+    "cores": null,
+    "mem": 249
+  },
+  {
+    "name": "maldi_quant_preprocessing",
+    "cores": null,
+    "mem": 400
   },
   {
     "name": "mass_spectrometry_imaging_classification",
     "cores": null,
-    "mem": 128,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 128
   },
   {
     "name": "mass_spectrometry_imaging_combine",
     "cores": null,
-    "mem": 12,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 12
   },
   {
     "name": "mass_spectrometry_imaging_filtering",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 20
   },
   {
     "name": "mass_spectrometry_imaging_ion_images",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 20
   },
   {
     "name": "mass_spectrometry_imaging_mzplots",
     "cores": null,
-    "mem": 24,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 24
   },
   {
     "name": "mass_spectrometry_imaging_preprocessing",
     "cores": null,
-    "mem": 110,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 110
   },
   {
     "name": "mass_spectrometry_imaging_qc",
     "cores": null,
-    "mem": 110,
-    "parent_group": "mass_spectrometry_imaging"
+    "mem": 110
   },
   {
     "name": "mass_spectrometry_imaging_segmentations",
-    "cores": [],
-    "mem": [
-      12,
-      92
-    ],
-    "parent_group": "mass_spectrometry_imaging"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "mass_spectrometry_imaging_segmentations",
+    "cores": null,
+    "mem": 92
   },
   {
     "name": "masurca_simple",
     "cores": 8,
-    "mem": 31,
-    "parent_group": "mas"
+    "mem": 31
   },
   {
     "name": "maxbin2",
     "cores": 10,
-    "mem": 48,
-    "parent_group": "max"
+    "mem": 48
   },
   {
     "name": "maxquant",
-    "cores": [
-      8,
-      16
-    ],
-    "mem": 20,
-    "parent_group": "maxquant"
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "maxquant",
+    "cores": 16,
+    "mem": null
   },
   {
     "name": "maxquant_mqpar",
     "cores": 16,
-    "mem": null,
-    "parent_group": "maxquant"
+    "mem": null
   },
   {
     "name": "mdanalysis_extract_rmsd",
     "cores": 4,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "medaka_consensus_pipeline",
     "cores": 12,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "medaka_variant",
     "cores": null,
-    "mem": 48,
-    "parent_group": null
+    "mem": 48
   },
   {
     "name": "megablast_wrapper",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mega"
+    "mem": 20
   },
   {
     "name": "megahit",
-    "cores": [
-      10,
-      10,
-      10
-    ],
-    "mem": [
-      48,
-      80,
-      110
-    ],
-    "parent_group": "megahit"
+    "cores": 10,
+    "mem": 48
+  },
+  {
+    "name": "megahit",
+    "cores": 10,
+    "mem": 80
+  },
+  {
+    "name": "megahit",
+    "cores": 10,
+    "mem": 110
   },
   {
     "name": "megan_daa2rma",
     "cores": null,
-    "mem": 40,
-    "parent_group": "megan"
+    "mem": 40
   },
   {
     "name": "megan_daa_meganizer",
     "cores": null,
-    "mem": 40,
-    "parent_group": "megan"
+    "mem": 40
   },
   {
     "name": "megan_sam2rma",
     "cores": null,
-    "mem": 40,
-    "parent_group": "megan"
+    "mem": 40
   },
   {
     "name": "meme_dreme",
-    "cores": [],
-    "mem": [
-      12,
-      16
-    ],
-    "parent_group": "meme"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "meme_dreme",
+    "cores": null,
+    "mem": 16
   },
   {
     "name": "meme_fimo",
     "cores": null,
-    "mem": 4,
-    "parent_group": "meme"
+    "mem": 4
   },
   {
     "name": "merge_pcr_duplicates.py",
     "cores": null,
-    "mem": 4,
-    "parent_group": "mer"
+    "mem": 4
   },
   {
     "name": "merqury",
     "cores": null,
-    "mem": 12,
-    "parent_group": "mer"
+    "mem": 12
   },
   {
     "name": "meryl",
     "cores": 24,
-    "mem": 130,
-    "parent_group": "mer"
+    "mem": 130
   },
   {
     "name": "metabat2",
     "cores": 10,
-    "mem": 48,
-    "parent_group": "meta"
+    "mem": 48
   },
   {
     "name": "metagene_annotator",
     "cores": null,
-    "mem": 16,
-    "parent_group": "meta"
+    "mem": 16
   },
   {
     "name": "metaphlan",
     "cores": 16,
-    "mem": null,
-    "parent_group": "meta"
+    "mem": null
   },
   {
     "name": "metaspades",
-    "cores": [
-      10,
-      10
-    ],
-    "mem": [
-      110,
-      250
-    ],
-    "parent_group": "meta"
+    "cores": 10,
+    "mem": 110
+  },
+  {
+    "name": "metaspades",
+    "cores": 10,
+    "mem": 250
   },
   {
     "name": "methtools_calling",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      40,
-      40
-    ],
-    "parent_group": "methtools"
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "methtools_calling",
+    "cores": 12,
+    "mem": 40
   },
   {
     "name": "methtools_filter",
     "cores": null,
-    "mem": 10,
-    "parent_group": "methtools"
+    "mem": 10
   },
   {
     "name": "methtools_plot",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "methtools"
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "methtools_plot",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "metilene",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "met"
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "metilene",
+    "cores": 12,
+    "mem": 20
+  },
+  {
+    "name": "migmap",
+    "cores": null,
+    "mem": 96
   },
   {
     "name": "migmap",
     "cores": 10,
-    "mem": [
-      96,
-      16
-    ],
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "mimodd_aln",
     "cores": null,
-    "mem": 19,
-    "parent_group": "mimodd"
+    "mem": 19.0
   },
   {
     "name": "mimodd_main",
     "cores": null,
-    "mem": 22.8,
-    "parent_group": "mimodd"
+    "mem": 22.8
   },
   {
     "name": "mimodd_varcall",
     "cores": 6,
-    "mem": null,
-    "parent_group": "mimodd"
+    "mem": null
   },
   {
     "name": "minced",
     "cores": null,
-    "mem": 10,
-    "parent_group": "min"
+    "mem": 10
   },
   {
     "name": "minia",
     "cores": 2,
-    "mem": 8,
-    "parent_group": "mini"
+    "mem": 8
   },
   {
     "name": "miniasm",
     "cores": null,
-    "mem": 32,
-    "parent_group": "mini"
+    "mem": 32
   },
   {
     "name": "minimap2",
-    "cores": [
-      8,
-      8
-    ],
-    "mem": [
-      20,
-      32
-    ],
-    "parent_group": "mini"
+    "cores": 8,
+    "mem": 20
+  },
+  {
+    "name": "minimap2",
+    "cores": 8,
+    "mem": 32
   },
   {
     "name": "mira_assembler",
     "cores": null,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "mirdeep2_mapper",
     "cores": 10,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "mitohifi",
     "cores": 8,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "mitos2",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "mlst",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "mmbios01",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mmbios0"
+    "mem": 20
   },
   {
     "name": "mmbios02",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mmbios0"
+    "mem": 20
   },
   {
     "name": "mmbios03",
     "cores": null,
-    "mem": 20,
-    "parent_group": "mmbios0"
+    "mem": 20
   },
   {
     "name": "morpheus",
     "cores": null,
-    "mem": 64,
-    "parent_group": null
+    "mem": 64
   },
   {
     "name": "mothur_align_check",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_align"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_align_check",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_align_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 90,
-    "parent_group": "mothur_align"
+    "cores": 2,
+    "mem": 90
+  },
+  {
+    "name": "mothur_align_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_amova",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_amova",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_anosim",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_anosim",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_bin_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_bin_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_bellerophon",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_bellerophon",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_ccode",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_ccode",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_check",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_check",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_perseus",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_perseus",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_pintail",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_pintail",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_slayer",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_slayer",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_uchime",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chimera_uchime",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_chimera_vsearch",
     "cores": 7,
-    "mem": null,
-    "parent_group": "mothur_ch"
+    "mem": null
   },
   {
     "name": "mothur_chop_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ch"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_chop_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_classify_otu",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_classify_otu",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_classify_rf",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_classify_rf",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_classify_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": [
-      20,
-      8
-    ],
-    "parent_group": "mothur_cl"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_classify_seqs",
+    "cores": 8,
+    "mem": 8
   },
   {
     "name": "mothur_classify_tree",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_classify_tree",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_clearcut",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_clearcut",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_cluster",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_cluster",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_cluster_classic",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_cluster_classic",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_cluster_fragments",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_cluster_fragments",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_cluster_split",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 90,
-    "parent_group": "mothur_cl"
+    "cores": 1,
+    "mem": 90
+  },
+  {
+    "name": "mothur_cluster_split",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_collect_shared",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_collect_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_collect_single",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_collect_single",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_consensus_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_consensus_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_cooccurrence",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_cooccurrence",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_corr_axes",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_corr_axes",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_count_groups",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_count_groups",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_count_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_co"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_count_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_create_database",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_create_database",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_degap_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_de"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_degap_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_deunique_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_de"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_deunique_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_deunique_tree",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_de"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_deunique_tree",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_dist_seqs",
     "cores": 8,
-    "mem": null,
-    "parent_group": "mothur_dist"
+    "mem": null
   },
   {
     "name": "mothur_dist_shared",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_dist"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_dist_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_fastq_info",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_fastq_info",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_filter_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_filter"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_filter_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_filter_shared",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_filter"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_filter_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_communitytype",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_communitytype",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_coremicrobiome",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_coremicrobiome",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_dists",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_dists",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_group",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_group",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_groups",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_groups",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_label",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_label",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_lineage",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_lineage",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_mimarkspackage",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_mimarkspackage",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_otulabels",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_otulabels",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_otulist",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_otulist",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_oturep",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_oturep",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_otus",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_otus",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_rabund",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_rabund",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_relabund",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_relabund",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_sabund",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_sabund",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_get_sharedseqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_get"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_get_sharedseqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_hcluster",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_hcluster",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_heatmap_bin",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_heatmap"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_heatmap_bin",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_heatmap_sim",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_heatmap"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_heatmap_sim",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_homova",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_homova",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_indicator",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_indicator",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_lefse",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_lefse",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_libshuff",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_li"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_libshuff",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_list_otulabels",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_li"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_list_otulabels",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_list_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_li"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_list_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_biom",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 90,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 90
+  },
+  {
+    "name": "mothur_make_biom",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_contigs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_contigs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_design",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_design",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_fastq",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_fastq",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_group",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_group",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_lefse",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_lefse",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_lookup",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_lookup",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_shared",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_make_sra",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_make_sra",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_mantel",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_ma"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_mantel",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_merge_files",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_me"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_merge_files",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_merge_groups",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_me"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_merge_groups",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_merge_sfffiles",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_me"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_merge_sfffiles",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_merge_taxsummary",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_me"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_merge_taxsummary",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_metastats",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_me"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_metastats",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_mimarks_attributes",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_mimarks_attributes",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_nmds",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_nmds",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_normalize_shared",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_normalize_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_otu_association",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_otu"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_otu_association",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_otu_hierarchy",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_otu"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_otu_hierarchy",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_pairwise_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pa"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_pairwise_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_parse_list",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pa"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_parse_list",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_parsimony",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pa"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_parsimony",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_pca",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pc"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_pca",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_pcoa",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pc"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_pcoa",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_pcr_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pc"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_pcr_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_phylo_diversity",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_phylo"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_phylo_diversity",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_phylotype",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_phylo"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_phylotype",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_pre_cluster",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pr"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_pre_cluster",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_primer_design",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_pr"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_primer_design",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_rarefaction_shared",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_rarefaction"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_rarefaction_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_rarefaction_single",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_rarefaction"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_rarefaction_single",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_dists",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_dists",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_groups",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_groups",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_lineage",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_lineage",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_otulabels",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_otulabels",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_otus",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_otus",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_rare",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_rare",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_remove_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_remove_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_reverse_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_re"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_reverse_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_screen_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_screen_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_sens_spec",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_se"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_sens_spec",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_seq_error",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_se"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_seq_error",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_sffinfo",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_sffinfo",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_shhh_flows",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_shhh"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_shhh_flows",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_shhh_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_shhh"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_shhh_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_sort_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_sort_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_split_abund",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_split"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_split_abund",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_split_groups",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_split"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_split_groups",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_sub_sample",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_sub_sample",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_summary_qual",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_summary_qual",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_summary_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_summary_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_summary_shared",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_summary_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_summary_single",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_summary_single",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_summary_tax",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_su"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_summary_tax",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_taxonomy_to_krona",
     "cores": null,
-    "mem": 26.6,
-    "parent_group": "mothur"
+    "mem": 26.6
   },
   {
     "name": "mothur_tree_shared",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_tr"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_tree_shared",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_trim_flows",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_tr"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_trim_flows",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_trim_seqs",
-    "cores": [
-      2,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_tr"
+    "cores": 2,
+    "mem": 20
+  },
+  {
+    "name": "mothur_trim_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_unifrac_unweighted",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_uni"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_unifrac_unweighted",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_unifrac_weighted",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_uni"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_unifrac_weighted",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_unique_seqs",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur_uni"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_unique_seqs",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "mothur_venn",
-    "cores": [
-      1,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "mothur"
+    "cores": 1,
+    "mem": 20
+  },
+  {
+    "name": "mothur_venn",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "msaboot",
     "cores": null,
-    "mem": 6,
-    "parent_group": null
+    "mem": 6
   },
   {
     "name": "msgfplus",
     "cores": 10,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "msi_classification",
     "cores": null,
-    "mem": 90,
-    "parent_group": "msi"
+    "mem": 90
   },
   {
     "name": "msi_combine",
     "cores": null,
-    "mem": 12,
-    "parent_group": "msi"
+    "mem": 12
   },
   {
     "name": "msi_filtering",
     "cores": null,
-    "mem": 20,
-    "parent_group": "msi"
+    "mem": 20
   },
   {
     "name": "msi_ion_images",
-    "cores": [],
-    "mem": [
-      12,
-      20,
-      92
-    ],
-    "parent_group": "msi_ion_images"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "msi_ion_images",
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "msi_ion_images",
+    "cores": null,
+    "mem": 92
   },
   {
     "name": "msi_preprocessing",
     "cores": null,
-    "mem": 110,
-    "parent_group": "msi"
+    "mem": 110
   },
   {
     "name": "msi_qualitycontrol",
     "cores": null,
-    "mem": 110,
-    "parent_group": "msi"
+    "mem": 110
   },
   {
     "name": "msi_spectra_plot",
-    "cores": [],
-    "mem": [
-      12,
-      24,
-      210
-    ],
-    "parent_group": "msi_spectra_plot"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "msi_spectra_plot",
+    "cores": null,
+    "mem": 24
+  },
+  {
+    "name": "msi_spectra_plot",
+    "cores": null,
+    "mem": 210
   },
   {
     "name": "msstats",
     "cores": null,
-    "mem": 24,
-    "parent_group": "mss"
+    "mem": 24
   },
   {
     "name": "msstatstmt",
     "cores": null,
-    "mem": 24,
-    "parent_group": "mss"
+    "mem": 24
   },
   {
     "name": "multiqc",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": null
+    "mem": 11.4
   },
   {
     "name": "mummer_nucmer",
     "cores": 5,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "mz_to_sqlite",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "naive_variant_caller",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "nanocompore_sampcomp",
     "cores": 9,
-    "mem": 48,
-    "parent_group": "nano"
+    "mem": 48
   },
   {
     "name": "nanoplot",
     "cores": 2,
-    "mem": 12,
-    "parent_group": "nanop"
+    "mem": 12
   },
   {
     "name": "nanopolish_eventalign",
-    "cores": [
-      5,
-      20
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "nanopolish"
+    "cores": 5,
+    "mem": 12
+  },
+  {
+    "name": "nanopolish_eventalign",
+    "cores": 20,
+    "mem": 12
   },
   {
     "name": "nanopolish_methylation",
-    "cores": [
-      5,
-      10
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "nanopolish"
+    "cores": 5,
+    "mem": 12
+  },
+  {
+    "name": "nanopolish_methylation",
+    "cores": 10,
+    "mem": 12
   },
   {
     "name": "nanopolish_polya",
     "cores": 3,
-    "mem": null,
-    "parent_group": "nanopolish"
+    "mem": null
   },
   {
     "name": "nanopolish_variants",
-    "cores": [
-      5,
-      20
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "nanopolish"
+    "cores": 5,
+    "mem": 12
+  },
+  {
+    "name": "nanopolish_variants",
+    "cores": 20,
+    "mem": 12
   },
   {
     "name": "nanopolishcomp_eventaligncollapse",
     "cores": 10,
-    "mem": 12,
-    "parent_group": "nanopolish"
+    "mem": 12
   },
   {
     "name": "natural_product_likeness",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "ncbi_blast_plus",
-    "cores": [
-      8,
-      10,
-      16
-    ],
-    "mem": [
-      20,
-      40
-    ],
-    "parent_group": "ncbi_blast"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "ncbi_blast_plus",
+    "cores": 8,
+    "mem": null
+  },
+  {
+    "name": "ncbi_blast_plus",
+    "cores": 10,
+    "mem": 40
+  },
+  {
+    "name": "ncbi_blast_plus",
+    "cores": 16,
+    "mem": null
   },
   {
     "name": "ncbi_blastn_wrapper",
     "cores": 8,
-    "mem": 20,
-    "parent_group": "ncbi_blast"
+    "mem": 20
   },
   {
     "name": "ncbi_blastp_wrapper",
     "cores": 8,
-    "mem": 40,
-    "parent_group": "ncbi_blast"
+    "mem": 40
   },
   {
     "name": "ncbi_makeblastdb",
     "cores": null,
-    "mem": 20,
-    "parent_group": "ncbi"
+    "mem": 20
   },
   {
     "name": "neo4j",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "novoplasty",
     "cores": null,
-    "mem": 40,
-    "parent_group": null
+    "mem": 40
   },
   {
     "name": "nspdk_sparse",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "numeric_clustering",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "ont_fast5_api_compress_fast5",
     "cores": 8,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "openduck_run_smd",
     "cores": 1,
-    "mem": null,
-    "parent_group": "open"
+    "mem": null
   },
   {
     "name": "openmg",
     "cores": null,
-    "mem": 20,
-    "parent_group": "openm"
+    "mem": 20
   },
   {
     "name": "openms_accuratemasssearch",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_additiveseries",
     "cores": 20,
-    "mem": 12,
-    "parent_group": "openms"
+    "mem": 12
   },
   {
     "name": "openms_assaygeneratormetabo",
     "cores": null,
-    "mem": 12,
-    "parent_group": "openms"
+    "mem": 12
   },
   {
     "name": "openms_baselinefilter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_compnovo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_co"
+    "mem": 8
   },
   {
     "name": "openms_compnovocid",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_co"
+    "mem": 8
   },
   {
     "name": "openms_consensusid",
     "cores": 1,
-    "mem": 58,
-    "parent_group": "openms_co"
+    "mem": 58
   },
   {
     "name": "openms_consensusmapnormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_co"
+    "mem": 8
   },
   {
     "name": "openms_cruxadapter",
     "cores": null,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_cvinspector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_decharger",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_de"
+    "mem": 8
   },
   {
     "name": "openms_decoydatabase",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_de"
+    "mem": 8
   },
   {
     "name": "openms_demeanderize",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_de"
+    "mem": 8
   },
   {
     "name": "openms_digestor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_digestormotif",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_eicextractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_erpairfinder",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_falsediscoveryrate",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_featurefindercentroided",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurefinderisotopewavelet",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurefindermetabo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurefindermrm",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurefindermultiplex",
     "cores": 8,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurefindersuperhirn",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurelinkerlabeled",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurelinkerunlabeled",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_featurelinkerunlabeledqt",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_feature"
+    "mem": 8
   },
   {
     "name": "openms_ffeval",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_fidoadapter",
     "cores": 8,
-    "mem": 8,
-    "parent_group": "openms_fi"
+    "mem": 8
   },
   {
     "name": "openms_fileconverter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_fi"
+    "mem": 8
   },
   {
     "name": "openms_filefilter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_fi"
+    "mem": 8
   },
   {
     "name": "openms_fileinfo",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_fi"
+    "mem": 8
   },
   {
     "name": "openms_filemerger",
     "cores": 4,
-    "mem": 16,
-    "parent_group": "openms_fi"
+    "mem": 16
   },
   {
     "name": "openms_highresprecursormasscorrector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_idconflictresolver",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idextractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idfileconverter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idfilter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idmapper",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idmassaccuracy",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idmerger",
     "cores": 1,
-    "mem": 30,
-    "parent_group": "openms_id"
+    "mem": 30
   },
   {
     "name": "openms_idposteriorerrorprobability",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idrtcalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_idsplitter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_id"
+    "mem": 8
   },
   {
     "name": "openms_inclusionexclusionlistcreator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_internalcalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_isobaricanalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_itraqanalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_labeledeval",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_mapaligneridentification",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mapalignerposeclustering",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mapalignerspectrum",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mapalignmentevaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mapnormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_maprttransformer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mapstatistics",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_masscalculator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_masstraceextractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_ma"
+    "mem": 8
   },
   {
     "name": "openms_mrmmapper",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_mrmpairfinder",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_msgfplusadapter",
     "cores": 10,
-    "mem": 12,
-    "parent_group": "openms"
+    "mem": 12
   },
   {
     "name": "openms_mssimulator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_myrimatchadapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_mztabexporter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_noisefiltergaussian",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_noisefiltersgolay",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_omssaadapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_openswathanalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathchromatogramextractor",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathconfidencescoring",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathdecoygenerator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathdiaprescoring",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathfeaturexmltotsv",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathrewritetofeaturexml",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathrtnormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_openswath"
+    "mem": 8
   },
   {
     "name": "openms_openswathworkflow",
     "cores": null,
-    "mem": 156,
-    "parent_group": "openms_openswath"
+    "mem": 156
   },
   {
     "name": "openms_peakpickerhires",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pe"
+    "mem": 8
   },
   {
     "name": "openms_peakpickerwavelet",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pe"
+    "mem": 8
   },
   {
     "name": "openms_pepnovoadapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pe"
+    "mem": 8
   },
   {
     "name": "openms_peptideindexer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pe"
+    "mem": 8
   },
   {
     "name": "openms_precursorionselector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pr"
+    "mem": 8
   },
   {
     "name": "openms_precursormasscorrector",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pr"
+    "mem": 8
   },
   {
     "name": "openms_proteininference",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pr"
+    "mem": 8
   },
   {
     "name": "openms_proteinquantifier",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pr"
+    "mem": 8
   },
   {
     "name": "openms_proteinresolver",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_pr"
+    "mem": 8
   },
   {
     "name": "openms_ptmodel",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_ptpredict",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_qccalculator",
     "cores": null,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_rnpxl",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_rtevaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_rt"
+    "mem": 8
   },
   {
     "name": "openms_rtmodel",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_rt"
+    "mem": 8
   },
   {
     "name": "openms_rtpredict",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_rt"
+    "mem": 8
   },
   {
     "name": "openms_seedlistgenerator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_se"
+    "mem": 8
   },
   {
     "name": "openms_semanticvalidator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_se"
+    "mem": 8
   },
   {
     "name": "openms_sequencecoveragecalculator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_se"
+    "mem": 8
   },
   {
     "name": "openms_siriusadapter",
     "cores": null,
-    "mem": 16,
-    "parent_group": "openms"
+    "mem": 16
   },
   {
     "name": "openms_speclibcreator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_speclibsearcher",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilterbernnorm",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafiltermarkermower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilternlargest",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilternormalizer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilterparentpeakmower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilterscaler",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafiltersqrtmower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilterthresholdmower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectrafilterwindowmower",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_spectramerger",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms_spec"
+    "mem": 8
   },
   {
     "name": "openms_textexporter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_tmtanalyzer",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_tofcalibration",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_transformationevaluation",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_xmlvalidator",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openms_xtandemadapter",
     "cores": 4,
-    "mem": 8,
-    "parent_group": "openms"
+    "mem": 8
   },
   {
     "name": "openrefine",
     "cores": null,
-    "mem": 4,
-    "parent_group": "open"
+    "mem": 4
   },
   {
     "name": "orfipy",
     "cores": 8,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "pangolin",
     "cores": 8,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "panoply",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "paralyzer",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "paraview",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "peakachu",
     "cores": null,
-    "mem": 16,
-    "parent_group": "peak"
+    "mem": 16
   },
   {
     "name": "pear",
     "cores": 7,
-    "mem": null,
-    "parent_group": "pea"
+    "mem": null
   },
   {
     "name": "pepquery",
     "cores": null,
-    "mem": 8,
-    "parent_group": "pep"
+    "mem": 8
   },
   {
     "name": "pepquery2",
     "cores": null,
-    "mem": 20,
-    "parent_group": "pep"
+    "mem": 20
   },
   {
     "name": "peptide_shaker",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      92,
-      24
-    ],
-    "parent_group": "peptide"
+    "cores": 10,
+    "mem": 92
+  },
+  {
+    "name": "peptide_shaker",
+    "cores": 12,
+    "mem": 24
   },
   {
     "name": "peptideshaker",
-    "cores": [
-      7,
-      10
-    ],
-    "mem": [
-      90,
-      12
-    ],
-    "parent_group": "peptide"
+    "cores": 7,
+    "mem": 90
+  },
+  {
+    "name": "peptideshaker",
+    "cores": 10,
+    "mem": 12
   },
   {
     "name": "pharmcat",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "phinch",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "phyloseq_filter",
     "cores": null,
-    "mem": 60.8,
-    "parent_group": null
+    "mem": 60.8
   },
   {
     "name": "phyloseq_ordination_plot",
     "cores": null,
-    "mem": 60.8,
-    "parent_group": null
+    "mem": 60.8
+  },
+  {
+    "name": "picard",
+    "cores": null,
+    "mem": 10
+  },
+  {
+    "name": "picard",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "picard",
     "cores": 3,
-    "mem": [
-      10,
-      12
-    ],
-    "parent_group": "picard"
+    "mem": null
   },
   {
-    "name": "picard_arrg",
+    "name": "picard_ARRG",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_addorreplacereadgroups",
+    "name": "picard_AddOrReplaceReadGroups",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_bamindexstats",
+    "name": "picard_BamIndexStats",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_casm",
+    "name": "picard_CASM",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_cleansam",
+    "name": "picard_CleanSam",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_collectinsertsizemetrics",
+    "name": "picard_CollectInsertSizeMetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_collectrnaseqmetrics",
+    "name": "picard_CollectRnaSeqMetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_downsamplesam",
+    "name": "picard_DownsampleSam",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_estimatelibrarycomplexity",
+    "name": "picard_EstimateLibraryComplexity",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_fastqtosam",
+    "name": "picard_FastqToSam",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_filtersamreads",
+    "name": "picard_FilterSamReads",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_fixmateinformation",
+    "name": "picard_FixMateInformation",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_markduplicates",
+    "name": "picard_MarkDuplicates",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_mergesamfiles",
+    "name": "picard_MergeSamFiles",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_normalizefasta",
+    "name": "picard_NormalizeFasta",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_qualityscoredistribution",
+    "name": "picard_QualityScoreDistribution",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_reordersam",
+    "name": "picard_ReorderSam",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_replacesamheader",
+    "name": "picard_ReplaceSamHeader",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_samtofastq",
+    "name": "picard_SamToFastq",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
-    "name": "picard_sortsam",
+    "name": "picard_SortSam",
     "cores": null,
-    "mem": 10,
-    "parent_group": "picard"
+    "mem": 10
   },
   {
     "name": "picard_index_builder_data_manager",
     "cores": null,
-    "mem": 12,
-    "parent_group": "picard"
+    "mem": 12
   },
   {
     "name": "pileometh",
     "cores": 1,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "pilon",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "piranha",
     "cores": null,
-    "mem": 15,
-    "parent_group": null
+    "mem": 15
   },
   {
     "name": "plotly_regression_performance_plots",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "porechop",
-    "cores": [],
-    "mem": [
-      12,
-      40
-    ],
-    "parent_group": "pore"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "porechop",
+    "cores": null,
+    "mem": 40
   },
   {
     "name": "poretools_events",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_extract",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_hist",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_nucdist",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_occupancy",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_qualdist",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_qualpos",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_squiggle",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_stats",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_tabular",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_times",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_winner",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "poretools_yield_plot",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "poretools"
+    "mem": 11.4
   },
   {
     "name": "preproc",
     "cores": null,
-    "mem": 10,
-    "parent_group": "pre"
+    "mem": 10
   },
   {
     "name": "profia",
     "cores": null,
-    "mem": 8,
-    "parent_group": "pro"
+    "mem": 8
   },
   {
     "name": "projective_transformation",
     "cores": null,
-    "mem": 24,
-    "parent_group": "pro"
+    "mem": 24
   },
   {
     "name": "prokaryotic_ncbi_submission",
     "cores": 24,
-    "mem": 24,
-    "parent_group": "prok"
+    "mem": 24
+  },
+  {
+    "name": "prokka",
+    "cores": null,
+    "mem": 20
   },
   {
     "name": "prokka",
     "cores": 8,
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": "prok"
+    "mem": 20
+  },
+  {
+    "name": "proteomics_moff",
+    "cores": null,
+    "mem": 10
   },
   {
     "name": "proteomics_moff",
     "cores": 6,
-    "mem": [
-      10,
-      20
-    ],
-    "parent_group": "proteomics"
+    "mem": 20
   },
   {
     "name": "proteomics_search_msgfplus_1",
     "cores": null,
-    "mem": 10,
-    "parent_group": "proteomics"
+    "mem": 10
   },
   {
     "name": "pureclip",
     "cores": 2,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "purge_dups",
     "cores": null,
-    "mem": 30.4,
-    "parent_group": null
+    "mem": 30.4
   },
   {
     "name": "pyiron",
     "cores": 1,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "pyprophet_score",
-    "cores": [
-      1,
-      1
-    ],
-    "mem": [
-      400,
-      800
-    ],
-    "parent_group": null
+    "cores": 1,
+    "mem": 400
+  },
+  {
+    "name": "pyprophet_score",
+    "cores": 1,
+    "mem": 800
   },
   {
     "name": "qualimap_bamqc",
     "cores": null,
-    "mem": 24,
-    "parent_group": "quali"
+    "mem": 24
   },
   {
     "name": "qualimap_rnaseq",
     "cores": null,
-    "mem": 12,
-    "parent_group": "quali"
+    "mem": 12
   },
   {
     "name": "quality_metrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "quali"
+    "mem": 12
   },
   {
     "name": "qualitymetrics",
     "cores": null,
-    "mem": 12,
-    "parent_group": "quali"
+    "mem": 12
   },
   {
     "name": "quast",
     "cores": 10,
-    "mem": 12,
-    "parent_group": "qua"
+    "mem": 12
   },
   {
     "name": "r_correlation_matrix",
     "cores": null,
-    "mem": 80,
-    "parent_group": null
+    "mem": 80
   },
   {
     "name": "racon",
-    "cores": [
-      4,
-      16
-    ],
-    "mem": [
-      24,
-      36
-    ],
-    "parent_group": null
+    "cores": 4,
+    "mem": 24
+  },
+  {
+    "name": "racon",
+    "cores": 16,
+    "mem": 36
   },
   {
     "name": "radiant",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "raven",
     "cores": 16,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "raxml",
     "cores": 16,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "rbc_mirdeep2_mapper",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": null
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "rbc_mirdeep2_mapper",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "rcas",
     "cores": 4,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "rdock_sort_filter",
     "cores": null,
-    "mem": 90,
-    "parent_group": null
+    "mem": 90
   },
   {
     "name": "re_he_maldi_image_registration",
     "cores": null,
-    "mem": 48,
-    "parent_group": null
+    "mem": 48
   },
   {
     "name": "reactome_pathwaymatcher",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "recetox_aplcms_align_features",
     "cores": 4,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "repeat_masker",
     "cores": 8,
-    "mem": 40,
-    "parent_group": "repe"
+    "mem": 40
   },
   {
     "name": "repeatmodeler",
     "cores": 8,
-    "mem": null,
-    "parent_group": "repe"
+    "mem": null
   },
   {
     "name": "repenrich",
     "cores": 8,
-    "mem": null,
-    "parent_group": "repe"
+    "mem": null
   },
   {
-    "name": "rgestlibcomp",
+    "name": "rgEstLibComp",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
-    "name": "rgpicfixmate",
+    "name": "rgPicFixMate",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
-    "name": "rgpicardmarkdups",
+    "name": "rgPicardMarkDups",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "rgrnastar",
     "cores": 10,
-    "mem": 50,
-    "parent_group": null
+    "mem": 50
   },
   {
     "name": "ribotaper",
     "cores": 12,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "rm_spurious_events.py",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "rna_star",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      140,
-      100
-    ],
-    "parent_group": "rna_star"
+    "cores": 10,
+    "mem": 140
+  },
+  {
+    "name": "rna_star",
+    "cores": 12,
+    "mem": 100
   },
   {
     "name": "rna_star_index_builder_data_manager",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      300,
-      160
-    ],
-    "parent_group": "rna_star"
+    "cores": 10,
+    "mem": 300
+  },
+  {
+    "name": "rna_star_index_builder_data_manager",
+    "cores": 12,
+    "mem": 160
   },
   {
     "name": "rna_starsolo",
     "cores": 4,
-    "mem": 40,
-    "parent_group": "rna_star"
+    "mem": 40
+  },
+  {
+    "name": "rnalien",
+    "cores": 10,
+    "mem": null
   },
   {
     "name": "rnaspades",
-    "cores": [
-      10,
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      250,
-      90
-    ],
-    "parent_group": "rnaspades"
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "rnaspades",
+    "cores": 10,
+    "mem": 250
+  },
+  {
+    "name": "rnaspades",
+    "cores": 12,
+    "mem": 90
   },
   {
     "name": "rnbeads",
     "cores": null,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "roary",
     "cores": 24,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "rsem",
     "cores": null,
-    "mem": 16,
-    "parent_group": "rse"
+    "mem": 16
   },
   {
     "name": "rsem_calculate_expression",
     "cores": null,
-    "mem": 16,
-    "parent_group": "rse"
+    "mem": 16
+  },
+  {
+    "name": "rseqc",
+    "cores": null,
+    "mem": 7.6
+  },
+  {
+    "name": "rseqc",
+    "cores": null,
+    "mem": 30.4
   },
   {
     "name": "rseqc",
     "cores": 8,
-    "mem": [
-      7.6,
-      30.4,
-      20
-    ],
-    "parent_group": "rseqc"
+    "mem": 20
   },
   {
     "name": "rseqc_bam2wig",
     "cores": 8,
-    "mem": 16,
-    "parent_group": "rseqc"
+    "mem": 16
   },
   {
     "name": "rstudio",
     "cores": 1,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "rxdock_sort_filter",
     "cores": null,
-    "mem": 90,
-    "parent_group": null
+    "mem": 90
   },
   {
     "name": "sailfish",
-    "cores": [
-      6,
-      6
-    ],
-    "mem": [
-      60,
-      70
-    ],
-    "parent_group": null
+    "cores": 6,
+    "mem": 60
+  },
+  {
+    "name": "sailfish",
+    "cores": 6,
+    "mem": 70
   },
   {
     "name": "salmon",
-    "cores": [
-      6,
-      6
-    ],
-    "mem": [
-      60,
-      70
-    ],
-    "parent_group": "salmon"
+    "cores": 6,
+    "mem": 60
+  },
+  {
+    "name": "salmon",
+    "cores": 6,
+    "mem": 70
   },
   {
     "name": "salmon_index_builder_data_manager",
     "cores": 12,
-    "mem": 92,
-    "parent_group": "salmon"
+    "mem": 92
   },
   {
     "name": "salsa",
     "cores": 1,
-    "mem": 12,
-    "parent_group": "sal"
+    "mem": 12
   },
   {
     "name": "sam_merge",
     "cores": null,
-    "mem": 32,
-    "parent_group": "sam"
+    "mem": 32
   },
   {
     "name": "sam_merge2",
     "cores": null,
-    "mem": 32,
-    "parent_group": "sam"
+    "mem": 32
   },
   {
     "name": "samtool_filter2",
     "cores": null,
-    "mem": 11.4,
-    "parent_group": "samtool"
+    "mem": 11.4
   },
   {
     "name": "samtools_mpileup",
     "cores": 5,
-    "mem": null,
-    "parent_group": "samtools"
+    "mem": null
   },
   {
     "name": "samtools_rmdup",
     "cores": null,
-    "mem": 7.6,
-    "parent_group": "samtools"
+    "mem": 7.6
   },
   {
     "name": "samtools_sort",
     "cores": 10,
-    "mem": 10,
-    "parent_group": "samtools"
+    "mem": 10
   },
   {
     "name": "scale_image",
     "cores": null,
-    "mem": 12,
-    "parent_group": "sca"
+    "mem": 12
   },
   {
     "name": "scanpy_cluster_reduce_dimension",
-    "cores": [
-      4,
-      4
-    ],
-    "mem": 19,
-    "parent_group": "scanpy"
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "scanpy_cluster_reduce_dimension",
+    "cores": 4,
+    "mem": 19.0
   },
   {
     "name": "scanpy_filter",
-    "cores": [
-      4,
-      4
-    ],
-    "mem": 11.4,
-    "parent_group": "scanpy"
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "scanpy_filter",
+    "cores": 4,
+    "mem": 11.4
   },
   {
     "name": "scanpy_inspect",
-    "cores": [
-      4,
-      4
-    ],
-    "mem": 19,
-    "parent_group": "scanpy"
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "scanpy_inspect",
+    "cores": 4,
+    "mem": 19.0
   },
   {
     "name": "scanpy_normalize",
-    "cores": [
-      4,
-      4
-    ],
-    "mem": 7.6,
-    "parent_group": "scanpy"
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "scanpy_normalize",
+    "cores": 4,
+    "mem": 7.6
   },
   {
     "name": "scanpy_plot",
     "cores": 4,
-    "mem": null,
-    "parent_group": "scanpy"
+    "mem": null
   },
   {
     "name": "scanpy_remove_confounders",
-    "cores": [
-      4,
-      9
-    ],
-    "mem": [],
-    "parent_group": "scanpy"
+    "cores": 4,
+    "mem": null
+  },
+  {
+    "name": "scanpy_remove_confounders",
+    "cores": 9,
+    "mem": null
   },
   {
     "name": "schicexplorer_schicadjustmatrix",
     "cores": 5,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schiccluster",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicclustercomparments",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicclusterminhash",
     "cores": 20,
-    "mem": 240,
-    "parent_group": "schicexplorer_schic"
+    "mem": 240
   },
   {
     "name": "schicexplorer_schicclustersvl",
     "cores": 20,
-    "mem": 20,
-    "parent_group": "schicexplorer_schic"
+    "mem": 20
   },
   {
     "name": "schicexplorer_schicconsensusmatrices",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schiccorrectmatrices",
     "cores": 20,
-    "mem": 110,
-    "parent_group": "schicexplorer_schic"
+    "mem": 110
   },
   {
     "name": "schicexplorer_schiccreatebulkmatrix",
     "cores": 10,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicdemultiplex",
     "cores": 5,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicinfo",
     "cores": 1,
-    "mem": 8,
-    "parent_group": "schicexplorer_schic"
+    "mem": 8
   },
   {
     "name": "schicexplorer_schicmergematrixbins",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicmergetoscool",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicnormalize",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicplotclusterprofiles",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "schicexplorer_schicplotconsensusmatrices",
     "cores": 10,
-    "mem": 32,
-    "parent_group": "schicexplorer_schic"
+    "mem": 32
   },
   {
     "name": "schicexplorer_schicqualitycontrol",
     "cores": 20,
-    "mem": 64,
-    "parent_group": "schicexplorer_schic"
+    "mem": 64
   },
   {
     "name": "scpipe",
     "cores": 8,
-    "mem": 64,
-    "parent_group": null
+    "mem": 64
   },
   {
     "name": "search_gui",
-    "cores": [
-      6,
-      10
-    ],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": null
+    "cores": 6,
+    "mem": 12
+  },
+  {
+    "name": "search_gui",
+    "cores": 10,
+    "mem": 12
   },
   {
     "name": "secretbt2test",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      20,
-      20
-    ],
-    "parent_group": null
+    "cores": 10,
+    "mem": 20
+  },
+  {
+    "name": "secretbt2test",
+    "cores": 12,
+    "mem": 20
   },
   {
     "name": "segemehl",
     "cores": null,
-    "mem": 80,
-    "parent_group": null
+    "mem": 80
   },
   {
     "name": "seq_filter_by_mapping",
     "cores": null,
-    "mem": 8,
-    "parent_group": "seq"
+    "mem": 8
   },
   {
     "name": "seq_select_by_id",
     "cores": null,
-    "mem": 8,
-    "parent_group": "seq"
+    "mem": 8
   },
   {
     "name": "seqtk",
     "cores": 4,
-    "mem": null,
-    "parent_group": "seq"
+    "mem": null
   },
   {
     "name": "shasta",
     "cores": 10,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "shovill",
     "cores": 4,
-    "mem": 50,
-    "parent_group": "sho"
+    "mem": 50
   },
   {
-    "name": "show_2d_image_reshape",
+    "name": "show_2D_image_reshape",
     "cores": null,
-    "mem": 20,
-    "parent_group": "show"
+    "mem": 20
   },
   {
-    "name": "show_3d_image_reshape",
+    "name": "show_3D_image_reshape",
     "cores": null,
-    "mem": 20,
-    "parent_group": "show"
+    "mem": 20
   },
   {
-    "name": "show_3d_surface_plot",
+    "name": "show_3D_surface_plot",
     "cores": null,
-    "mem": 20,
-    "parent_group": "show"
+    "mem": 20
   },
   {
     "name": "signalp3",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "sklearn_model_validation",
     "cores": 10,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "sklearn_searchcv",
     "cores": 10,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "slamdunk",
     "cores": 10,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "smooth_running_window",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "smudgeplot",
     "cores": null,
-    "mem": 8,
-    "parent_group": null
+    "mem": 8
   },
   {
     "name": "snippy",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
+  },
+  {
+    "name": "snpEff",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff_build_gb",
+    "cores": null,
+    "mem": 48
+  },
+  {
+    "name": "snpEff_databases",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff_download",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpEff_get_chr_names",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_annotate",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_caseControl",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_filter",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_filter",
+    "cores": null,
+    "mem": 18
+  },
+  {
+    "name": "snpSift_geneSets",
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpSift_int",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "snpeff",
-    "cores": [],
-    "mem": [
-      12,
-      12,
-      48
-    ],
-    "parent_group": "snpeff"
-  },
-  {
-    "name": "snpeff_build_gb",
     "cores": null,
-    "mem": 48,
-    "parent_group": "snpeff"
+    "mem": 12
   },
   {
-    "name": "snpeff_databases",
+    "name": "snpeff",
     "cores": null,
-    "mem": 12,
-    "parent_group": "snpeff"
-  },
-  {
-    "name": "snpeff_download",
-    "cores": null,
-    "mem": 12,
-    "parent_group": "snpeff"
-  },
-  {
-    "name": "snpeff_get_chr_names",
-    "cores": null,
-    "mem": 12,
-    "parent_group": "snpeff"
-  },
-  {
-    "name": "snpsift_annotate",
-    "cores": null,
-    "mem": 12,
-    "parent_group": "snpsift"
-  },
-  {
-    "name": "snpsift_casecontrol",
-    "cores": null,
-    "mem": 12,
-    "parent_group": "snpsift"
-  },
-  {
-    "name": "snpsift_filter",
-    "cores": [],
-    "mem": [
-      12,
-      18
-    ],
-    "parent_group": "snpsift"
-  },
-  {
-    "name": "snpsift_genesets",
-    "cores": [],
-    "mem": [
-      12,
-      12
-    ],
-    "parent_group": "snpsift"
-  },
-  {
-    "name": "snpsift_int",
-    "cores": null,
-    "mem": 12,
-    "parent_group": "snpsift"
+    "mem": 48
   },
   {
     "name": "snpsift",
-    "cores": [],
-    "mem": [
-      12,
-      18
-    ],
-    "parent_group": "snpsift"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "snpsift",
+    "cores": null,
+    "mem": 18
+  },
+  {
+    "name": "snpsift_genesets",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "sopra",
     "cores": 4,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "spades",
-    "cores": [
-      10,
-      12,
-      20
-    ],
-    "mem": [
-      256,
-      180,
-      330
-    ],
-    "parent_group": "spades"
+    "cores": 10,
+    "mem": 256
+  },
+  {
+    "name": "spades",
+    "cores": 12,
+    "mem": 180
+  },
+  {
+    "name": "spades",
+    "cores": 20,
+    "mem": 330
   },
   {
     "name": "spades_biosyntheticspades",
     "cores": 10,
-    "mem": 450,
-    "parent_group": "spades"
+    "mem": 450
   },
   {
     "name": "spades_coronaspades",
     "cores": 10,
-    "mem": 8,
-    "parent_group": "spades"
+    "mem": 8
   },
   {
     "name": "spades_metaplasmidspades",
     "cores": 10,
-    "mem": 330,
-    "parent_group": "spades"
+    "mem": 330
   },
   {
     "name": "spades_metaviralspades",
     "cores": 10,
-    "mem": 250,
-    "parent_group": "spades"
+    "mem": 250
   },
   {
     "name": "spades_plasmidspades",
     "cores": 10,
-    "mem": 250,
-    "parent_group": "spades"
+    "mem": 250
   },
   {
     "name": "spades_rnaviralspades",
     "cores": 10,
-    "mem": 8,
-    "parent_group": "spades"
+    "mem": 8
   },
   {
     "name": "spyboat",
     "cores": 8,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "sra_tools",
-    "cores": [
-      3,
-      8
-    ],
-    "mem": 20,
-    "parent_group": "sra_tools"
+    "cores": null,
+    "mem": 20
+  },
+  {
+    "name": "sra_tools",
+    "cores": 3,
+    "mem": null
+  },
+  {
+    "name": "sra_tools",
+    "cores": 8,
+    "mem": null
   },
   {
     "name": "srs_preprocess_s2",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "sshmm",
     "cores": null,
-    "mem": 16,
-    "parent_group": null
+    "mem": 16
   },
   {
     "name": "stacks2_clonefilter",
     "cores": null,
-    "mem": 8,
-    "parent_group": "stacks2"
+    "mem": 8
   },
   {
     "name": "stacks2_cstacks",
     "cores": 16,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks2_denovomap",
     "cores": 4,
-    "mem": 16,
-    "parent_group": "stacks2"
+    "mem": 16
   },
   {
     "name": "stacks2_gstacks",
     "cores": 16,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks2_kmerfilter",
     "cores": null,
-    "mem": 7.6,
-    "parent_group": "stacks2"
+    "mem": 7.6
   },
   {
     "name": "stacks2_populations",
     "cores": 8,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks2_refmap",
     "cores": 8,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks2_shortreads",
     "cores": null,
-    "mem": 7.6,
-    "parent_group": "stacks2"
+    "mem": 7.6
   },
   {
     "name": "stacks2_sstacks",
     "cores": 16,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks2_ustacks",
     "cores": 16,
-    "mem": null,
-    "parent_group": "stacks2"
+    "mem": null
   },
   {
     "name": "stacks_clonefilter",
     "cores": null,
-    "mem": 8,
-    "parent_group": "stacks"
+    "mem": 8
   },
   {
     "name": "strelka_germline",
     "cores": 8,
-    "mem": 12,
-    "parent_group": "str"
+    "mem": 12
   },
   {
     "name": "strelka_somatic",
     "cores": 8,
-    "mem": 12,
-    "parent_group": "str"
+    "mem": 12
   },
   {
     "name": "stringtie",
     "cores": null,
-    "mem": 25,
-    "parent_group": "str"
+    "mem": 25
   },
   {
     "name": "structurefold",
-    "cores": [],
-    "mem": [
-      12,
-      60
-    ],
-    "parent_group": "str"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "structurefold",
+    "cores": null,
+    "mem": 60
   },
   {
     "name": "t_coffee",
     "cores": null,
-    "mem": 90,
-    "parent_group": null
+    "mem": 90
   },
   {
     "name": "taxonomy_krona_chart",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "tetoolkit_tetranscripts",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "text_processing",
-    "cores": [],
-    "mem": [
-      8,
-      12
-    ],
-    "parent_group": "text"
+    "cores": null,
+    "mem": 8
+  },
+  {
+    "name": "text_processing",
+    "cores": null,
+    "mem": 12
   },
   {
     "name": "tgsgapcloser",
     "cores": 16,
-    "mem": 24,
-    "parent_group": null
+    "mem": 24
   },
   {
     "name": "tmhmm_and_signalp",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "tombo_detect_modifications",
     "cores": 10,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "tombo_resquiggle",
     "cores": 10,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "tophat2",
-    "cores": [
-      10,
-      12
-    ],
-    "mem": [
-      90,
-      90
-    ],
-    "parent_group": null
+    "cores": 10,
+    "mem": 90
+  },
+  {
+    "name": "tophat2",
+    "cores": 12,
+    "mem": 90
   },
   {
     "name": "tp_easyjoin_tool",
     "cores": null,
-    "mem": 12,
-    "parent_group": "tp"
+    "mem": 12
   },
   {
     "name": "tp_multijoin_tool",
     "cores": null,
-    "mem": 8,
-    "parent_group": "tp"
+    "mem": 8
   },
   {
     "name": "tp_uniq_tool",
     "cores": null,
-    "mem": 12,
-    "parent_group": "tp"
+    "mem": 12
+  },
+  {
+    "name": "transdecoder",
+    "cores": null,
+    "mem": 8
   },
   {
     "name": "transdecoder",
     "cores": 8,
-    "mem": [
-      8,
-      8
-    ],
-    "parent_group": "trans"
+    "mem": 8
   },
   {
     "name": "trim_galore",
     "cores": 5,
-    "mem": null,
-    "parent_group": "tri"
+    "mem": null
   },
   {
     "name": "trimmomatic",
     "cores": 6,
-    "mem": 12,
-    "parent_group": "tri"
+    "mem": 12
   },
   {
     "name": "trinity",
-    "cores": [
-      4,
-      6,
-      32
-    ],
-    "mem": [
-      512,
-      220,
-      512
-    ],
-    "parent_group": "trinity"
+    "cores": 4,
+    "mem": 512
+  },
+  {
+    "name": "trinity",
+    "cores": 6,
+    "mem": 220
+  },
+  {
+    "name": "trinity",
+    "cores": 32,
+    "mem": 512
   },
   {
     "name": "trinity_align_and_estimate_abundance",
     "cores": 8,
-    "mem": null,
-    "parent_group": "trinity"
+    "mem": null
   },
   {
     "name": "trycycler_cluster",
     "cores": 9,
-    "mem": null,
-    "parent_group": "trycycler"
+    "mem": null
   },
   {
     "name": "trycycler_consensus",
     "cores": 16,
-    "mem": null,
-    "parent_group": "trycycler"
+    "mem": null
   },
   {
     "name": "trycycler_partition",
     "cores": 9,
-    "mem": null,
-    "parent_group": "trycycler"
+    "mem": null
   },
   {
     "name": "trycycler_reconcile_msa",
     "cores": 9,
-    "mem": null,
-    "parent_group": "trycycler"
+    "mem": null
   },
   {
     "name": "trycycler_subsample",
     "cores": 9,
-    "mem": null,
-    "parent_group": "trycycler"
+    "mem": null
   },
   {
     "name": "twobit_builder_data_manager",
     "cores": 16,
-    "mem": 36,
-    "parent_group": null
+    "mem": 36
   },
   {
     "name": "umi_tools_dedup",
-    "cores": [],
-    "mem": [
-      12,
-      90
-    ],
-    "parent_group": "umi_tools"
+    "cores": null,
+    "mem": 12
+  },
+  {
+    "name": "umi_tools_dedup",
+    "cores": null,
+    "mem": 90
   },
   {
     "name": "umi_tools_extract",
     "cores": null,
-    "mem": 4,
-    "parent_group": "umi_tools"
+    "mem": 4
   },
   {
     "name": "umi_tools_group",
     "cores": null,
-    "mem": 12,
-    "parent_group": "umi_tools"
+    "mem": 12
   },
   {
     "name": "unicycler",
-    "cores": [
-      10,
-      12,
-      16
-    ],
-    "mem": [
-      80,
-      180,
-      90
-    ],
-    "parent_group": "unicycler"
+    "cores": 10,
+    "mem": 80
+  },
+  {
+    "name": "unicycler",
+    "cores": 12,
+    "mem": 180
+  },
+  {
+    "name": "unicycler",
+    "cores": 16,
+    "mem": 90
   },
   {
     "name": "upload1",
     "cores": 1,
-    "mem": 0.3,
-    "parent_group": null
+    "mem": 0.3
   },
   {
     "name": "valet",
     "cores": 8,
-    "mem": 20,
-    "parent_group": null
+    "mem": 20
   },
   {
     "name": "vardict_java",
     "cores": 2,
-    "mem": 128,
-    "parent_group": "var"
+    "mem": 128
   },
   {
     "name": "varscan",
     "cores": null,
-    "mem": 12,
-    "parent_group": "varscan"
+    "mem": 12
   },
   {
     "name": "varscan_copynumber",
     "cores": null,
-    "mem": 12,
-    "parent_group": "varscan"
+    "mem": 12
   },
   {
     "name": "varscan_mpileup",
     "cores": null,
-    "mem": 12,
-    "parent_group": "varscan"
+    "mem": 12
   },
   {
     "name": "varscan_somatic",
     "cores": 8,
-    "mem": 12,
-    "parent_group": "varscan"
+    "mem": 12
   },
   {
     "name": "vcf_iobio",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
+  },
+  {
+    "name": "velvet",
+    "cores": null,
+    "mem": 32
   },
   {
     "name": "velvet",
     "cores": 4,
-    "mem": [
-      32,
-      16
-    ],
-    "parent_group": "velvet"
+    "mem": 16
   },
   {
     "name": "velvetg",
     "cores": 4,
-    "mem": 32,
-    "parent_group": "velvet"
+    "mem": 32
   },
   {
     "name": "velveth",
     "cores": 4,
-    "mem": 16,
-    "parent_group": "velvet"
+    "mem": 16
   },
   {
     "name": "velvetoptimiser",
     "cores": 4,
-    "mem": null,
-    "parent_group": "velvet"
+    "mem": null
   },
   {
     "name": "viz_overlay_moving_and_fixed_image",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
+  },
+  {
+    "name": "vsearch",
+    "cores": null,
+    "mem": 80
   },
   {
     "name": "vsearch",
     "cores": 16,
-    "mem": [
-      80,
-      24
-    ],
-    "parent_group": "vsearch"
+    "mem": 24
   },
   {
     "name": "vsearch_search",
     "cores": null,
-    "mem": 80,
-    "parent_group": "vsearch"
+    "mem": 80
   },
   {
     "name": "wallace",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
-    "name": "wig_to_bigwig",
+    "name": "wig_to_bigWig",
     "cores": null,
-    "mem": 10,
-    "parent_group": null
+    "mem": 10
   },
   {
     "name": "wilson",
     "cores": null,
-    "mem": 4,
-    "parent_group": null
+    "mem": 4
   },
   {
     "name": "winnowmap",
     "cores": 8,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "xarray_select",
     "cores": null,
-    "mem": 12,
-    "parent_group": null
+    "mem": 12
   },
   {
     "name": "xchem_pose_scoring",
     "cores": 1,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "xchem_transfs_scoring",
     "cores": 1,
-    "mem": null,
-    "parent_group": null
+    "mem": null
   },
   {
     "name": "xcms_fillpeaks",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "xcms_retcor",
     "cores": null,
-    "mem": 32,
-    "parent_group": null
+    "mem": 32
   },
   {
     "name": "yahs",
     "cores": null,
-    "mem": 100,
-    "parent_group": null
+    "mem": 100
   }
 ]

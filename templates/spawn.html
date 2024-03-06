@@ -49,8 +49,14 @@
 
 </style>
 
-<!-- Load d3.js -->
-<script src="d3.v7.min.js" ></script>
+    <script src="d3.v7.min.js" ></script>
+    <script src="tools.json" ></script>
+
+<div id="dropdowntools">
+    <input id="dropdown_menu" label="Check Tool Specs" list="dropdown_values">
+    </input>
+    <datalist id="dropdown_values" ></datalist>
+</div>
 
 <div id="plotgraph" >
     <div id="plotcont" >
@@ -490,38 +496,209 @@ class Plot {
     }
 }
 
+const Page = {
+
+    startCharts : function(){
+        Style.init()
+        Metrics.init()
+
+        const squash_every = 1000
+        const trans_time_new = 150
+        const trans_time_hist = 0
+        const plot_every = 500
+        const fetch_every = 500
+
+        Timers.newTimer("populate", Metrics.populateTimeScale,
+                        fetch_every)
+        Timers.newTimer("squash", function(){
+            Smooth.squashDataOlderThan(squash_every)
+        }, squash_every)
+
+        Metrics.populateTimeScale()
+
+        const margin = {top: 5, right: 30, bottom: 40, left: 60}
+        const width = 460 - margin.left - margin.right
+        const height = 200 - margin.top - margin.bottom
+
+        // // CPU plot
+        var p1 = new Plot("cpu", margin, width, height, "cpu_percent", show_xticks=false)
+        // RAM plot
+        var p2 = new Plot("ram", margin, width, height, "memory_rss_mb")
+        // They share a common Timer
+        Timers.newTimer("render", function(){
+            p1.render(trans_time_new, trans_time_hist)
+            p2.render(trans_time_new, trans_time_hist)
+        }, plot_every)
+    },
+
+    longestPrefix: function(words){
+        // check border cases size 1 array and empty first word)
+        if (!words[0] || words.length ==  1) return words[0] || "";
+        let i = 0;
+        // while all words have the same character at position i, increment i
+        while(words[0][i] && words.every(w => w[i] === words[0][i]))
+            i++;
+        // prefix is the substring from the beginning to the last successfully checked i
+        return words[0].substr(0, i);
+    },
+
+    populateToolDropDown : function(){
+        // Find common groups of tools to serve as opt groups
+        // Add indices, and empty parent groups
+        tool_requirements.map((x,i) => {x.index = i})
+        tool_requirements.map(x => {x.parent_group = {}}) // frequency list
+        tool_requirements.map(x => {x.name = x.name.toLowerCase()}) // downcase all tools
+        var tool_map = {}  // log any duplicate groups
+
+        for (var i=0; i < tool_requirements.length; i++){
+
+            let name = tool_requirements[i].name.toLowerCase()
+            if (name in tool_map){
+                tool_map[name].push(tool_requirements[i].index)
+            } else {
+                tool_map[name] = [tool_requirements[i].index]
+            }
+            // We use this seed to search forward in the sorted list of tool
+            for (var s=3; s < 10; s++){
+                let seed = name.substr(0,s) // try varying seeds
+                // matching tools
+                let matching_tools = tool_requirements.filter(x => x.name.substr(0,s) === seed)
+
+                // A group is a group if it has at least 2 members in it (e.g. funannotate, but not IDM)
+                if (matching_tools.length > 2){
+                    // Find longest common prefix, stripping any trailing"_"
+                    let common_prefix = Page.longestPrefix(matching_tools.map(x => x.name))
+
+                    if (common_prefix.substr(common_prefix.length - 1,1) === "_"){
+                        common_prefix = common_prefix.substr(0, common_prefix.length -1)
+                    }
+                    // If the longest is something like "picard_C" or
+                    // "chira_m", discard the bit after the hypen
+                    if (common_prefix.substr(common_prefix.length - 2,1) === "_"){
+                        common_prefix = common_prefix.substr(0, common_prefix.length - 2)
+                    }
+
+                    for (var m=0; m < matching_tools.length; m++){
+                        let mtool = matching_tools[m];
+                        let match_index = mtool.index
+                        // Push parent match to selection
+                        let count = tool_requirements[match_index].parent_group[common_prefix] || 0
+                        tool_requirements[match_index].parent_group[common_prefix] = count + 1
+                    }
+                }
+            }
+        }
+        // Do a second pass through each parent group, assign the most populous
+        for (var i=0; i < tool_requirements.length; i++){
+            let groups = tool_requirements[i].parent_group
+            let group_keys = Object.keys(groups)
+            let group_vals = Object.keys(groups)
+
+            if (group_keys.length > 1){
+                let max_index = group_vals.indexOf(d3.max(group_vals))
+                let max_group = group_keys[max_index]
+                tool_requirements[i].parent_group = max_group
+            } else if (group_keys.length === 1) {
+                tool_requirements[i].parent_group = group_keys[0]
+            } else {
+                tool_requirements[i].parent_group = null
+            }
+        }
+        // // Collapse requirements into groups too
+        let dupes = Object.entries(tool_map).filter(x => x[1].length > 1)
+        for (var i=0; i < dupes.length; i++){
+            let dupe_indices = dupes[i][1]
+            let keep_this = dupe_indices[0]
+            let move_these = dupe_indices.slice(1) // everything after is merged
+
+            // Convert requirements to arrays
+            tool_requirements[keep_this].cores = [tool_requirements[keep_this].cores]
+            tool_requirements[keep_this].mem = [tool_requirements[keep_this].mem]
+
+            for (var m=0; m < move_these.length; m++){
+                // Append requirements
+                let entry = tool_requirements[move_these[m]]
+                if (entry.cores !== null){
+                    tool_requirements[keep_this].cores.push(entry.cores)
+                }
+                if (entry.mem !== null){
+                    tool_requirements[keep_this].mem.push(entry.mem)
+                }
+                if (entry.parent_group !== null){
+                    if (entry.parent_group !== tool_requirements[keep_this].parent_group){
+                        console.error("Mismatch of parent groups", dupe_indices)
+                    }
+                }
+                // Null the entry
+                tool_requirements[move_these[m]] = null
+            }
+            // Remove any null and flatten single entries
+            tool_requirements[keep_this].cores = tool_requirements[keep_this].cores
+                .filter(x => x!=null).filter((x,i,a) => a.indexOf(x)===i) // unique
+            if (tool_requirements[keep_this].cores.length === 1){
+                tool_requirements[keep_this].cores = tool_requirements[keep_this].cores[0]
+            }
+            if (tool_requirements[keep_this].cores.length === 0){
+                tool_requirements[keep_this].cores = null
+            }
+
+            tool_requirements[keep_this].mem = tool_requirements[keep_this].mem
+                .filter(x => x!=null).filter((x,i,a) => a.indexOf(x)===i) // unique
+            if (tool_requirements[keep_this].mem.length === 1){
+                tool_requirements[keep_this].mem = tool_requirements[keep_this].mem[0]
+            }
+            if (tool_requirements[keep_this].mem.length === 0){
+                tool_requirements[keep_this].mem = null
+            }
+        }
+        // Reindex the array and remove nulls
+        tool_requirements = tool_requirements.filter(x => x !== null)
+        for (var m=0; m < tool_requirements.length; m++){
+            delete tool_requirements[m].index
+        }
+    },
+
+    makeToolDropDown : function(){
+        let ddm = document.getElementById("dropdown_values")
+        let single_optgroup = document.createElement("optgroup")
+        single_optgroup.setAttribute("label", "other tools")
+
+        // stores elements of optgroups
+        let optgroup_map = { "single" : single_optgroup}
+
+        for (var o=0; o < tool_requirements.length; o++){
+            let tool = tool_requirements[o]
+
+            let child = document.createElement("option")
+            child.setAttribute("label", tool.name)
+            child.setAttribute("value", tool.name)
+
+            let optgroup = tool.parent_group
+            if (optgroup !== null){
+                // Create tools with optgroups in place
+                // -- we defer only the single tools
+                if (!(optgroup in optgroup_map)){
+                    let parent = document.createElement("optgroup")
+                    parent.setAttribute("label", optgroup)                   
+                    optgroup_map[optgroup] = parent
+                    ddm.appendChild(parent)
+                }
+                optgroup_map[optgroup].appendChild(child)
+            } else {
+                optgroup_map["single"].appendChild(child)
+            }
+        }
+        ddm.appendChild(single_optgroup)
+    }
+}
 
 window.onload = function(){
-    Style.init()
-    Metrics.init()
+    Page.populateToolDropDown()
+    Page.makeToolDropDown()
+    //Charts.init()
 
-    const squash_every = 1000
-    const trans_time_new = 150
-    const trans_time_hist = 0
-    const plot_every = 500
-    const fetch_every = 500
 
-    Timers.newTimer("populate", Metrics.populateTimeScale,
-                    fetch_every)
-    Timers.newTimer("squash", function(){
-        Smooth.squashDataOlderThan(squash_every)
-    }, squash_every)
 
-    Metrics.populateTimeScale()
-
-    const margin = {top: 5, right: 30, bottom: 40, left: 60}
-    const width = 460 - margin.left - margin.right
-    const height = 200 - margin.top - margin.bottom
-
-    // // CPU plot
-    var p1 = new Plot("cpu", margin, width, height, "cpu_percent", show_xticks=false)
-    // RAM plot
-    var p2 = new Plot("ram", margin, width, height, "memory_rss_mb")
-    // They share a common Timer
-    Timers.newTimer("render", function(){
-        p1.render(trans_time_new, trans_time_hist)
-        p2.render(trans_time_new, trans_time_hist)
-    }, plot_every)
 }
 
 
