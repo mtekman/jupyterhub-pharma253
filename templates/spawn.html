@@ -91,7 +91,8 @@ div.myspecs:nth-child(1) {
     <script src="tools.json" ></script>
 
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
-<div id="dropdowntools">
+    <div id="dropdowntools">
+    <div id="dropdown_summary" ></div>
     <select id="dropdown_menu" label="Check Tool Specs" multiple="true" />
 </div>
 
@@ -781,7 +782,16 @@ window.onload = function(){
         `);
       }
     };
-  }})
+        }})
+
+    element.addEventListener(
+  'change',
+  function(event) {
+    console.log(event.detail.value);
+    console.log(event.detail.cores);
+  },
+  false,
+);
 }
 
 
