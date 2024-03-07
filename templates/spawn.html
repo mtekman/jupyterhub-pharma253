@@ -1,5 +1,5 @@
 <html>
-<!-- {% extends "templates/spawn.html" %} -->
+    <!-- {% extends "templates/spawn.html" %} -->
 <!-- {% block main %} -->
 
 <!-- {{ super() }} -->
@@ -77,11 +77,36 @@ div.myspecs > span:empty {
     padding: 0;
 }
 
-
 div.myspecs:nth-child(1) {
     flex-grow: 10;
 }
+#dropdown_summary {
+    display:flex;
+    flex-direction: row;
+}
 
+#dropdown_summary > span.notify {
+    flex-grow: 1;
+    font-size:small;
+}
+#dropdown_summary > span.spacer {
+    flex-grow: 10;
+}
+#dropdown_summary > span.reqs {
+    flex-grow: 1;
+    display: flex;
+}
+
+span.reqs > span:empty {
+    padding:0;
+    border:0;
+}
+
+span.reqs > span {
+    padding: 2px;
+    border: 1px solid blue;
+    border-radius: 5px;
+}
 
 
 </style>
@@ -93,7 +118,7 @@ div.myspecs:nth-child(1) {
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
     <div id="dropdowntools">
     <div id="dropdown_summary" ></div>
-    <select id="dropdown_menu" label="Check Tool Specs" multiple="true" />
+    <select id="dropdown_menu" label="Check Tool Specs" multiple="true" ></select>
 </div>
 
 <div id="plotgraph" >
@@ -103,7 +128,6 @@ div.myspecs:nth-child(1) {
     <div id="highlighted_user"></div>
     <div>
         <select id="active_users" label="Show Users" multiple="true" >
-            <!-- onchange="Plot.render()" -->
         </select>
     </div>
 </div>
@@ -567,7 +591,12 @@ const Page = {
             p1.render(trans_time_new, trans_time_hist)
             p2.render(trans_time_new, trans_time_hist)
         }, plot_every)
-    },
+    }
+}
+
+const Reqs = {
+    selector : document.getElementById("dropdown_summary"),
+    choice_element : null,
 
     longestPrefix: function(words){
         // check border cases size 1 array and empty first word)
@@ -580,7 +609,7 @@ const Page = {
         return words[0].substr(0, i);
     },
 
-    populateToolDropDown : function(){
+    parseToolInput__RETIRE_THIS : function(){
         // Find common groups of tools to serve as opt groups
 
         // Quick pass: deduplicate
@@ -630,13 +659,13 @@ const Page = {
             if (d3.min(mem_range) === d3.max(mem_range)){
                 mem_range = mem_range[0]
             }
-            tool_requirements[keep_this].mem = mem_range // no need for both if dupe            
+            tool_requirements[keep_this].mem = mem_range // no need for both if dupe
         }
         // Reindex the array and remove nulls
         tool_requirements = tool_requirements.filter(x => x !== null)
         for (var m=0; m < tool_requirements.length; m++){
             delete tool_requirements[m].index
-        }        
+        }
 
         // Index and determine groups based on common prefixes
         tool_requirements.map((x,i) => {x.index = i})
@@ -654,8 +683,8 @@ const Page = {
                 // A group is a group if it has at least 2 members in it (e.g. funannotate, but not IDM)
                 if (matching_tools.length > 2){
                     // Find longest common prefix, stripping any trailing"_"
-                    let common_prefix = Page.longestPrefix(matching_tools.map(x => x.name))
-                    
+                    let common_prefix = Reqs.longestPrefix(matching_tools.map(x => x.name))
+
                     if (common_prefix.substr(common_prefix.length - 1,1) === "_"){
                         common_prefix = common_prefix.substr(0, common_prefix.length -1)
                     }
@@ -674,7 +703,7 @@ const Page = {
                     }
                 }
             }
-        }       
+        }
         // Do a second pass through each parent group, assign the most populous
         for (var i=0; i < tool_requirements.length; i++){
             let groups = tool_requirements[i].parent_group
@@ -704,8 +733,7 @@ const Page = {
             .map(x => x[1].map(i => tool_requirements[i].parent_group = null))
     },
 
-    makeToolDropDown : function(){
-        let ddm = document.getElementById("dropdown_values")
+    toolJSONtoChoicesJSON : function(){
         // stores elements of optgroups
         let optgroup_map = {}
         let ordered_groups = [] // Final group array with values inside
@@ -736,7 +764,7 @@ const Page = {
                 }
                 return(prefix + " " + val)
             }
-            
+
             let cores_text = labelText("CPU:", tool.cores)
             let mem_text = labelText("RAM:", tool.mem)
             ordered_groups[optgroup_map[optgroup]]
@@ -750,20 +778,41 @@ const Page = {
                 })
         }
         return(ordered_groups)
-    }
-}
+    },
 
-window.onload = function(){
-    Page.populateToolDropDown()
-    var choices = Page.makeToolDropDown()
-    //Charts.init()
-    const element = document.getElementById('dropdown_menu');
-    const example = new Choices(element, {
-        choices : choices,
-        callbackOnCreateTemplates: function(template) {
-    return {
-        choice: (classNames, data) => {
-            return template(`
+    summarizeChoiceItems : function(arr, type, prefix){
+        // Return a text summary
+        let rng = arr.map(x => x[type].split(prefix)[1])
+            .filter(x => x!==undefined)
+        if (rng.length === 0){
+            return("")
+        }
+        let range = d3.extent(rng.map(x => x.split(" - ")).flat().map(x => parseInt(x)))
+        let min_val = d3.min(range)
+        if (d3.max(range) === min_val){
+            return(prefix + "" + min_val)
+        }
+        return(prefix + "" + range[0] + " - " + range[1])
+    },
+
+    updateRequirementsText: function(change_event){
+        let selection = Reqs.choice_element.getValue().map(x => x.customProperties)
+        let mem_text = Reqs.summarizeChoiceItems(selection, "mem", "RAM: ")
+        let cpu_text = Reqs.summarizeChoiceItems(selection, "cores", "CPU: ")
+        
+        Reqs.selector.innerHTML = `\
+<span class="notify">Estimated Requirements:</span>\
+<span class="spacer"></span>\
+<span class="reqs">
+  <span>${cpu_text}</span>\
+  <span>${mem_text}</span>\
+</span>`
+    },
+
+    customTemplate : function(template) {
+            return {
+                choice: (classNames, data) => {
+                    return template(`
           <div class="${classNames.item} ${classNames.itemChoice}
  ${data.disabled ? classNames.itemDisabled : classNames.itemSelectable}"
   data-select-text="${this.config.itemSelectText}" data-choice
@@ -779,56 +828,23 @@ window.onload = function(){
                 </div>
             </div>
           </div>
-        `);
-      }
-    };
-        }})
+        `)}}},
 
-    element.addEventListener(
-  'change',
-  function(event) {
-    console.log(event.detail.value);
-    console.log(event.detail.cores);
-  },
-  false,
-);
+    init : function(){
+        Reqs.parseToolInput__RETIRE_THIS()
+        const element = document.getElementById('dropdown_menu');
+        element.addEventListener('change', Reqs.updateRequirementsText, false)
+        Reqs.choice_element = new Choices(element, {
+            choices : Reqs.toolJSONtoChoicesJSON(),
+            callbackOnCreateTemplates: Reqs.customTemplate
+        })
+    }
 }
 
-
-
-// // Pass single element
-// const element = document.getElementById('dropdown_menu');
-// const example = new Choices(element);
-// example.setChoices(
-//   [
-//     {
-//       label: 'Group one',
-//       choices: [
-//           { value: 'Child One', label: 'Child One', uniquestr: 5, selected: true },
-//           { value: 'Child Two', label: 'Child Two', uniquestr: 51, disabled: true },
-//           { value: 'Child Three', label: 'Child Three', uniquestr: 11},
-//       ],
-//     },
-//     {
-//       label: 'Group two',
-//       choices: [
-//           { value: 'Child Four', label: 'Child Four', disabled: true, uniquestr:10 },
-//           { value: 'Child Five', label: 'Child Five', uniquestr: 55 },
-//           {
-//           value: 'Child Six',
-//           label: 'Child Six',
-//           customProperties: {
-//             description: 'Custom description about child six',
-//             random: 'Another random custom property',
-//           },
-//         },
-//       ],
-//     },
-//   ],
-//   'value',
-//   'label',
-//   false,
-// );
+window.onload = function(){
+    Page.startCharts()
+    //Reqs.init()
+}
 
 </script>
 
