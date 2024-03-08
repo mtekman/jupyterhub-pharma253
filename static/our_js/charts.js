@@ -4,12 +4,13 @@ import {
     axisBottom, axisLeft, extent,
     scaleLinear, select, max, line, curveBasis
 } from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
- 
+
 export const Charts = {
 
     Metrics : {
 
         choice_element : null,
+        pause_button : null,
 
         // Needs to be a map of User values, with entries updated with timestamps
         //
@@ -144,7 +145,8 @@ export const Charts = {
 
     Selector : {
         user_highlight : document.getElementById("highlighted_user"),
-        user_active : document.getElementById("active_users")
+        user_active : document.getElementById("active_users"),
+        user_pause : document.getElementById("pause_button")
     },
 
     Style : {
@@ -199,6 +201,13 @@ export const Charts = {
             };
             obj.resume()
             Charts.Timers._db[name] = obj;
+        },
+
+        setAll : function(state){
+            // state MUST be either pause or resume
+            for (var tmp in Charts.Timers._db){
+                Charts.Timers.get(tmp)[state]()
+            }
         }
     },
 
@@ -307,8 +316,8 @@ export const Charts = {
         initAxes(width, height){
             // Initialize axes if not present
             let xnew_dom = document.getElementById(this.name + "_xaxis-new"),
-                  xold_dom = document.getElementById(this.name + "_xaxis-old"),
-                  yaxis_dom = document.getElementById(this.name + "_yaxis")
+                xold_dom = document.getElementById(this.name + "_xaxis-old"),
+                yaxis_dom = document.getElementById(this.name + "_yaxis")
 
             if (xnew_dom != null){
                 xnew_dom.remove()
@@ -327,6 +336,13 @@ export const Charts = {
                 .attr("transform", `translate(0, ${height})`)
             // y
             this.svg.append("g").attr("id", this.name + "_yaxis")
+
+            // Add Axis labels, to plot itself
+            this.svg.append("text")
+                .attr('text-anchor', 'middle')
+                //.attr('transform', 'translate(-25, 60) rotate(-90)')
+                .attr('transform', 'translate(20, 10)')
+                .text(this.name.toUpperCase())
         }
 
         updateAxes(hist_width, xold, xnew, y){
@@ -504,5 +520,14 @@ export const Charts = {
             p1.render(trans_time_new, trans_time_hist)
             p2.render(trans_time_new, trans_time_hist)
         }, plot_every)
+
+        console.log(Charts.Timers)
+        Charts.Selector.user_pause.addEventListener("change", (event) => {
+            if (Charts.Selector.user_pause.checked){
+                Charts.Timers.setAll("resume")
+            } else {
+                Charts.Timers.setAll("pause")
+            }
+        })
     }
 }

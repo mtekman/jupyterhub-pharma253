@@ -12,14 +12,23 @@
   <select id="dropdown_menu" label="Check Tool Specs" multiple="true" ></select>
 </div>
 
-<div id="plotgraph" >
-  <div id="plotcont" >
-    <div id="cpu"></div><div id="ram"></div>
-  </div>
-  <div id="users_container">
-    <select id="active_users" label="Show Users" multiple="true" ></select>
-  </div>
-  <div id="highlighted_user"></div>
+
+<input type="checkbox" id="toggle_plotgraph" class="collapsible">
+<label for="collapse1">View Current Resources</label>
+<div class="content">
+  <div id="plotgraph" >
+    <div id="plotcont" >
+      <div id="cpu"></div><div id="ram"></div>
+    </div>
+    <div id="users_container">
+      <select id="active_users" label="Show Users" multiple="true" ></select>
+      <label class="chart_switch" >
+        <input id="pause_button" type="checkbox" checked="true" ></input>
+        <span class="chart_slider"></span>
+      </label>
+    </div>
+    <div id="highlighted_user"></div>
+  </div> 
 </div>
 
 
