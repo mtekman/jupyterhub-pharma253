@@ -1,0 +1,4 @@
+/tool_lists/2_processing/
+/jupyterhub_cookie_secret
+/jupyterhub.sqlite
+/jupyterhub-proxy.pid
