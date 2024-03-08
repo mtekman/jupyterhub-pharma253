@@ -1,0 +1,175 @@
+thead { font-family: monospace; font-style: italic; }
+form { display:grid; }
+#curr_resource { position:absolute; bottom: 20px; right: 20px}
+#usage_cont { border: solid black; border-radius: 20px;
+              text-align: center; background-color: #cdc;
+              box-shadow: 5px 5px 5px #888;}
+#chart {position: absolute; top: 50px; left: 50px; width: 200px; height: 200px;}
+table { border-spacing: 5px;  border-collapse: separate;
+        text-align:center;  margin-left: auto; margin-right: auto}
+td,th { padding-left: 30px; }
+#profile_cont { font-size: large; flex-direction: row; display:flex;
+                width: 90%; margin-left: auto; margin-right: auto}
+#profile_cont select { box-shadow: 2px 2px 2px #888; flex-grow: 2;
+                       margin-bottom: 5px;}
+#profile_cont span { flex-grow: 4; }
+#prealloc_message {margin-left:auto; margin-right:auto;
+                   margin-top:6px; font-size:small;}
+th { text-align:center; }
+td input[type="number"] { margin-top: 10px; text-align:center;
+                          border-radius: 10px;
+                          border: 2px solid #555; width: 120px;}
+td input[type="range"] {width: 150px;}
+#active_users {
+    position: absolute; top: 0px; left: 0px
+}
+.xaxis .tick text {
+    text-anchor : end;
+    transform: translate(-12px, 8px) rotate(-90deg);
+}
+#plotgraph {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+    justify-content: center;
+}
+
+#plotcont svg {
+    display: block;
+    margin: auto;
+}
+#plotcont svg:nth-child(1) {
+    margin-top: -30px;
+}
+
+.choices {
+    /* Centers the select box over the charts */
+    max-height: 40px;
+    overflow: visible;
+}
+.choices__inner {
+    /* This is size of the main select box */
+    min-width: 250px;
+    padding:0;
+    width:unset;
+    min-height: unset;
+    font-size: x-small;
+    background-color: white;
+}
+.choices[data-type*=select-one] .choices__input {
+    max-width: unset;
+    font-size: xx-small;
+}
+.choices__list--dropdown {
+    /* How much the dropdown drops down */
+    max-height: 250px;
+    padding:0;
+}
+.choices__list--dropdown .choices__item,
+.choices__list[aria-expanded] .choices__item {
+  /* Size of each drop down item */
+  position:relative;
+  padding:0px;
+  font-size:small;
+}
+.choices__list--single {
+    max-width: 250px;
+    font-size: xx-small;
+}
+.choices__list--single .choices__item {
+    max-width: 250px;
+    font-size: xx-small;
+}
+.choices__list[aria-expanded] {
+    /* This is needed to stop the list collapsing ? */
+    width: unset;
+    font-size: xx-small;
+}
+.choices__input {
+    max-width: 250px;
+    min-width: 180px;
+    font-size: xx-small;
+}
+.choices__item {
+    display: flex;
+    flex-direction: row;
+    max-width: 250px;
+    min-width: 180px;
+    font-size: xx-small;
+}
+
+.choices__heading {
+    font-size: x-small;
+}
+
+span.spacer {
+    flex-grow: 100;
+}
+
+div.myspecs {
+    flex-grow: 2;
+    display:flex;
+    flex-direction: row;
+}
+
+div.myspecs > span {
+    font-size: x-small;
+    color: white;
+    border: 1px solid grey;
+    background-color: grey;
+    margin: 3px;
+    padding: 1px;
+    border-radius: 5px;
+}
+
+div.myspecs > span:empty {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+div.myspecs:nth-child(1) {
+    flex-grow: 10;
+}
+#dropdown_summary {
+    display:flex;
+    flex-direction: row;
+}
+
+#dropdown_summary > span.notify {
+    flex-grow: 1;
+    font-size:small;
+}
+#dropdown_summary > span.spacer {
+    flex-grow: 10;
+}
+#dropdown_summary > span.reqs {
+    flex-grow: 1;
+    display: flex;
+}
+
+span.reqs > span:empty {
+    padding:0;
+    border:0;
+}
+
+span.reqs > span {
+    padding: 2px;
+    border: 1px solid blue;
+    border-radius: 5px;
+}
+
+/* Manual overrides */
+.item_selected {
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #antiquewhite;
+    margin: 2px;
+}
+
+#users_container {
+    margin: auto;
+    margin-bottom: 30px;
+}
+
