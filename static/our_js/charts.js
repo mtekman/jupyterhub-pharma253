@@ -1,4 +1,10 @@
-
+/* D3 can't be loaded into global namespace via requireJS,
+   so we need to use module imports */
+import {
+    axisBottom, axisLeft, extent,
+    scaleLinear, select, max, line, curveBasis
+} from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+ 
 export const Charts = {
 
     Metrics : {
@@ -289,7 +295,7 @@ export const Charts = {
                 this.height = height
                 this.ytype = ytype
                 this.show_xticks = show_xticks
-                this.svg = d3.select("#" + name) //"#my_dataviz")
+                this.svg = select("#" + name) //"#my_dataviz")
                     .append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
@@ -331,36 +337,36 @@ export const Charts = {
             // xold
             if (this.show_xticks){
                 this.svg.select("#" + this.name + "_xaxis-old")
-                    .call(d3.axisBottom(xold).ticks(len_hist_items).tickFormat(Charts.Plot.formatDate))
+                    .call(axisBottom(xold).ticks(len_hist_items).tickFormat(Charts.Plot.formatDate))
                 // xnew
                 this.svg.select("#" + this.name + "_xaxis-new")
-                    .call(d3.axisBottom(xnew).ticks(len_ref_items).tickFormat(Charts.Plot.formatDate))
+                    .call(axisBottom(xnew).ticks(len_ref_items).tickFormat(Charts.Plot.formatDate))
             }
             // y
-            this.svg.select("#" + this.name + "_yaxis").call(d3.axisLeft(y).ticks(5))
+            this.svg.select("#" + this.name + "_yaxis").call(axisLeft(y).ticks(5))
         }
 
         calculateAxes(historical_ref, incoming_ref, hist_width){
             // Update the axis ranges
-            const xold = d3.scaleLinear().domain(d3.extent(historical_ref, d => d.time))
+            const xold = scaleLinear().domain(extent(historical_ref, d => d.time))
                 .range([ 0, hist_width])
 
-            const xnew = d3.scaleLinear()
-                .domain(d3.extent(incoming_ref, d => d.time))
+            const xnew = scaleLinear()
+                .domain(extent(incoming_ref, d => d.time))
                 .range([ hist_width, this.width ])
 
             let y;
             if (this.ytype === "cpu_percent"){
-                //y = d3.scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
-                y = d3.scaleLinear()
-                    .domain([0, d3.max(
+                //y = scaleLinear().domain([0, 100]).range([ this.height, 0 ]);
+                y = scaleLinear()
+                    .domain([0, max(
                         historical_ref.concat(incoming_ref),
                         d => d[this.ytype])])
                     .range([ this.height, 0 ]);
             } else {
                 // Assume RAM
-                y = d3.scaleLinear()
-                    .domain([0, d3.max(
+                y = scaleLinear()
+                    .domain([0, max(
                         historical_ref.concat(incoming_ref),
                         d => d.memory_rss_mb)])
                     .range([ this.height, 0 ]);
@@ -370,12 +376,12 @@ export const Charts = {
         }
 
         static calculateDpoints(d, x, y, ykey="cpu_percent", docurve=false){
-            let crv = d3.line()
+            let crv = line()
                 .x(d => x(d.time))
                 .y(d => y(d[ykey]))
 
             if (docurve){
-                crv = crv.curve(d3.curveBasis)
+                crv = crv.curve(curveBasis)
             }
             return(crv(d[1]))
         }

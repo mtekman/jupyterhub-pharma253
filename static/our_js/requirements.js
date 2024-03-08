@@ -1,15 +1,16 @@
+import {extent, min, max} from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 export const Reqs = {
     selector : document.getElementById("dropdown_summary"),
     choice_element : null,
 
-    toolJSONtoChoicesJSON : function(){
+    toolJSONtoChoicesJSON : function(tool_list){
         // stores elements of optgroups
         let optgroup_map = {}
         let ordered_groups = [] // Final group array with values inside
 
-        for (var o=0; o < tool_requirements.length; o++){
-            let tool = tool_requirements[o]
+        for (var o=0; o < tool_list.length; o++){
+            let tool = tool_list[o]
             let optgroup = tool.parent_group
 
             if (optgroup === null){
@@ -57,9 +58,9 @@ export const Reqs = {
         if (rng.length === 0){
             return("")
         }
-        let range = d3.extent(rng.map(x => x.split(" - ")).flat().map(x => parseInt(x)))
-        let min_val = d3.min(range)
-        if (d3.max(range) === min_val){
+        let range = extent(rng.map(x => x.split(" - ")).flat().map(x => parseInt(x)))
+        let min_val = min(range)
+        if (max(range) === min_val){
             return(prefix + "" + min_val)
         }
         return(prefix + "" + range[0] + " - " + range[1])
@@ -109,11 +110,11 @@ export const Reqs = {
         }
     },
 
-    init : function(){
+    init : function(tool_list){
         const element = document.getElementById('dropdown_menu');
         element.addEventListener('change', Reqs.updateRequirementsText, false)
         Reqs.choice_element = new Choices(element, {
-            choices : Reqs.toolJSONtoChoicesJSON(),
+            choices : Reqs.toolJSONtoChoicesJSON(tool_list),
             callbackOnCreateTemplates: Reqs.customTemplate
         })
     }
