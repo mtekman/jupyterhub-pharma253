@@ -5,7 +5,7 @@ c = get_config()  #noqa
 from base64 import b64encode
 from os import listdir
 from os.path import join as pathjoin, exists as pathexists
-from shutil import copytree
+from shutil import copytree, rmtree
 from sys import path as PATH
 
 # MUST be set
@@ -109,9 +109,13 @@ def CopyResources(resource):
         
         if not pathexists(path_from):
             raise AssertionError("From path: " + path_from + " not found")
+
+        if pathexists(path_to):
+            print("Removing existing files at", path_to)
+            rmtree(path_to)
         
-        print("Copying with overwrite", path_from, " -> ", path_to)
-        copytree(path_from, path_to, dirs_exist_ok=True)
+        print("Copying", path_from, " -> ", path_to)
+        copytree(path_from, path_to)
 
 
 ## Embed Images
