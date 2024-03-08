@@ -1,5 +1,5 @@
 
-const Reqs = {
+export const Reqs = {
     selector : document.getElementById("dropdown_summary"),
     choice_element : null,
 
@@ -116,6 +116,5 @@ const Reqs = {
             choices : Reqs.toolJSONtoChoicesJSON(),
             callbackOnCreateTemplates: Reqs.customTemplate
         })
-        delete tool_requirements
     }
 }

@@ -1,5 +1,5 @@
 
-const Charts = {
+export const Charts = {
 
     Metrics : {
 
@@ -67,7 +67,7 @@ const Charts = {
             const metrics = Charts.Metrics.generateFakeMetrics()
             const time = metrics.time.now
 
-            for (username in metrics.user.cpu_percent){
+            for (let username in metrics.user.cpu_percent){
                 const packet = { "time" : time,
                     "cpu_percent" : metrics.user.cpu_percent[username],
                     "memory_rss_mb" : metrics.user.memory_rss_mb[username]}
@@ -184,7 +184,7 @@ const Charts = {
 
         newTimer: function(name, do_func, millisecs) {
             var timer
-            obj = {};
+            var obj = {};
             obj.resume = function() {
                 timer = setInterval(do_func, millisecs);
             };
@@ -489,10 +489,10 @@ const Charts = {
         const width = 460 - margin.left - margin.right
         const height = 200 - margin.top - margin.bottom
 
-        // CPU plot
-        var p1 = new Charts.Plot("cpu", margin, width, height, "cpu_percent", show_xticks=false)
-        // RAM plot
-        var p2 = new Charts.Plot("ram", margin, width, height, "memory_rss_mb")
+        // CPU plot without xticks
+        var p1 = new Charts.Plot("cpu", margin, width, height, "cpu_percent", false)
+        // RAM plot with xticks
+        var p2 = new Charts.Plot("ram", margin, width, height, "memory_rss_mb", true)
         // They share a common Timer
         Charts.Timers.newTimer("render", function(){
             p1.render(trans_time_new, trans_time_hist)

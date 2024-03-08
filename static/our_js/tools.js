@@ -1,4 +1,4 @@
-var tool_requirements = [
+export var tool_requirements = [
   {
     "name": "accuratemasssearch",
     "cores": 4,
