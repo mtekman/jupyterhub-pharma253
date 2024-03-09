@@ -63,15 +63,26 @@ export const Charts = {
             return(metr)
         },
 
+        getMetrics : async function(){
+            const data = await fetch("/hub/api/sysmon", {
+                method: 'GET',
+                headers: {
+                    'Authorization': "token c8098ee2702746a1a406fbce61afee4e"
+                }
+            })
+            return(data.json())
+        },
+
         init : function(){
             Charts.Metrics.hist_data.set("all_processes", [])
             Charts.Metrics.initializeUserSelectBox()
         },
 
-        populateTimeScale: function(){
-            // Data are the metrics
-            const metrics = Charts.Metrics.generateFakeMetrics()
-            const time = metrics.time.now
+        populateTimeScale: async function(){
+            // For Debugging, uncomment below.
+            //const metrics = Charts.Metrics.generateFakeMetrics()
+            const metrics = await Charts.Metrics.getMetrics()
+            const time = Date.now()
 
             for (let username in metrics.user.cpu_percent){
                 const packet = { "time" : time,
