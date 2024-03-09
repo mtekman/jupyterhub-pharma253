@@ -320,12 +320,14 @@ export const Charts = {
 
         size_of_letter = 15
 
-        constructor(name, margin, width, height,
-            ytype="cpu_percent", show_xticks=true){
+        constructor(name, title, margin, width, height, prune_limit=100,
+                    ytype="cpu_percent", show_xticks=true){
                 this.name = name
+                this.title = title
                 this.width = width
                 this.height = height
                 this.ytype = ytype
+                this.prune_limit = 100
                 this.show_xticks = show_xticks
                 this.svg = select("#" + name) //"#my_dataviz")
                     .append("svg")
@@ -494,8 +496,7 @@ export const Charts = {
                     }
 
                 // Free space divided by letter spacing
-                var how_many_to_plot = Math.floor((this.width - hist_width) / this.size_of_letter)
-                const filtered_data = Charts.Smooth.headTimescale(how_many_to_plot)
+                const filtered_data = Charts.Smooth.headTimescale(this.prune_limit)
                 const ref_filt = filtered_data.get("all_processes")
 
                 const [xold, xnew, y] = this.calculateAxes(ref_hist, ref_filt, hist_width)
