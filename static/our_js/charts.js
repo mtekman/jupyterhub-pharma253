@@ -182,31 +182,39 @@ export const Charts = {
         }
     },
 
-    Timers : {
+    Timers : class Timers {
 
-        _db : {}, // internal database of all timers
+        static _db = {} // internal database of all timers
 
-        get : function(name){
+        static get(name){
             return(Charts.Timers._db[name])
-        },
+        }
 
-        newTimer: function(name, do_func, millisecs) {
-            var timer
-            var obj = {};
-            obj.resume = function() {
-                timer = setInterval(do_func, millisecs);
-            };
-            obj.pause = function() {
-                clearInterval(timer);
-            };
-            obj.resume()
-            Charts.Timers._db[name] = obj;
-        },
-
-        setAll : function(state){
+        static setAll(state){
             // state MUST be either pause or resume
             for (var tmp in Charts.Timers._db){
                 Charts.Timers.get(tmp)[state]()
+            }
+        }
+
+        constructor(name, do_func, millisecs) {
+            this.timer = null
+            this.task = do_func
+            this.ms = millisecs
+            this.resume()
+            Charts.Timers._db[name] = this
+        }
+
+        resume(){
+            if (this.timer === null){
+                this.timer = setInterval(this.task, this.ms);
+            }
+        }
+
+        pause() {
+            if (this.timer !== null){
+                clearInterval(this.timer);
+                this.timer = null
             }
         }
     },
@@ -497,11 +505,12 @@ export const Charts = {
         const trans_time_hist = 0
         const plot_every = 500
         const fetch_every = 500
+        new Charts.Timers("populate",
+                          Charts.Metrics.populateTimeScale,
+                          fetch_every)
 
-        Charts.Timers.newTimer("populate", Charts.Metrics.populateTimeScale,
-            fetch_every)
-        Charts.Timers.newTimer("squash", function(){
-            Charts.Smooth.squashDataOlderThan(squash_every)
+        new Charts.Timers("squash", function(){
+            Charts.Smooth.squashDataOlderThan(squash_older_than)
         }, squash_every)
 
         Charts.Metrics.populateTimeScale()
@@ -511,11 +520,11 @@ export const Charts = {
         const height = 200 - margin.top - margin.bottom
 
         // CPU plot without xticks
-        var p1 = new Charts.Plot("cpu", margin, width, height, "cpu_percent", false)
+        var p1 = new Charts.Plot("cpu", "CPU (%)", margin, width, height, 100, "cpu_percent", false)
         // RAM plot with xticks
-        var p2 = new Charts.Plot("ram", margin, width, height, "memory_rss_mb", true)
+        var p2 = new Charts.Plot("ram", "RAM (MB)", margin, width, height, 100, "memory_rss_mb", true)
         // They share a common Timer
-        Charts.Timers.newTimer("render", function(){
+        new Charts.Timers("render", function(){
             p1.render(trans_time_new, trans_time_hist)
             p2.render(trans_time_new, trans_time_hist)
         }, plot_every)
