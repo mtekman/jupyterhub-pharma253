@@ -8,10 +8,9 @@ import {
 export const Charts = {
 
     Metrics : {
-
         choice_element : null,
         pause_button : null,
-
+        collapsible_div : null,
         // Needs to be a map of User values, with entries updated with timestamps
         //
         // e.g.1  {"User1" : [{ "time": 123455, "cpu_percent" : 1.3 }, ... ]
@@ -146,7 +145,8 @@ export const Charts = {
     Selector : {
         user_highlight : document.getElementById("highlighted_user"),
         user_active : document.getElementById("active_users"),
-        user_pause : document.getElementById("pause_button")
+        user_pause : document.getElementById("pause_button"),
+        div_collapse : document.getElementById("collapse_plotgraph")
     },
 
     Style : {
@@ -222,7 +222,6 @@ export const Charts = {
 
             let ref_array = Charts.Metrics.timescale_data.get("all_processes")
             var min_time = Date.now() - last_ms
-            //if (ref_array.filter(x => x.time < min_time).length > 20){
 
             for (const [user, arrays] of Charts.Metrics.timescale_data)
                 {
@@ -527,6 +526,19 @@ export const Charts = {
                 Charts.Timers.setAll("resume")
             } else {
                 Charts.Timers.setAll("pause")
+            }
+        })
+
+        // Collapsible div
+        Charts.Selector.div_collapse.addEventListener("click", function(){
+            let content = this.nextElementSibling;
+            this.classList.toggle("active")
+            if (content.style.display === "block") {
+                content.style.display = "none"
+                Charts.Timers.setAll("pause")
+            } else {
+                content.style.display = "block"
+                Charts.Timers.setAll("resume")
             }
         })
     }
