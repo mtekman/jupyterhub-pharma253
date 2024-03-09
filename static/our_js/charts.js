@@ -235,28 +235,33 @@ export const Charts = {
                 {
                     let data_before = arrays.filter(x => x.time < min_time)
                     let len_data = data_before.length
-                    let data_summed = data_before
-                        .reduce((acc, obj) => {
-                            acc.cpu_percent += obj.cpu_percent || 0;
-                            acc.memory_rss_mb += obj.memory_rss_mb || 0;
-                            return acc;
-                        }, {cpu_percent: 0, memory_rss_mb: 0})
 
-                    let data_avg = {
-                        "time" : min_time,
-                        "cpu_percent" : (data_summed.cpu_percent / len_data) || 0,
-                        "memory_rss_mb" : (data_summed.memory_rss_mb / len_data) || 0
+                    // Only do squashing if there actually is data
+                    // older than specified.
+                    if (len_data > 2) {
+                        let data_summed = data_before
+                            .reduce((acc, obj) => {
+                                acc.cpu_percent += obj.cpu_percent || 0;
+                                acc.memory_rss_mb += obj.memory_rss_mb || 0;
+                                return acc;
+                            }, {cpu_percent: 0, memory_rss_mb: 0})
+
+                        let data_avg = {
+                            "time" : min_time,
+                            "cpu_percent" : (data_summed.cpu_percent / len_data),
+                            "memory_rss_mb" : (data_summed.memory_rss_mb / len_data)
+                        }
+
+                        if (Charts.Metrics.hist_data.has(user)){
+                            Charts.Metrics.hist_data.get(user).push(data_avg)
+                        } else {
+                            Charts.Metrics.hist_data.set(user, [data_avg])
+                        }
+
+                        // Shorten all histories, but use last value of hist as starting point
+                        Charts.Metrics.timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
+                        //Charts.Metrics.timescale_data.set(user, arrays.filter(x => x.time >= min_time))
                     }
-
-                    if (Charts.Metrics.hist_data.has(user)){
-                        Charts.Metrics.hist_data.get(user).push(data_avg)
-                    } else {
-                        Charts.Metrics.hist_data.set(user, [data_avg])
-                    }
-
-                    // Shorten all histories, but use last value of hist as starting point
-                    Charts.Metrics.timescale_data.set(user, [data_avg].concat(arrays.filter(x => x.time >= min_time)))
-                    //Charts.Metrics.timescale_data.set(user, arrays.filter(x => x.time >= min_time))
                 }
         },
 
