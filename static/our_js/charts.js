@@ -352,9 +352,9 @@ export const Charts = {
             // Add Axis labels, to plot itself
             this.svg.append("text")
                 .attr('text-anchor', 'middle')
-                //.attr('transform', 'translate(-25, 60) rotate(-90)')
-                .attr('transform', 'translate(20, 10)')
-                .text(this.name.toUpperCase())
+                .attr('transform', 'translate(350, 10)')
+                //.attr('transform', 'translate(20, 10)')
+                .text(this.title)
         }
 
         updateAxes(hist_width, xold, xnew, y){
@@ -505,11 +505,13 @@ export const Charts = {
         Charts.Style.init()
         Charts.Metrics.init()
 
-        const squash_every = 1000
-        const trans_time_new = 150
+        const squash_older_than = 120000 // squash after 2 minutes seconds
+        const squash_every = squash_older_than // Check every 5 minute
+        const trans_time_new = 250
         const trans_time_hist = 0
-        const plot_every = 500
-        const fetch_every = 500
+        const plot_every = 1000
+        const fetch_every = 3000
+
         new Charts.Timers("populate",
                           Charts.Metrics.populateTimeScale,
                           fetch_every)
@@ -518,7 +520,6 @@ export const Charts = {
             Charts.Smooth.squashDataOlderThan(squash_older_than)
         }, squash_every)
 
-        Charts.Metrics.populateTimeScale()
 
         const margin = {top: 5, right: 30, bottom: 40, left: 60}
         const width = 460 - margin.left - margin.right
@@ -534,7 +535,8 @@ export const Charts = {
             p2.render(trans_time_new, trans_time_hist)
         }, plot_every)
 
-        console.log(Charts.Timers)
+
+        // Manual Toggle button
         Charts.Selector.user_pause.addEventListener("change", (event) => {
             if (Charts.Selector.user_pause.checked){
                 Charts.Timers.setAll("resume")
@@ -555,5 +557,14 @@ export const Charts = {
                 Charts.Timers.setAll("resume")
             }
         })
+
+        // populate some initial data to render
+        Charts.Metrics.populateTimeScale()
+        setTimeout(Charts.Metrics.populateTimeScale, 500)
+        setTimeout(function(){
+            Charts.Metrics.populateTimeScale
+            p1.render(trans_time_new, trans_time_hist)
+            p2.render(trans_time_new, trans_time_hist)
+        }, 700)
     }
 }
