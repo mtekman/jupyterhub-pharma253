@@ -1,73 +1,24 @@
 {% extends "templates/spawn.html" %}
 {% block main %}
-<meta content="utf-8" http-equiv="encoding">
-
-<link rel="stylesheet" href="static/our_css/libraries/choices.min.css" />
-<link rel="stylesheet" href="static/our_css/charts.css" />
 
 {{ super() }}
+
+{% include "our_snippets/load_css.html" %}
 
 <div id="all_extras">
   <!-- includes a list of tool suggestions and metrics -->
   <div>
-    <input type="button" class="met_collapsible"
-           id="collapse_plotgraph" value="Show System Metrics">
-    <div class="met_content">
-      <div id="plotgraph" >
-        <div id="plotcont" >
-          <div id="cpu"></div><div id="ram"></div>
-        </div>
-        <div id="users_container">
-          <select id="active_users" label="Show Users" multiple="true" ></select>
-          <label class="chart_switch" >
-            <input id="pause_button" type="checkbox" checked="true" ></input>
-            <span class="chart_slider"></span>
-          </label>
-        </div>
-        <div id="highlighted_user"></div>
-      </div> 
-    </div>
+    {% include "our_snippets/show_metrics.html" %}
   </div>
   <div>
-    <input type="button" class="met_collapsible"
-           id="collapse_tools" value="Show Tool Requirements" >
-    <div class="met_content">
-      <p>
-        This is a list of tools from usegalaxy.eu and their resource
-        requirements. Please type in names of the
-        packages/libraries/tools you might use in your analysis, in
-        order to recieve a rough summary of the Jupyter resources you
-        might require. The list is comprehensive, but does not
-        encompass all possible packages (e.g. Seurat is notably
-        missing)
-      </p>
-      <div id="dropdown_summary" ></div>
-      <select id="dropdown_menu" label="Check Tool Specs" multiple="true" ></select>
-    </div>
+    {% include "our_snippets/show_tools.html" %}
   </div>
 </div>
 
-{% endblock %}
-
-{% block script %}
-
 <script type="module" >
-  import "./static/our_js/libraries/choices.min.js";
-  import { Charts } from "./static/our_js/charts.js";
-  import { Reqs } from "./static/our_js/requirements.js";
-
-  fetch("./static/our_js/tool_list.json")
-    .then(response => response.json())
-    .then(json => {
-        Reqs.init(json)
-    })
-
-  Charts.init()
-  // For debugging:
-  window.Charts = Charts
+  {% include "our_snippets/show_metrics.js" %}
+  {% include "our_snippets/show_tools.js" %}  
 </script>
 
-
-{{ super() }}
-
 {% endblock %}
+
