@@ -581,5 +581,11 @@ export const Charts = {
             p1.render(trans_time_new, trans_time_hist)
             p2.render(trans_time_new, trans_time_hist)
         }, 700)
+
+        // Upon first loading the page, check that chargs are visible,
+        // and if not pause them.
+        if (Charts.Selector.div_collapse.nextElementSibling.style.display !== "block"){
+            Charts.Timers.setAll("pause")
+        }
     }
 }
