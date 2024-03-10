@@ -10,7 +10,6 @@ export const Charts = {
     Metrics : {
         choice_element : null,
         pause_button : null,
-        collapsible_div : null,
         // Needs to be a map of User values, with entries updated with timestamps
         //
         // e.g.1  {"User1" : [{ "time": 123455, "cpu_percent" : 1.3 }, ... ]

@@ -1,7 +1,9 @@
 import {extent, min, max} from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
+
 export const Reqs = {
     selector : document.getElementById("dropdown_summary"),
+    div_collapse : document.getElementById("collapse_tools"),
     choice_element : null,
 
     toolJSONtoChoicesJSON : function(tool_list){
@@ -116,6 +118,16 @@ export const Reqs = {
         Reqs.choice_element = new Choices(element, {
             choices : Reqs.toolJSONtoChoicesJSON(tool_list),
             callbackOnCreateTemplates: Reqs.customTemplate
+        })
+        Reqs.div_collapse.addEventListener("click", function(){
+            let content = this.nextElementSibling;
+            this.classList.toggle("active")
+            content.style.display = (
+                content.style.display === "block"
+            )?"none":"block";
+            content.style.overflow = (
+                content.style.display === "visible"
+            )?"unset":"visible"
         })
     }
 }

@@ -30,7 +30,7 @@ td input[type="range"] {width: 150px;}
 #plotgraph {
     display: flex;
     flex-direction: column;
-    margin-top: 2em;
+    margin-top: 3em;
     justify-content: center;
 }
 
@@ -51,7 +51,8 @@ td input[type="range"] {width: 150px;}
     /* This is size of the main select box */
     min-width: 250px;
     padding:0;
-    width:unset;
+    /* width:unset; */
+    width: 100%;
     min-height: unset;
     font-size: x-small;
     background-color: white;
@@ -148,6 +149,12 @@ div.myspecs:nth-child(1) {
     display: flex;
 }
 
+#collapse_tools ~ div {
+   /* Tool container max width */
+   max-width: 70%;
+}
+
+
 span.reqs > span:empty {
     padding:0;
     border:0;
@@ -228,23 +235,52 @@ input:checked + .chart_slider:before {
 }
 
 /* Collapsible */
-.collapsible {
+.met_collapsible {
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 18px;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 8px 8px 8px 8px;
   width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
+  text-align: center;
+  outline:none;
   font-size: 15px;
+  margin: auto;
+  margin-bottom: 0.5em;    
 }
-.active, .collapsible:hover {
+
+.active {
+  border-radius: 8px 8px 0px 0px;
+  margin-bottom: 0;    
+}
+
+.active, .met_collapsible:hover {
   background-color: #ccc;
 }
-.content {
-  padding: 0 18px;
+.met_content {
+  padding: 18px 18px;
   display: none;
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: white;
+  margin: auto;
+  border: 1px solid black;
+}
+
+.met_content > p {
+    font-size: xx-small;
+}
+
+/* Aligning all metrics and dropdowns */
+#all_extras {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+}
+
+#all_extras > div {
+    flex-grow: 1;
+    margin: auto;
+    
 }
