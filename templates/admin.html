@@ -1,0 +1,22 @@
+{% extends "templates/admin.html" %}
+
+{% block main %}
+
+{{ super() }}
+
+
+{% include "our_snippets/load_css.html" %}
+
+<div id="all_extras">
+  <div>
+    {% include "our_snippets/show_metrics.html" %}
+  </div>
+</div>
+
+
+<script type="module" >
+  {% include "our_snippets/show_metrics.js" %}
+</script>
+
+{% endblock %}
+
