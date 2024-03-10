@@ -2,6 +2,8 @@
 
 {% block login %}
 
+<link rel="stylesheet" href="static/our_css/login.css" />
+
 <div id="new_header" >
   <span class="spacer">&nbsp;</span>
   <span class="main_title">
@@ -13,13 +15,11 @@
   <span class="spacer">&nbsp;</span>
 </div>
 
-<!-- images -->
+<!-- uni freiburg images -->
 <a id="logo_long" href="https://uni-freiburg.de/" >
   <img src="static/our_images/20221107-UFR-logo-blue-rgb-344A9A.svg" />
 </a>
-
 <img id="logo_sigil" src="static/our_images/Albert-Ludwigs-Universität_Freiburg_2009_logo.svg" />
-
 
 <div class='container branding'>
   <div class="center_this" >
@@ -36,178 +36,7 @@
 
 </div>
 
-
-<!-- Edit the src above this to a webpage image -->
-
-<!-- Edit the paragraph section below this -->
 {{ super() }}
 
 
-{% endblock %}
-
-<!-- Edit login-main .auth-form-body,  login-main .auth-form-header, login-main .form-control:focus, #login-main input[type=submit]:focus, and .btn-jupyter colors-->
-
-{% block stylesheet %}
-{{ super() }}
-<style>
-
-
-
-
-.main_title > p {
-    padding-top: 10px;
-    vertical-align: middle;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.center_this {
-    display: flex;
-    flex-direction: column;
-    width: unset;
-    align-items: center;
-}
-
-.center_this > a {
-    position: relative;
-    margin-top: -20px;
-    margin-bottom: 10px;
-    font-size: small;
-    font-style: italic;
-}
-
-.center_this > .people {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    align-items: center;
-    vertical-align: middle;
-}
-
-.branding a {
-    position: relative;
-    flex-grow: 1;
-    color: #34499a;
-    font-weight: normal;
-    padding: 5px 10px 0px 10px;
-    text-decoration: none;
-}
-
-.branding a:hover {
-    color: #34499a;
-    text-decoration: none;
-}
-
-.branding a::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    border-radius: 4px;
-    background-color: #34499a;
-    bottom: 0;
-    left: 5%;
-    width: 90%;
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform .3s ease-in-out;
-}
-
-.branding a:hover::before {
-  transform-origin: left;
-  transform: scaleX(1);
-}
-
-#new_header {
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    display:flex;
-    flex-direction: row;
-    height: 50px;
-    vertical-align: middle;
-    width: 100%;
-}
-
-#logo_long {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-}
-#logo_long > img {
-   width:240px;
-}
-
-#logo_sigil {
-   position: absolute;
-   width: 75px;
-   bottom: -15px;
-   right: -15px;
-    
-}
-
-#new_header span {flex-grow: 1; text-align:center;}
-#new_header span.spacer {flex-grow: 3;}
-
-.navbar-default img {
-    position: fixed;
-    left: 10px;
-    bottom: 11px;
-}
-
-.branding img {
-    display: block;
-    width: 250px;
-    /* top right bottom left */
-    margin: 0 auto 0 auto;
-}
-
-
-#login-main {
-    margin-top: 1%;
-    height: 100%;
-}
-
-footer {
-    border-top: 1px solid silver;
-    padding: 10px;
-    bottom: 0;
-    position: fixed;
-    width: 100%;
-}
-
-footer p{
-    margin: 0 auto 0 auto;
-    text-align: center;
-}
-
-#login-main form {
-    text-align: center;
-    box-shadow: 5px 5px 5px #888;
-}
-
-#login-main .auth-form-header {
-    color: white;
-    /*background: rgb(27, 113, 56);*/
-    border: 1px solid;
-    border-color: rgb(0, 124, 186);
-}
-
-#insecure-login-warning {
-    color: black;
-}
-
-.btn-jupyter.active, .btn-jupyter:active, .open>.dropdown-toggle.btn-jupyter {
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px #a88400;
-    border-color: rgb(0, 160, 130);
-    outline-color: rgb(0, 160, 130);
-}
-
-#login-main .form-control:focus, #login-main input[type=submit]:focus {
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px #f37524;
-    border-color: rgb(0, 160, 130);
-    outline-color: rgb(27, 113, 56);
-}
-
-
-</style>
 {% endblock %}
