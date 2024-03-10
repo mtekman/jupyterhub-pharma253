@@ -2,11 +2,61 @@
 from os.path import sep as fsep
 from dockerspawner import SystemUserSpawner
 from psutil import virtual_memory, cpu_percent, cpu_count
+from base64 import b64encode
+from shutil import copytree, rmtree
+from os.path import join as pathjoin, exists as pathexists
+
+class Templates():
+    ## We copy over anything in the "static" sub-directory into the Jupyter
+    ## jupyter_venv environment.
+    ##
+    ## For now this is the only way to ensure our static resources are
+    ## being loaded without the massive overhead of encoding them via the
+    ## c.JupyterHub.template_vars variable.
+    ##
+    ## Otherwise we would simply append to the c.JupyterHub.template_paths
+    ## and call it a day!
+    def __init__(self, jupyter_venv):
+        self.venv_static_dir = pathjoin(jupyter_venv, "share", "jupyterhub", "static")
+        self.local_static_dir = "static"
+
+        if not pathexists(self.venv_static_dir):
+            raise AssertionError("Jupyter virtualenv cannot be found at: '{path}'"
+                                 .format(path=self.venv_static_dir))
+        if not pathexists(self.local_static_dir):
+            raise AssertionError("Local static folder cannot be found at: '{path}'"
+                                 .format(path=self.local_static_dir))
+
+        ## It is imperative that these names are NOT "js" "css" "images", as
+        ## they may overwrite existing Jupyterhub resources
+        self.copy_resources = ["our_js", "our_css", "our_images"]
+
+        ## Embed Images, JS, and CSS
+        self.CopyResources("images")
+        self.CopyResources("js")
+        self.CopyResources("css")
+
+    def CopyResources(self, resource):
+        ## Copy over new resources
+        for resource in self.copy_resources:
+            path_from = pathjoin(self.local_static_dir, resource)
+            path_to = pathjoin(self.venv_static_dir, resource)
+
+            if not pathexists(path_from):
+                raise AssertionError("From path: " + path_from + " not found")
+
+            if pathexists(path_to):
+                print("Removing existing files at", path_to)
+                rmtree(path_to)
+
+            print("Copying", path_from, " -> ", path_to)
+            copytree(path_from, path_to)
+
 
 class DockerSystemProfileSpawner(SystemUserSpawner):
 
     _SEP_="|" ## class delimiter used
-    
+
     @staticmethod
     def datalistOptions(valranges):
         """For a list of integers, convert into datalist entries"""
@@ -18,7 +68,7 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
     ##     free_mem = round(virtual_memory()._asdict()["available"] / 1e9)
     ##     free_cpu = round(100 * (1- cpu_percent()))
     ##     return([free_mem, free_cpu])
-    
+
     def ResourceSelect(self):
         """This function generates the HTML select options needed to
         present the CPU and RAM profiles in the webpage for the user
@@ -49,8 +99,8 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
             )
             tick_cpus.append(cpu_limit)
             tick_mems.append(mem_limit)
-            select_text += option_text        
-        select_text +="\n</select>"    
+            select_text += option_text
+        select_text +="\n</select>"
         return([select_text, tick_cpus, tick_mems])
 
     def DockerImageSelect(self):
@@ -82,7 +132,7 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
                 raise AssertionError("You have not defined '{subentry}' in your \"default\" user_profiles".format(subentry=subentry))
         return(self.user_profiles[username][subentry])
 
-        
+
     def _options_form_default(self):
         default_cpus=4
         default_memg=5
@@ -122,17 +172,17 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
             </td>
             <td>
                 <div class="slider">
-                    <input id="memg_slider" value="{memg}" type="range" 
+                    <input id="memg_slider" value="{memg}" type="range"
                      list="mem_values" min="2" max="{max_mem}"
                      oninput="mem_limit.value = this.value" />
                     <datalist id="mem_values" >
                      {mem_tick_values}
                     </datalist>
                 </div>
-            </td>                 
+            </td>
         </tr>
         <tr>
-          <td><input id="cpu_limit" name="cpu_limit" value="{cpus}" type="number" 
+          <td><input id="cpu_limit" name="cpu_limit" value="{cpus}" type="number"
                 list="cpu_values" min="1" max="{max_cpu}"
                 oninput="cpus_slider.value = this.value" />
                 <label for="cpu_limit"> cores</label>
@@ -161,7 +211,7 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         if cpu_limit > self.max_cpu:
             raise AssertionError("{username} requested {N} cores, but is permitted only {M}".format(
                 username=self.user.name, N=cpu_limit, M=self.max_cpu
-            ))        
+            ))
         if mem_limit > self.max_mem:
             raise AssertionError("{username} requested {N} GB memory, but is permitted only {M} GB".format(
                 username=self.user.name, N=mem_limit, M=self.max_mem
@@ -174,14 +224,14 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
 
         return([cpu_limit, mem_limit, cpu_guarantee, mem_guarantee])
 
-    
+
     def options_from_form(self, formdata):
         options = {}
 
         cpu_limit, mem_limit, cpu_guarantee, mem_guarantee = self.validateResourceLimits(
             int(formdata['cpu_limit'][0]), int(formdata['mem_limit'][0])
         )
-        
+
         options["mem_limit"] = str(mem_limit) + "G"
         options["cpu_limit"] = cpu_limit
         options["mem_guarantee"] = str(mem_guarantee) + "G"

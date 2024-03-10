@@ -2,21 +2,12 @@
 
 c = get_config()  #noqa
 
-from base64 import b64encode
-from os import listdir
-from os.path import join as pathjoin, exists as pathexists
-from shutil import copytree, rmtree
-from sys import path as PATH
+from os.path import exists as pathexists, join as pathjoin
+from sys import path as modulepath
 
 # MUST be set
 repository_location = "/home/memo/repos/_mtekman/jupyterhub-pharma253/";
-if not pathexists(repository_location):
-    print("Please set the repository_location properly.")
-    exit(255)
-PATH.append(repository_location)
-
-
-from DockerSystemProfileSpawner import DockerSystemProfileSpawner
+jupyter_venv = "/home/memo/repos/_mtekman/jupyterhub-pharma253/venv_mtekman/"
 
 resource_profiles = {
     ## These are maximum LIMITs to which a Docker Image can run.
@@ -75,60 +66,29 @@ user_profiles = {
     ## permit.
 }
 
+if not (pathexists(repository_location) and pathexists(repository_location)):
+    print("Please check the above two paths exist.")
+    exit(255)
+modulepath.append(repository_location)
+
+
+from DockerSystemProfileSpawner import DockerSystemProfileSpawner, Templates
+Templates(jupyter_venv)
+c.JupyterHub.template_paths = pathjoin(repository_location, "templates")
+
+
 c.JupyterHub.spawner_class = DockerSystemProfileSpawner
 c.JupyterHub.spawner_class.resource_profiles = resource_profiles
 c.JupyterHub.spawner_class.docker_profiles = docker_profiles
 c.JupyterHub.spawner_class.user_profiles = user_profiles
 
-## We use the templates to load the resources we want, when we want
-## but the resources MUST be first in the jupyterhub root environment
-c.JupyterHub.template_paths = pathjoin(repository_location, "templates")
-if not pathexists(c.JupyterHub.template_paths):
-    raise AssertionError("Template path '" + c.JupyterHub.template_paths + "' doesn't exist")
-
-## We copy over anything in the "static" sub-directory into the Jupyter
-## jupyter_venv environment.
-##
-## For now this is the only way to ensure our static resources are
-## being loaded without the massive overhead of encoding them via the
-## c.JupyterHub.template_vars variable.
-
-jupyter_venv = "/home/memo/repos/_mtekman/jupyterhub-pharma253/venv_mtekman/"
-venv_static_dir= pathjoin(jupyter_venv, "share", "jupyterhub", "static")
-local_static_dir = "static"
-## It is imperative that these names are NOT "js" "css" "images", as
-## they may overwrite existing Jupyterhub resources
-copy_resources = ["our_js", "our_css", "our_images"]
-
-c.JupyterHub.template_vars = {}
-def CopyResources(resource):
-    ## Copy over new resources
-    for resource in copy_resources:
-        path_from = pathjoin(local_static_dir, resource)
-        path_to = pathjoin(venv_static_dir, resource)
-        
-        if not pathexists(path_from):
-            raise AssertionError("From path: " + path_from + " not found")
-
-        if pathexists(path_to):
-            print("Removing existing files at", path_to)
-            rmtree(path_to)
-        
-        print("Copying", path_from, " -> ", path_to)
-        copytree(path_from, path_to)
-
-
-## Embed Images
-CopyResources("images")
-CopyResources("js")
-CopyResources("css")
 
 c.JupyterHub.cleanup_servers = False
 c.JupyterHub.sysmon_interval = 2
-c.JupyterHub.ip = '127.0.0.1'
-##c.JupyterHub.port = 443
-##c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
-##c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
+##c.JupyterHub.ip = '127.0.0.1'
+c.JupyterHub.port = 443
+c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
+c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
 
 c.JupyterHub.hub_ip = '172.17.0.1' ## This corresponds to the docker0 address
 
