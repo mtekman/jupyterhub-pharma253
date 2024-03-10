@@ -1,4 +1,8 @@
 {% extends "templates/spawn_pending.html" %}
-{% block message %} {{ super() }}
-<p>Patience is a virtue.</p>
+{% block message %}
+{{ super() }}
+
+Hang tight, we might need to download a docker image, or the system
+might be a little bit overwhelmed.
+
 {% endblock %}
