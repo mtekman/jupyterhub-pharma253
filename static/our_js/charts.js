@@ -200,10 +200,11 @@ export const Charts = {
             return(Charts.Timers._db[name])
         }
 
-        static setAll(state){
+        static setAll(state, donowtoo=false){
+            console.log("Setting timers:", state)
             // state MUST be either pause or resume
             for (var tmp in Charts.Timers._db){
-                Charts.Timers.get(tmp)[state]()
+                Charts.Timers.get(tmp)[state](donowtoo)
             }
         }
 
@@ -215,9 +216,12 @@ export const Charts = {
             Charts.Timers._db[name] = this
         }
 
-        resume(){
+        resume(donowtoo=false){
             if (this.timer === null){
                 this.timer = setInterval(this.task, this.ms);
+                if (donowtoo){
+                    this.task()
+                }
             }
         }
 
@@ -550,7 +554,7 @@ export const Charts = {
         // Manual Toggle button
         Charts.Selector.user_pause.addEventListener("change", (event) => {
             if (Charts.Selector.user_pause.checked){
-                Charts.Timers.setAll("resume")
+                Charts.Timers.setAll("resume", true)
             } else {
                 Charts.Timers.setAll("pause")
             }
@@ -565,7 +569,7 @@ export const Charts = {
                 Charts.Timers.setAll("pause")
             } else {
                 content.style.display = "block"
-                Charts.Timers.setAll("resume")
+                Charts.Timers.setAll("resume", true)
             }
         })
 
