@@ -1,9 +1,10 @@
-from base64 import b64encode
 from dockerspawner import SystemUserSpawner
-from psutil import cpu_count, cpu_percent, virtual_memory
 from os.path import exists as pathexists, join as pathjoin
-from shutil import copytree, rmtree
+from pathlib import Path as currpath
+from psutil import cpu_count, cpu_percent, virtual_memory
 from secrets import token_hex
+from shutil import copytree, rmtree
+
 
 class Templates():
     ## We copy over anything in the "static" sub-directory into the Jupyter
@@ -15,10 +16,12 @@ class Templates():
     ##
     ## Otherwise we would simply append to the c.JupyterHub.template_paths
     ## and call it a day!
-    def __init__(self, jconfig, repository_location, jupyter_venv,
+    def __init__(self, jconfig, jupyter_venv,
                  ## It is imperative that these names are NOT "js" "css" "images", as
                  ## they may overwrite existing Jupyterhub resources
                  copy_resources = ["our_js", "our_css", "our_images"]):
+
+        repository_location = str(currpath().resolve())
 
         self.venv_static_dir = pathjoin(jupyter_venv, "share", "jupyterhub", "static")
         self.local_static_dir = pathjoin(repository_location, "static")
@@ -47,7 +50,6 @@ class Templates():
         if not pathexists(path):
             raise AssertionError("'{name} cannot be found at: '{path}'"
                                  .format(name=name, path=path))
-
 
     @staticmethod
     def initialiseMetricService(jconf):
