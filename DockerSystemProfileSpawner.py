@@ -147,6 +147,7 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         self.max_cpu = max(tick_cpu)
 
         self.host_homedir_format_string = self.getUserProfileSubEntry("host_homedir_format_string")
+        self.image_homedir_format_string = self.host_homedir_format_string
 
         return """
         <div id="profile_cont">
@@ -232,11 +233,28 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
             int(formdata['cpu_limit'][0]), int(formdata['mem_limit'][0])
         )
 
+        ## Set the docker environment to set the user of the docker image the same as the
+        ## main user.
+        self.environment = {
+            ##'JUPYTER_ENABLE_LAB': 'yes',
+            'NB_USER': f'{self.user.name}',
+            ##'NB_UID': int(self.user.uid),
+            ##'NB_GID': int(self.user.gid),
+        }
+        options["environment"] = self.environment
         options["mem_limit"] = str(mem_limit) + "G"
         options["cpu_limit"] = cpu_limit
         options["mem_guarantee"] = str(mem_guarantee) + "G"
         options["cpu_guarantee"] = cpu_guarantee
         options['image'] = formdata['image'][0]
+
+        ## host tells us where to look for "home" on the server
+        ## image tells us where to set "home" in the image.
+        ## - We set them to the same location, because this fixes an issue
+        ##   where people cannot see their conda installs
+        ## We need to fill these into the options later
+        options['host_homedir_format_string'] = self.host_homedir_format_string
+        options['image_homedir_format_string'] = self.image_homedir_format_string
 
         ## These are needed for the spawner to be aware of them
         self.mem_limit = options['mem_limit']
