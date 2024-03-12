@@ -5,9 +5,10 @@ import {
     scaleLinear, select, max, line, curveBasis
 } from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-// TODO: Figure out how to dynamically populate the API token
-
 export const Charts = {
+
+    api_token : null, // Don't change this. This token is changed to a
+    //new value via the Templates() class when starting Jupyter.
 
     Metrics : {
         choice_element : null,
@@ -68,7 +69,7 @@ export const Charts = {
             const data = await fetch("/hub/api/sysmon", {
                 method: 'GET',
                 headers: {
-                    'Authorization': "token c8098ee2702746a1a406fbce61afee4e"
+                    'Authorization': `token ${Charts.api_token}`
                 }
             })
             return(data.json())
@@ -77,6 +78,17 @@ export const Charts = {
         init : function(){
             Charts.Metrics.hist_data.set("all_processes", [])
             Charts.Metrics.initializeUserSelectBox()
+
+            if (Charts.api_token === null){
+                throw new Error(`
+You need to generate an API token to access system metrics.
+This should be automatically performed when you start the server using
+DockerSystemProfileSpawner.
+
+Failing that: Go to the Admin panel, generate a new token with "read:users"
+scope and copy the hex value there into "api_token" parameter in line 10.
+Restart the server.`)
+            }
         },
 
         populateTimeScale: async function(){

@@ -64,16 +64,11 @@ user_profiles = {
     ## permit.
 }
 
-if not (pathexists(repository_location) and pathexists(repository_location)):
-    print("Please check the above two paths exist.")
-    exit(255)
-modulepath.append(repository_location)
-
 
 from DockerSystemProfileSpawner import DockerSystemProfileSpawner, Templates
-Templates(jupyter_venv)
-c.JupyterHub.template_paths = pathjoin(repository_location, "templates")
 
+## Copy over all templates and initialise the API keys
+Templates(c.JupyterHub, repository_location, jupyter_venv)
 
 c.JupyterHub.spawner_class = DockerSystemProfileSpawner
 c.JupyterHub.spawner_class.resource_profiles = resource_profiles
@@ -82,6 +77,7 @@ c.JupyterHub.spawner_class.user_profiles = user_profiles
 
 c.JupyterHub.cleanup_servers = False
 c.JupyterHub.sysmon_interval = 2
+
 
 ## To run locally only, uncomment (1)
 ##(1)#c.JupyterHub.ip = '127.0.0.1'
@@ -102,7 +98,5 @@ c.Spawner.default_url = '/lab'
 c.Authenticator.admin_users = ['memo']
 c.DockerSpawner.debug = True
 
-
 ## DEBUG:
 ## sudo docker stop jupyter-memo; sudo docker container rm jupyter-memo; sudo jupyterhub
-

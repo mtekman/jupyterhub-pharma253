@@ -1,10 +1,9 @@
-# [[file:../../../../../mnt/galaxy_data/repos/_mtekman/org-projects/brain/20240226120319-jupyterhub_docker.org::*Module][Module:1]]
-from os.path import sep as fsep
-from dockerspawner import SystemUserSpawner
-from psutil import virtual_memory, cpu_percent, cpu_count
 from base64 import b64encode
+from dockerspawner import SystemUserSpawner
+from psutil import cpu_count, cpu_percent, virtual_memory
+from os.path import exists as pathexists, join as pathjoin
 from shutil import copytree, rmtree
-from os.path import join as pathjoin, exists as pathexists
+from secrets import token_hex
 
 class Templates():
     ## We copy over anything in the "static" sub-directory into the Jupyter
@@ -16,25 +15,81 @@ class Templates():
     ##
     ## Otherwise we would simply append to the c.JupyterHub.template_paths
     ## and call it a day!
-    def __init__(self, jupyter_venv):
+    def __init__(self, jconfig, repository_location, jupyter_venv,
+                 ## It is imperative that these names are NOT "js" "css" "images", as
+                 ## they may overwrite existing Jupyterhub resources
+                 copy_resources = ["our_js", "our_css", "our_images"]):
+
         self.venv_static_dir = pathjoin(jupyter_venv, "share", "jupyterhub", "static")
-        self.local_static_dir = "static"
+        self.local_static_dir = pathjoin(repository_location, "static")
+        self.templates_dir = pathjoin(repository_location, "templates")
 
-        if not pathexists(self.venv_static_dir):
-            raise AssertionError("Jupyter virtualenv cannot be found at: '{path}'"
-                                 .format(path=self.venv_static_dir))
-        if not pathexists(self.local_static_dir):
-            raise AssertionError("Local static folder cannot be found at: '{path}'"
-                                 .format(path=self.local_static_dir))
-
-        ## It is imperative that these names are NOT "js" "css" "images", as
-        ## they may overwrite existing Jupyterhub resources
-        self.copy_resources = ["our_js", "our_css", "our_images"]
+        Templates.checkPath("VirtualEnv", self.venv_static_dir)
+        Templates.checkPath("'static' folder", self.local_static_dir)
+        Templates.checkPath("'templates' folder", self.templates_dir)
 
         ## Embed Images, JS, and CSS
+        self.copy_resources = copy_resources
         self.CopyResources("images")
         self.CopyResources("js")
         self.CopyResources("css")
+
+        ## Add templates path
+        jconfig.template_paths = self.templates_dir
+
+        ## Create API and metrics services
+        api_token = Templates.initialiseMetricService(jconfig)
+        self.replaceAPIToken(api_token)
+
+
+    @staticmethod
+    def checkPath(name, path):
+        if not pathexists(path):
+            raise AssertionError("'{name} cannot be found at: '{path}'"
+                                 .format(name=name, path=path))
+
+
+    @staticmethod
+    def initialiseMetricService(jconf):
+        api_token = token_hex(32)
+        jconf.services = [{
+            'name': 'metrics-service',
+            'api_token': api_token
+        }]
+        jconf.load_roles = [{
+            "name": "metrics-role",
+            "scopes": ["read:users"],
+            "services": [ "metrics-service" ]
+        }]
+        return(api_token)
+
+    def replaceAPIToken(self, token):
+        ## We populate the token only on the copy, not the original source.
+        charts_js = pathjoin(self.venv_static_dir, "our_js", "charts.js")
+        if not pathexists(charts_js):
+            raise AssertionError("Unable to find 'charts.js' at '{path}'"
+                                 .format(path=charts_js))
+
+        token_from = "api_token : null,"
+        token_to   = "api_token : '{token}',".format(token=token)
+
+        new_content=""
+        replaced_token = False
+        with open(charts_js, 'r') as ch:
+            for line in ch:
+                if not replaced_token:
+                    if token_from in line:
+                        line = line.replace(token_from, token_to)
+                        replaced_token = True
+                new_content += line
+
+        if replaced_token == False:
+            raise AssertionError("Unable to find '{text}' in '{path}'"
+                                 .format(text = token_from, path=charts_js))
+
+        with open(charts_js, 'w') as ch:
+            ch.write(new_content)
+
 
     def CopyResources(self, resource):
         ## Copy over new resources
@@ -264,4 +319,3 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         self.image = options['image']
 
         return options
-# Module:1 ends here
