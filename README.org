@@ -495,8 +495,8 @@ With your config file setup, it is now time to test the server
 #+begin_src bash
   cd /opt/jupyterhub/jupyterhub-pharma253
   source venv_jupyter_metrics/bin/activate
-  ## TODOfixfix
-  sudo -E PATH=$PATH /opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub
+
+  sudo -E env PATH=$PATH /opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub
 #+end_src
 
 if you're lucky, things should just work and you should be able to
@@ -528,8 +528,7 @@ This is typically a combination of:
 **** Reading the logs
 
 JupyterHub doesn't really do logs, but you can view what is happening
-at the Jupyter level by monitering the output of the =sudo -E
-/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub=
+at the Jupyter level by monitering the output of the =sudo -E env PATH=$PATH /opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub=
 command in realtime, or if you invoked jupyterhub via systemd, you can view the logs via
 
 #+begin_src bash
@@ -549,19 +548,208 @@ spawned via the =sudo docker ps -a= command.
 
 * Post Installation Steps
 
+We have a running Jupyter, at least when hosted directly on the
+machine itself.  But if you're running through a proxy, then this
+needs to be set up before the machine can be accessed from the outside world.
+
 ** Setup Proxy
+
+The proxy communicates with the internet, and tunnels these outside
+connections to the host machine (running Jupyter).
+
+In a schematic:
+
+#+begin_src artist
+
+  Users --> Internet --(1)-> ProxyDevice <--(2)--> HostDevice (Jupyter)
+      
+#+end_src
 
 *** Host Machine
 
+The host machine needs to establish a permanent connection to the
+proxy. There are many ways to do this, but the easiest and most secure
+is via a reverse SSH connection.
+
+#+begin_src bash
+   ssh -i ~localuser/.ssh/id_rsa -p 51122 \
+       -o ServerAliveInterval=60 -o ExitOnForwardFailure=yes \
+       -R 58001:127.0.0.1:58001 \
+       proxyuser@proxydevice vmstat 120
+#+end_src
+
+The above will create an ssh connection from localuser on the host
+machine to the proxydevice machine (change the address) with a user
+called proxyuser on the proxydevice. It is assumed that the ssh port
+on the proxy machine is 51122. If not, change this too.
+
+The proxy port is 58001 on both machines, meaning that port 58001 on
+the host maps to port 58001 on the host. Whatever the host sends to
+address "127.0.0.1:58001" will be recieved on the proxy at their port
+"58001".
+
+This builds the (2) connection in the above schematic.
+
+This can be implemented as a systemd service. Please see the systemd
+folder for the =proxy-tunnel-pharma53.service=. You just need to
+modify it to your tastes and then copy it to
+=/etc/systemd/system/proxy-tunnel-pharma53.service= and then start it
+via =sudo systemctl start proxy-tunnel-pharma53=
+
 *** Proxy Machine
 
+The proxy machine can now recieve signals from the host, but it now
+needs to map the internet to the designatied 58001 port. To do this,
+we need to run a secure web server.
+
+**** HTTPS Certification
+
+The first step to being secure is to get a certificate from some web
+authority who can tell others that you are who you say you are.
+
+***** Configuring your web host
+
+So the way this all works is:
+
+ 1. You own a domain from some registrar. Tell the registrar where to point your domain.
+
+    Let's say you own the domain =example.com= which you bought from
+    godaddy.com. You need to login to your godaddy.com account, go to
+    your domain and point it to the IP address of whichever machine is
+    reachable by the internet.
+
+ 2. Tell a certificate authority to give you a secure certificate for your website.
+
+    The way this works is that on your side, you run a script on the
+    internet-facing machine (e.g. the proxy device) requesting a
+    certificate from some certificate authority (e.g. "give me a
+    certificate for example.com")
+
+    This authority checks the IP address of the request, and then
+    checks the IP address of what you typed in to your registrar. If
+    the addresses match, the registrar gives you the certificate.
+
+***** Certbot
+
+One good certificate authority owned [[https://www.eff.org/encrypt-the-web][by some good people]] is
+LetsEncrypt. We will use their =certbot= to request new certificates:
+
+#+begin_src bash
+  sudo certbot certonly --standalone -d www.example.com
+#+end_src
+ (again, change the example to a domain you actually own)
+
+ This should install certificates to the location of
+
+ =/etc/letsencrypt/live/www.example.com= on your machine, if it worked.
+ 
 **** WebServer
 
+Once we have the certificates we can setup the webserver and proxy all
+requests to the host who is listening on port 58001.
+
+There are two main ones choose from: Caddy (easy), or Nginx (stable)
+
+You only need one. I can recommend Caddy due to sheer ease, but if
+something is failing on the Proxy side of things, then it can't hurt to try Nginx.
+     
 ***** Caddy
+
+Put this inside your caddy file at =/etc/caddy/Caddyfile=
+
+(modify the website to whatever website you own)
+
+#+begin_src conf
+       www.example.com {
+           reverse_proxy localhost:58001
+       }
+#+end_src
+
+Then enable the service: =sudo systemctl start caddy=
+
+If all works fine, skip nginx.
 
 ***** Nginx
 
-**** HTTPS Certification
+If all did not work fine with Caddy, then try the nginxy config:
+
+#+begin_src conf
+  #user http;
+  worker_processes auto;
+
+  events {
+      worker_connections 1024;
+  }
+  http {
+      include mime.types;
+      default_type application/octet-stream;
+      sendfile on;
+      keepalive_timeout 65;
+      map $http_upgrade $connection_upgrade {
+          default upgrade;
+          '' close;
+      }
+      server {
+          if ($host = www.example.com) {
+              return 301 https://$host$request_uri;
+          } # managed by Certbot
+          listen 80;
+          server_name www.example.com;
+
+          # Redirect the request to HTTPS
+  	    return 302 https://$host$request_uri;
+      }
+      # HTTPS server to handle JupyterHub
+      server {
+  	    server_name www.example.com;
+
+          listen 443 ssl; # managed by Certbot
+          ssl_certificate /etc/letsencrypt/live/www.example.com/fullchain.pem; # managed by Certbot
+          ssl_certificate_key /etc/letsencrypt/live/www.example.com/privkey.pem; # managed by Certbot
+
+          ## Allow Jupyter to send large data packets
+          client_max_body_size 0;
+
+          access_log /var/log/host.access.log;
+          ## commented our previously
+          ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+          ssl_prefer_server_ciphers on;
+          ##ssl_dhparam /etc/ssl/certs/dhparam.pem;
+          ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+          ssl_session_timeout 1d;
+  	    ## end commented out previously
+          ssl_session_cache shared:SSL:50m;
+          ssl_stapling on;
+          ssl_stapling_verify on;
+          add_header Strict-Transport-Security max-age=15768000;
+
+          # Managing literal requests to the JupyterHub frontend
+          location / {
+              proxy_pass http://127.0.0.1:58001/;   ## again, check the proxy port.
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+              # websocket headers
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+              proxy_set_header X-Scheme $scheme;
+              proxy_buffering off;
+          }
+          # Managing requests to verify letsencrypt host
+          location ~ /.well-known {
+             allow all;
+          }
+
+      }
+  }
+
+#+end_src
+
+Change the domain where necessary, and check the proxy ports, and then start the service
+
+=sudo systemctl start nginx=
 
 
 ** Set Global limits on Docker
@@ -577,25 +765,93 @@ that the rest of the OS still has some resources for itself.
 We control the main docker process/daemon by making a child of a
 [[https://en.wikipedia.org/wiki/Cgroups][control group]] which has resource quotas.
 
-We will perform this step later. TODODODODOD
+We want to limit the total system resources that Docker uses. It shouldn't try to use 100% of everything
 
+To do this, we use slices. see the =docker_limit.slice= file in the
+repo. Modify it to your needs
+
+      #+begin_src conf
+        [Unit]
+        Description=Slice that limits docker resources
+        Before=slices.target
+
+        [Slice]
+        CPUAccounting=true
+        CPUQuota=7000%
+        ## We use 70 cores max and leave 2 cores free
+        MemoryAccounting=true
+        MemoryHigh=230G
+        ## We leave 20GB free for the system
+        ## Copy this file to /etc/systemd/system/docker_limit.slice
+        ## and start/enable it
+      #+end_src
+
+There should be an example in the systemd folder. Modify it to your
+needs, copy it over to =/etc/systemd/system/docker_limit.slice= and
+then start it.
 
 * Customization
 
-+ Templates
+The templates folder extends the [[https://jupyterhub.readthedocs.io/en/stable/howto/templates.html][Jinja2 templating system]] and some
+customizations have been made for the Freiburg Pharmacology dept.
 
+Customization is split into two folders:
+
+- Templates
+
+  This extends the Jinja2 system, and ensures that common motifs such
+  as metric charts can be enabled on many pages.
+
+- Static
+
+  These are the CSS, images, and Javascript resources. Every time that
+  Jupyter is started (with the custom Dockerspawner), it directly
+  copies over these resources into the virtual environment.
+  
 
 * Troubleshooting
 
+See [[Debugging]] for extra clues.
+
 ** Docker notebooks hang and do not spawn
-+ Preload the images
-+ Check the firewall
+
+- It could just be that images have not been fetched yet and require
+  some time to fetch, build, and then launch a container.
+
+  To speed this up, you can preload the images via =sudo docker run
+  <image-url>= and then kernel spawning should be much faster.
+
+- It could also be that the firewall is blocking Jupyter from talking
+  to Docker. Temporarily disable the firewall to see if it makes a
+  difference =sudo ufw disable=.
+
+  Also check the Jupyter logs to see what addresses it is waiting for
+  from the notebooks. If the addresses seem correct, then check the
+  logs of docker container to see if it's transmitting to the right
+  addresses.
  
 ** Users cannot use their conda environments
-+ Check image and host parameters
-+ Check the home path
-+ Remove all containers for a user, restart server
+
+This is to do with =host_homedir_format_string= and the
+=image_homedir_format_string=, which are both internal spawner
+variables in the [[https://jupyterhub-dockerspawner.readthedocs.io/en/latest/api/index.html#dockerspawner.SystemUserSpawner.image_homedir_format_string][DockerSpawner API]].
+
+The first tells Jupyter where the home directory for a user exists on
+the system, and the second tells Docker where to "place" it inside the container.
+
+It is better that these two both match, so I have enabled this
+internally such that the =image_homedir_format_string= is always equal
+to the =host_homedir_format_string=.
+
+If all the home directory paths are set correctly, but docker logs are
+still showing some weird paths, then make sure you properly stop and
+remove all containers related to a user and try again.
+
+#+begin_src bash
+  sudo docker ps -a   ## look for containers matching a username
+  sudo docker container stop <id>; sudo docker container rm <id>;
+#+end_src
 
 ** Other issues
 
-+ Make a PR
+If other issues arise, please make a PR or email me.
