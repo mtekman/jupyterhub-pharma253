@@ -1,0 +1,13 @@
+[Unit]
+Description=Maintain SSH Tunnel to Proxy the JupyterHub service
+After=network.target
+
+[Service]
+User=myuser
+ExecStart=/usr/bin/ssh -i ~myuser/.ssh/id_rsa -p 59922 -o ServerAliveInterval=60 -o ExitOnForwardFailure=yes -R 58001:127.0.0.1:58001 proxyuser@proxydevice vmstat 120
+RestartSec=15
+Restart=always
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

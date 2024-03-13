@@ -1,0 +1,14 @@
+[Unit]
+Description=Slice that limits docker resources
+Before=slices.target
+
+[Slice]
+CPUAccounting=true
+CPUQuota=7000%
+## We use 70 cores max and leave 2 cores free
+#Memory Management
+MemoryAccounting=true
+MemoryHigh=230G
+## We leave 20GB free for the system
+## Copy this file to /etc/systemd/system/docker_limit.slice
+## and start/enable it
