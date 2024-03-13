@@ -467,26 +467,26 @@ All keywords are named to be compliant with the [[https://jupyterhub-dockerspawn
 
 #+end_src
 
- - By default all users are allowed to use all the resource profiles
+By default all users are allowed to use all the resource profiles
 defined above, via the =allowed_resources= variable. Notice how user
 "memo" can only use 3 of those profiles..
 
-- Similarly one can define allowed docker images via the
+Similarly one can define allowed docker images via the
 =allowed_docker= variable. Since the user "memo" does not have this
 defined, he defaults to whatever the "default" user specifies for that
 variable.
 
-- The =host_homedir_format_string= *must* contain the placeholder
+The =host_homedir_format_string= *must* contain the placeholder
 "{username}" string in it's path, and it defines where the home
 directories of the users are, along with their conda environments. The
 user "memo" has his home directory in /home/memo path, which is
 different than the /media/daten/memo path that would have otherwise
 been specified in the default user profile.
 
-- The =max_preallocate= variable specifies the minimum preallocation
-  of resources that are guaranteed for a user. These resources will
-  then grow at maximum to whatever resource profile the user chooses
-  when spawning a kernel.
+The =max_preallocate= variable specifies the minimum preallocation of
+resources that are guaranteed for a user. These resources will then
+grow at maximum to whatever resource profile the user chooses when
+spawning a kernel.
 
 ** Testing Jupyter
 
