@@ -1,0 +1,279 @@
+#+TITLE: Pharma2-53 JupyterHub Server with personalised DockerSpawner
+
+* What is this
+
+This is a JupyterHub configuration and extension of the original spec
+which displays metrics to users on the system resources, spawns Docker
+containers, and preserves the existing conda/mamba environments in
+each user directory.
+
+The idea is to restrict all the different Jupyter kernels running on
+the same system from competing too hard on RAM resources.
+
+It has also been customized towards the Institute of Pharmacology and
+Toxicology at the University Freiburg.
+
+* System Security and Resources
+
+Before we expose a powerful machine to the internet and unleash it on
+a few dozen users, we need to set some boundaries.
+
+** Configure Docker
+
+First we need to enable Docker, and make note of the network it makes,
+since this is information needed in the Jupyter configuration file.
+
+*** Extract Docker Subnet
+
+First check the current addresses:
+#+begin_src bash
+  > ip a
+  1: lo:....
+     .....
+     inet 127.0.0.1/8
+     ...
+  2: eth0: ....
+     ....
+     inet blahblahblah/24 ....
+     ....
+  3: eth1: ...
+     ....
+     inet blahblahblah/24 ....
+     ...    
+#+end_src
+
+we don't see any network device starting with "docker", so we need to start docker
+
+#+begin_src bash
+  > sudo systemctl start docker
+  > ip a
+  1: lo ...
+  2: eth0 ...
+  3: eth1 ...
+  4: docker0 ...
+     ...
+     inet 172.17.0.1/16   
+#+end_src
+
+This is what we want to see, the inet address of the =docker0= device, =172.17.0.1=.
+Remember this, we will use this for later.
+   
+** Uncomplicated Firewall
+
+[[https://wiki.archlinux.org/title/Uncomplicated_Firewall][UFW]] is a great firewall for blocking unwanted connections. The
+Pharma2-53 is already behind a firewall and does not accept outside
+connections from the facility
+
+You can verify this by looking at the output of
+
+#+begin_src bash
+> sudo ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+137/udp                    ALLOW       blahblahblah/24
+138/udp                    ALLOW       blahblahblah/24
+139/tcp                    ALLOW       blahblahblah/24
+445/tcp                    ALLOW       blahblahblah/24
+137/udp                    ALLOW       blahblahblah/24
+138/udp                    ALLOW       blahblahblah/24
+138/tcp                    ALLOW       blahblahblah/24
+445/tcp                    ALLOW       blahblahblah/24
+22/tcp                     ALLOW       blahblahblah/24
+22/tcp                     ALLOW       blahblahblah/24
+22/tcp                     ALLOW       blahblahblah/16
+#+end_src
+
+At this point, any Docker containers that we make will be blocked by
+the system, so we need to create a new allow rule.
+
+(Note: the machine you are using to SSH into the Pharma2-53 device,
+ *should* share the prefix of one of the From addresses in the list
+ above, otherwise you will lose ssh access in the next step.)
+
+#+begin_src bash
+  > sudo ufw allow from 172.17.0.0/16
+  > sudo ufw status
+  ...
+  ...  
+  Anywhere                   ALLOW       172.17.0.0/16
+#+end_src
+
+Now we see that we have added an allow exception rule for the docker0 device.
+
+** Allowed SSH users
+
+Jupyter allows authenticated users to execute commands by offering
+them a terminal they can use. For this reason, it does not make sense
+to offer all users the ability to SSH into the machine, since they
+could wreak havoc on the services there.
+
+We adjust the allowed ssh users by modifying =/etc/ssh/sshd_config=,
+and changing the line to:
+
+#+begin_src conf
+      AllowUsers user1 user2 user3
+#+end_src
+
+where these correspond to trusted admin usernames on the system
+
+We then restart ssh to refresh these changes
+
+#+begin_src bash
+  sudo systemctl restart ssh
+#+end_src
+
+* Jupyter Installation
+
+With the system configured for Docker and Security, we can proceed
+with the Jupyter Installation.
+
+The installation comes in two parts:
+
+1. Installing the modified Jupyter base installation
+   
+   The original jupyterhub does not freely offer metrics on a per-user
+   basis, so I forked their repository and implemented it myself.
+
+   That is, we are not using vanilla JupyterHub, but JupyterHub+Metrics.
+
+2. Installing a custom Docker Spawner
+
+   A spawner is what Jupyter uses to create kernels (essentially
+   notebooks) for each user. There are many [[https://jupyterhub.readthedocs.io/en/stable/reference/spawners.html][different types]], but the
+   one we are interested in is the [[https://jupyterhub-dockerspawner.readthedocs.io/en/latest/spawner-types.html][SystemUserSpawner]] which is a type
+   of DockerSpawner (which is a kernel that creates Docker containers,
+   instead of running everything as a single process on the machine).
+
+   Unfortunately, the SystemUserSpawner restricts kernels equally,
+   meaning that all users get the same requirements. This is good if
+   users all have the same demands, but typically they don't.
+
+   Fortunately, one can extend SystemUserSpawner into a custom class I
+   wrote called =DockerSystemProfileSpawner= which allows per-user
+   customization, and we will go into detail about how to configure it later.
+
+** Backup Existing installation
+
+First thing's first, we backup any existing Jupyter installation. On
+the Pharma2-53 machine, this involves stopping the existing JupyterHub
+service and moving any config files to a backup location:
+
+#+begin_src bash  
+  sudo systemctl stop jupyterhub
+  sudo mkdir /opt/__<date>_jupyter_backup
+  sudo mv /etc/systemd/system/jupyterhub.service /opt/__<date>_jupyter_backup/
+  sudo mv /opt/jupyterhub/* /opt/__<date>_jupyter_backup/
+#+end_src
+
+** Prepare custom dependencies
+
+The JupyterHub that we will be installing is based on version
+=5.0.0.dev= which is pretty new as of 2024-03-13.
+
+It needs up-to-date Node and Python libraries, which are not a problem
+for bleeding edge Operating systems like Arch Linux, but *is* a
+problem for more stable OS's like Ubuntu.
+
+*** Node
+
+We upgrade the Node libraries in Ubuntu via
+
+#+begin_src bash
+  sudo apt-get update && sudo apt-get install -y ca-certificates curl gnupg
+  curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+  export NODE_MAJOR=21
+  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+  sudo apt-get update && sudo apt-get install nodejs -y
+#+end_src
+
+Verify that we are on version 21 via
+
+#+begin_src bash
+  node --version
+#+end_src
+
+*** Python
+
+
+
+
+** Configure Jupyter
+
+
+*** Prepare Jupyter Directories
+
+**** DockerSystemProfileSpawner
+
+**** Jupyter Python Virtual Env
+
+*** Config file
+
+**** Resource Profiles
+
+**** Docker Profiles
+
+**** User Profiles
+
+** Testing Jupyter
+
+*** Useful debug scripts
++ killing all docker, removing sqlite and cookie, starting as user
++ removing =rm -rf .jupyter .local/share/jupyter/ .cache=
+
+** Running Jupyter
+
+
+* Post Installation Steps
+
+** Setup Proxy
+
+*** Host Machine
+
+*** Proxy Machine
+
+**** WebServer
+
+***** Caddy
+
+***** Nginx
+
+**** Let's encrypt (Certbot)
+
+
+** Set Global limits on Docker
+
+We will be restricting individual Docker containers¹ for each user
+later, but we also want to set a global limit on Docker in general so
+that the rest of the OS still has some resources for itself.
+
+1: A "docker image" is a small operating system file, and a "docker
+   container" uses an image to create an environment, which correspond
+   to Jupyter kernels.
+
+We control the main docker process/daemon by making a child of a
+[[https://en.wikipedia.org/wiki/Cgroups][control group]] which has resource quotas.
+
+We will perform this step later. TODODODODOD
+
+
+* Customization
+
++ Templates
+
+
+* Troubleshooting
+
+** Docker notebooks hang and do not spawn
++ Preload the images
++ Check the firewall
+ 
+** Users cannot use their conda environments
++ Check image and host parameters
++ Check the home path
++ Remove all containers for a user, restart server
+
+** Other issues
+
++ Make a PR
