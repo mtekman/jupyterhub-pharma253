@@ -1,18 +1,19 @@
+## Leave the first 10 lines alone.
 c = get_config()  #noqa
 
-from os.path import exists as pathexists, join as pathjoin
 from pathlib import Path as currpath
 from sys import path as modulepath
 modulepath.append(str(currpath().resolve())) ## need this to import custom module
 
 ## Custom module: DockerSystemProfileSpawner and Templates
 from DockerSystemProfileSpawner import DockerSystemProfileSpawner as DSPS, Templates
+c.JupyterHub.spawner_class = DSPS  ## this is our custom spawner. Don't change.
 
 ## The jupyter python environment MUST be set.
 jupyter_venv = "/home/memo/repos/_mtekman/jupyterhub-pharma253/venv_mtekman/"
 server_type = "https"   ## or "local", "proxy", "https"
 
-c.JupyterHub.spawner_class = DSPS  ## this is our custom spawner. Don't change.
+c.Authenticator.admin_users = ['memo']
 
 c.JupyterHub.spawner_class.resource_profiles = {
     ## These are maximum LIMITs to which a Docker Image can run.
@@ -44,7 +45,6 @@ c.JupyterHub.spawner_class.docker_profiles = {
 
 c.JupyterHub.spawner_class.user_profiles = {
     ## Docker profiles permitted per user.
-
     ##
     ## The "default" entry MUST exist. These are the docker profiles
     ## permitted to any user who isn't explicitly listed below. The
@@ -99,7 +99,6 @@ else:
 c.JupyterHub.hub_ip = '172.17.0.1' ## This corresponds to the docker0 address
 
 c.Spawner.default_url = '/lab'
-c.Authenticator.admin_users = ['memo']
 c.DockerSpawner.debug = True
 
 ## This copies over templates and sets the API keys for metrics

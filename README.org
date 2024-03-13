@@ -58,11 +58,11 @@ we don't see any network device starting with "docker", so we need to start dock
 This is what we want to see, the inet address of the =docker0= device, =172.17.0.1=.
 Remember this, we will use this for later.
    
-** Uncomplicated Firewall
+** Firewall
 
-[[https://wiki.archlinux.org/title/Uncomplicated_Firewall][UFW]] is a great firewall for blocking unwanted connections. The
-Pharma2-53 is already behind a firewall and does not accept outside
-connections from the facility
+[[https://wiki.archlinux.org/title/Uncomplicated_Firewall][UFW]] (Uncomplicated Firewall) is a great firewall for blocking unwanted
+connections. The Pharma2-53 is already behind a firewall and does not
+accept outside connections from the facility
 
 You can verify this by looking at the output of
 
@@ -194,29 +194,304 @@ Verify that we are on version 21 via
   node --version
 #+end_src
 
-*** Python
+*** (Optional) Python
+
+The version of JupyterHub we're using relies on a pretty modern
+Python. To avoid any discrepancies between system Python and Jupyter
+Python, we will build our own Python, seperate from the system.
+
+  #+begin_src bash
+    export MYPYVER=3.11.8
+    export INSTALLHERE=/opt/jupyterhub/python-${MYPYVER}  ## must be an absolute path
+
+    ## Get and unpack python sources
+    cd /opt/jupyterhub
+    wget http://www.python.org/ftp/python/${MYPYVER}/Python-${MYPYVER}.tgz
+    tar -zxvf Python-${MYPYVER}.tgz
+
+    ## specify installation directory
+    mkdir ${INSTALLHERE}
+    cd Python-${MYPYVER}
+    CXX=$(command -v g++) ./configure --prefix=${INSTALLHERE} --enable-optimizations --enable-loadable-sqlite-extensions
+    make
+    make install
+
+    ## Remove unneeded source files
+    rm -rf /opt/jupyterhub/Python-${MYPYVER}.tgz /opt/jupyterhub/Python-${MYPYVER}
+  #+end_src
+
+** Prepare Jupyter
 
 
+At this point we have 1 directory
 
+#+begin_src bash
+    > tree  /opt/jupyterhub
+    /opt/jupyterhub/
+    └─ python-3.11.8
+#+end_src
 
-** Configure Jupyter
-
+We need to prepare the other directories now, the custom Jupyter
+install, and the custom DockerSpawner.
 
 *** Prepare Jupyter Directories
 
+  Let's clone the needed repos
+
 **** DockerSystemProfileSpawner
 
-**** Jupyter Python Virtual Env
++ Clone this repo...
 
-*** Config file
+#+begin_src bash
+  cd /opt/jupyterhub
+  git clone https://gitlab.com/mtekman/jupyterhub-pharma253
+#+end_src
 
-**** Resource Profiles
+**** Jupyter with Metrics
 
-**** Docker Profiles
+We do a shallow clone and use the "sysmon" branch
 
-**** User Profiles
+#+begin_src bash
+  cd /opt/jupyterhub
+  git clone --depth 1 https://github.com/mtekman/jupyterhub/ -b sysmon jupyterhub-metrics
+#+end_src
+
+At this point we now have 3 directories
+
+#+begin_src bash
+  > tree  /opt/jupyterhub
+  /opt/jupyterhub/
+  ├─ jupyterhub-metrics    (our custom jupyterhub)
+  ├─ jupyterhub-pharma253  (the custom docker spawner)
+  └─ python-3.11.8         (our custom python)
+#+end_src
+
+
+*** Creating the Jupyter VirtualEnvironment
+
+We built our own Python previously in the
+=/opt/jupyterhub/python-3.11.8= directory, but we haven't actually
+used it yet or installed any necessary packages into it.
+
+To do so, we create a virtual environment from it, and we keep it
+inside the the pharma directory.
+
+#+begin_src bash
+  cd /opt/jupyterhub/jupyterhub-pharma253
+  /opt/jupyterhub/jupyterhub-metrics/bin/python -m virtualenv venv_jupyter_metrics
+#+end_src
+
+Now we *source* this environment. We install packages inside of it and use it for launching Jupyter.
+
+#+begin_src bash
+  source venv_jupyter_metrics/bin/activate  ## we've sourced it
+  pip install ../jupyterhub-metrics/        ## install the dependencies of jupyter
+  pip install dockerspawner psutil configurable-http-proxy  ## install other dependencies
+#+end_src
+
+At this point Jupyter with metrics is installed. We just need to configure it.
+
+
+* Jupyter Config file
+
+The config file is actually a python script, so we use it to import
+our custom spawner, and to configure the different components of the Hub.
+
+Ignore the first few lines, these just tell python to consider the
+current directory when looking for modules.
+
+*** Jupyter Venv
+
+You should set the =jupyter_venv= variable to the absolute path of the
+=venv_jupyter_metrics= virtual environment we made earlier
+
+#+begin_src python
+  jupyter_venv = "/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/"
+#+end_src
+
+*** Admin Users
+
+We need to define our admin users who will have permissions to oversee
+the server and access the servers of other users.
+
+#+begin_src python
+  c.Authenticator.admin_users = ['memo', 'admin']
+#+end_src
+
+Here we define two users: "memo" and "admin" which are valid system user accounts.
+
+** Server Type
+
+We also need to tell Jupyter what kind of server this is by setting
+the =server_type= variable.
+
+1. "local"
+
+   Jupyter will be served only on the local machine over an insecure http protocol.
+
+   If you wish to still use this server as is, but open it up to the
+   entire network, then change the =c.JupyterHub.ip= variable near the
+   bottom to "0.0.0.0".
+
+2. "https"
+
+   Jupyter will be served over the internet over a secure https protocol.
+
+   You will need to configure the =c.JupyterHub.ssl_cert= and
+   =c.JupyterHub.ssl_key= variables with your HTTPS certificate
+   fullchain and privkeys that you will get from certbot. See the
+   [[HTTPS Certification]] section later.
+
+3. "proxy"
+
+   Jupyter will be server over the internet through a secure
+   proxy. Users will not connect directly to this machine, but will
+   connect first to a proxy device, and the proxy device will tunnel
+   all requests to the machine.
+
+   The certificates do not matter here, since all certification is
+   performed on the proxy machine and not on the Jupyter machine.
+
+   You will need to configure the =c.JupyterHub.bind_url= variable to point to the
+   http proxy address and port. See the [[Proxy Machine]] section later.
+
+
+The Pharma2-53 machine does not allow for direct outside connections
+(see the [[Firewall]] section previously). So either you make a few
+exceptions to allow port 80 (http) and port 443 (https) in the
+firewall, or we use the proxy option
+
+#+begin_src python
+  server_type = "proxy"
+#+end_src
+
+** Managing Individual User Resources
+
+This section describes the way we can configure what resources are
+offered to the users. The recommended CPU and MEM profiles, with
+maximum limits, the Docker images they can use, and the per-user overrides.
+
+*** Resource Profiles
+
+Here we set 5 resource profiles that users can choose from, defined by
+how many CPU cores and how many GB's of RAM they can consume.
+
+#+begin_src python
+  c.JupyterHub.spawner_class.resource_profiles = {
+      ## These are maximum LIMITs to which a Docker Image can run.
+      ## - At the same time, you can PREALLOCATE resources, see the preallocate
+      ##   subentry in the user_profiles
+      "Tiny"   : {"cpu_limit": 1,  "mem_limit": 2},
+      "Small"  : {"cpu_limit": 2,  "mem_limit": 4},
+      "Normal" : {"cpu_limit": 5,  "mem_limit": 10},
+      "Large"  : {"cpu_limit": 10, "mem_limit": 40},
+      "Extreme": {"cpu_limit": 36, "mem_limit": 80}
+  }
+#+end_src
+
+These are maximum limits, and the user can manually select whatever
+resources they want that fit their allowed resource profiles.
+
+Users can also have "preallocated" cores and memory, meaning that at
+*minimum* a certain number of cores and memory will allocated for them.
+
+*** Docker Profiles
+
+Here we define 3 different docker images (each containing a
+jupyter-*lab* install), and the URLs to retrieve them.
+
+You can find more jupyter docker "stacks" [[https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-base-notebook][here]].
+
+#+begin_src python
+  c.JupyterHub.spawner_class.docker_profiles = {
+      ## These correspond quay.io images, but see
+      ## https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-base-notebook
+      ## for more
+      ##
+      ## Basic, users rely on their conda installations for software
+      "SingleUser" : "quay.io/jupyterhub/singleuser:main",
+      "BaseNotebook" : "quay.io/jupyter/base-notebook",
+      ## Includes R, Python, and Julia at the system level, as well as their conda installations.
+      "DataScience" : "quay.io/jupyter/datascience-notebook:latest"
+      ## Add others
+      ##
+      ## To prevent users complaining of the slow startup times, download the required image first,
+      ## and then run Jupyter.
+      ## e.g. sudo docker run <URL>
+  }
+#+end_src
+
+  The first time these images are fetched and built, they will take
+  some time, so it is better to pre-emptively fetch these images
+  before starting the server, so that the docker containers don't need to wait first.
+
+  You can fetch them with the docker run command shown in the comment text above.
+
+*** User Profiles
+
+These are the individual user restrictions. Below we define two users "default" and "memo". 
+By default all users use the "default" profile, unless explicitly named.
+
+All keywords are named to be compliant with the [[https://jupyterhub-dockerspawner.readthedocs.io/en/latest/api/index.html][DockerSpawner API]].
+
+#+begin_src python
+  c.JupyterHub.spawner_class.user_profiles = {
+      ## Docker profiles permitted per user.
+      ##
+      ## The "default" entry MUST exist. These are the docker profiles
+      ## permitted to any user who isn't explicitly listed below. The
+      ## first entry in the list, is the preferred profile first offered
+      ## to the user in the selection screen.
+      ##
+      "default" : {
+          "allowed_resources": ["Normal", "Tiny", "Small", "Large", "Extreme"],
+          "allowed_docker": ["SingleUser", "BaseNotebook", "DataScience"],
+          "host_homedir_format_string" : "/media/daten/{username}",
+          ## maximum guaranteed resources for default users
+          ## - if the requested are smaller than the resource profile
+          ##   then these are scaled down to that profile.
+          "max_preallocate" : {"cpu_guarantee" : 5, "mem_guarantee": 10 }},
+
+      ## User overrides
+      "memo" : { "allowed_resources" : ["Normal", "Tiny", "Small"],
+      ##"allowed_docker" : ["SingleUser"],  ## must be an array, not string or tuple
+                "max_preallocate" : {"cpu_guarantee" : 2, "mem_guarantee": 4 },
+                ##"host_homedir_format_string" : "/opt/jupyterhub/user_home/jupyter_users/{username}"}
+                ## Note that conda only works when home directories are set...
+                "host_homedir_format_string" : "/home/{username}"}
+      ##
+      ## Note: The allowed profile with the largest RAM and largest
+      ## number of CPUs is the upper limit on what the HTML sliders will
+      ## permit.
+      }
+
+#+end_src
+
+ - By default all users are allowed to use all the resource profiles
+defined above, via the =allowed_resources= variable. Notice how user
+"memo" can only use 3 of those profiles..
+
+- Similarly one can define allowed docker images via the
+=allowed_docker= variable. Since the user "memo" does not have this
+defined, he defaults to whatever the "default" user specifies for that
+variable.
+
+- The =host_homedir_format_string= *must* contain the placeholder
+"{username}" string in it's path, and it defines where the home
+directories of the users are, along with their conda environments. The
+user "memo" has his home directory in /home/memo path, which is
+different than the /media/daten/memo path that would have otherwise
+been specified in the default user profile.
+
+- The =max_preallocate= variable specifies the minimum preallocation
+  of resources that are guaranteed for a user. These resources will
+  then grow at maximum to whatever resource profile the user chooses
+  when spawning a kernel.
 
 ** Testing Jupyter
+
+With your config file setup, it is now time to test the server
+
 
 *** Useful debug scripts
 + killing all docker, removing sqlite and cookie, starting as user
@@ -239,7 +514,7 @@ Verify that we are on version 21 via
 
 ***** Nginx
 
-**** Let's encrypt (Certbot)
+**** HTTPS Certification
 
 
 ** Set Global limits on Docker
