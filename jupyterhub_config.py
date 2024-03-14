@@ -85,8 +85,8 @@ elif server_type == "https":
     ## Serve HTTPS only from this machine
     c.JupyterHub.port = 443
     ## Change these to match your domain
-    c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
-    c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
+    c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/www.example.com/fullchain.pem'
+    c.JupyterHub.ssl_key = '/etc/letsencrypt/live/www.example.com/privkey.pem'
 
 elif server_type == "proxy":
     ## Change this to match your proxy, with HTTPS served on the proxy machine
