@@ -2,7 +2,7 @@
 All the systemd files in this folder should be modified to suit the
 jupyter virtual environment, paths, proxy machines, users, etc.
 
-Then they should be copied in /etc/systemd/system/ and then enabled.
+Then they should be copied in =/etc/systemd/system/= and then enabled.
 
 The jupyterhub service file has a soft dependency on the docker_slice
 and proxy-tunnel services, so they should automatically start when jupyter starts.

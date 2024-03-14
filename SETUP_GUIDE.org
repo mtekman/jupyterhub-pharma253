@@ -3,15 +3,33 @@
 * What is this
 
 This is a JupyterHub configuration and extension of the original spec
-which displays metrics to users on the system resources, spawns Docker
-containers, and preserves the existing conda/mamba environments in
-each user directory.
+with a few extras:
 
-The idea is to restrict all the different Jupyter kernels running on
-the same system from competing too hard on RAM resources.
+1. Users can choose how much resources they want
 
-It has also been customized towards the Institute of Pharmacology and
-Toxicology at the University Freiburg.
+   #+NAME: resources
+   https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/e3b96e3282fa990f48e1524c92cf29f5/Screenshot_2024-03-14_at_12-10-42_JupyterHub.png
+
+2. It displays metrics and tool suggestion requirements to users on the spawn page
+
+   #+NAME: metrics
+   [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/e3b96e3282fa990f48e1524c92cf29f5/Screenshot_2024-03-14_at_12-10-42_JupyterHub.png]]
+
+   #+NAME: tools
+   https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/38c677ca5adb01c215b826cb80e35735/2024-03-14-1214.png
+
+
+3. It preserves the existing conda/mamba environments whilst restricting environments with Docker
+
+   #+NAME: conda
+   https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/d6d6902cf48f1159413f4adac77cd3d7/Screenshot_2024-03-14_at_12-22-54_JupyterLab.png
+
+
+4. Customizations for Institute of Pharmacology and Toxicology at the University Freiburg
+
+   #+NAME: templates
+   https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/4086faf273115e005137e9409988fe03/Screenshot_2024-03-14_at_12-25-49_JupyterHub.png
+   
 
 * System Security and Resources
 
