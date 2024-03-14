@@ -223,7 +223,7 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
                    <input id="cpus_slider" value="{cpus}" type="range"
                      list="cpu_values" min="1" max="{max_cpu}"
                      oninput="cpu_limit.value = this.value" />
-                   <datalist id="cpu_values"
+                   <datalist id="cpu_values">
                      {cpu_tick_values}
                    </datalist>
                 </div>
