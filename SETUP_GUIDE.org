@@ -13,7 +13,7 @@ with a few extras:
 2. It displays metrics and tool suggestion requirements to users on the spawn page
 
    #+NAME: metrics
-   [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/e3b96e3282fa990f48e1524c92cf29f5/Screenshot_2024-03-14_at_12-10-42_JupyterHub.png]]
+   [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/96737de0aba2e1fd710b5c375fcb6233/2024-03-14-1215.png]]
 
    #+NAME: tools
    [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/38c677ca5adb01c215b826cb80e35735/2024-03-14-1214.png]]
