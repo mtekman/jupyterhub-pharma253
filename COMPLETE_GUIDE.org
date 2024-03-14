@@ -821,8 +821,19 @@ repo. Modify it to your needs
       #+end_src
 
 There should be an example in the systemd folder. Modify it to your
-needs, copy it over to =/etc/systemd/system/docker_limit.slice= and
-then start it.
+needs, copy it over to =/etc/systemd/system/docker_limit.slice=.
+
+We do not start it, it gets enabled automatically when Docker starts,
+but *only* if you modify the following Docker config file at
+=/etc/docker/daemon.json=
+
+  #+begin_src js
+    {
+        "storage-driver": "overlay2",
+        "cgroup-parent": "docker_limit.slice"
+    }
+  #+end_src
+
 
 * Customization
 
