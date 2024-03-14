@@ -867,7 +867,24 @@ config override, or move that user's home directory to the correct
 location (via =sudo usermod -m -d /media/daten/dbloggs/ dbloggs=),
 then stop their container, remove it, and restart the server.
 
-  
+** Users are unable to install more than one kernel
+
+If your users have more than one conda environment and want to install
+multiple kernels, normally all you need to do is:
+
+#+begin_src bash
+  sudo su thatuser
+  source ~/.bashrc ## just in case conda is not found
+  micromamba activate someenv
+  R
+  library(IRkernel)
+  IRkernel::installspec(displayname="someenv", name="someenv")
+#+end_src
+
+I tend to find that people only use the displayname, but not the name,
+and this leads to the issue of an existing kernel being overwritten.
+
+
 ** Other issues
 
 If other issues arise, please make a PR or email me.
