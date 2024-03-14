@@ -29,7 +29,7 @@ with a few extras:
 
    #+NAME: templates
    [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/4086faf273115e005137e9409988fe03/Screenshot_2024-03-14_at_12-25-49_JupyterHub.png]]
-   
+
 
 * System Security and Resources
 
@@ -57,7 +57,7 @@ First check the current addresses:
   3: eth1: ...
      ....
      inet blahblahblah/24 ....
-     ...    
+     ...
 #+end_src
 
 we don't see any network device starting with "docker", so we need to start docker
@@ -70,12 +70,12 @@ we don't see any network device starting with "docker", so we need to start dock
   3: eth1 ...
   4: docker0 ...
      ...
-     inet 172.17.0.1/16   
+     inet 172.17.0.1/16
 #+end_src
 
 This is what we want to see, the inet address of the =docker0= device, =172.17.0.1=.
 Remember this, we will use this for later.
-   
+
 ** Firewall
 
 [[https://wiki.archlinux.org/title/Uncomplicated_Firewall][UFW]] (Uncomplicated Firewall) is a great firewall for blocking unwanted
@@ -114,7 +114,7 @@ the system, so we need to create a new allow rule.
   > sudo ufw allow from 172.17.0.0/16
   > sudo ufw status
   ...
-  ...  
+  ...
   Anywhere                   ALLOW       172.17.0.0/16
 #+end_src
 
@@ -150,7 +150,7 @@ with the Jupyter Installation.
 The installation comes in two parts:
 
 1. Installing the modified Jupyter base installation
-   
+
    The original jupyterhub does not freely offer metrics on a per-user
    basis, so I forked their repository and implemented it myself.
 
@@ -178,7 +178,7 @@ First thing's first, we backup any existing Jupyter installation. On
 the Pharma2-53 machine, this involves stopping the existing JupyterHub
 service and moving any config files to a backup location:
 
-#+begin_src bash  
+#+begin_src bash
   sudo systemctl stop jupyterhub
   sudo mkdir /opt/__<date>_jupyter_backup
   sudo mv /etc/systemd/system/jupyterhub.service /opt/__<date>_jupyter_backup/
@@ -464,7 +464,7 @@ You can find more jupyter docker "stacks" [[https://jupyter-docker-stacks.readth
 
 *** User Profiles
 
-These are the individual user restrictions. Below we define two users "default" and "memo". 
+These are the individual user restrictions. Below we define two users "default" and "memo".
 By default all users use the "default" profile, unless explicitly named.
 
 All keywords are named to be compliant with the [[https://jupyterhub-dockerspawner.readthedocs.io/en/latest/api/index.html][DockerSpawner API]].
@@ -614,7 +614,7 @@ In a schematic:
 #+begin_src artist
 
   Users --> Internet --(1)-> ProxyDevice <--(2)--> HostDevice (Jupyter)
-      
+
 #+end_src
 
 *** Host Machine
@@ -695,7 +695,7 @@ LetsEncrypt. We will use their =certbot= to request new certificates:
  This should install certificates to the location of
 
  =/etc/letsencrypt/live/www.example.com= on your machine, if it worked.
- 
+
 **** WebServer
 
 Once we have the certificates we can setup the webserver and proxy all
@@ -705,7 +705,7 @@ There are two main ones choose from: Caddy (easy), or Nginx (stable)
 
 You only need one. I can recommend Caddy due to sheer ease, but if
 something is failing on the Proxy side of things, then it can't hurt to try Nginx.
-     
+
 ***** Caddy
 
 Put this inside your caddy file at =/etc/caddy/Caddyfile=
@@ -862,7 +862,7 @@ but *only* if you modify the following Docker config file at
 
    and witnessing that all docker process are children of the docker-slice process.
 
-  
+
 * Customization
 
 The templates folder extends the [[https://jupyterhub.readthedocs.io/en/stable/howto/templates.html][Jinja2 templating system]] and some
@@ -880,7 +880,7 @@ Customization is split into two folders:
   These are the CSS, images, and Javascript resources. Every time that
   Jupyter is started (with the custom Dockerspawner), it directly
   copies over these resources into the virtual environment.
-  
+
 
 * Troubleshooting
 
