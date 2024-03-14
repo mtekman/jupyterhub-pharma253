@@ -16,7 +16,7 @@ if [[ " ${sudo_users[@]} " =~ " ${USER} " ]]; then
 ║     Edit: "/opt/jupyterhub/jupyterhub-pharma253/jupyterhub_config.py" ║
 ║           (then restart jupyterhub)                                   ║
 ║   ──────────────────────────── Docker ─────────────────────────────   ║
-║        List: "docker container ls"                      (only active) ║
+║     General: "docker stats"        (usage and resources of all users) ║
 ║    List all: "docker ps -a"                      (started or stopped) ║
 ║     Stop/rm: "docker start/stop/rm jupyter-<user>" (files unaffected) ║
 ║  Stats/Logs: "docker stats/logs jupyter-<user>"                       ║
