@@ -16,7 +16,7 @@ server_type = "https"   ## or "local", "proxy", "https"
 c.Authenticator.admin_users = ['memo']
 
 ## Users can read/write to their home directories, but here we set other locations
-## which users can access in their volumes which are read only.
+## which all users can access in their volumes which are read only.
 c.JupyterHub.spawner_class.volumes_ro = [
     "/opt/bioinformatic_software/",
     "/media/daten/software/"
