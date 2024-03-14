@@ -881,6 +881,45 @@ Customization is split into two folders:
   Jupyter is started (with the custom Dockerspawner), it directly
   copies over these resources into the virtual environment.
 
+* Upgrading
+
+Development is in the beta stage at the moment, though things look relatively stable.
+
+To upgrade the server:
+
+1. Make a backup copy of your =jupyterhub_config.py= file
+
+   This copy should be outside of the =jupyterhub-pharma253=
+   repository, as any changes from the upstream repository will overwrite any config changes.
+
+2. Stash your current changes
+
+   This will reset your config file (again, you should have backed this up somewhere else)
+
+   #+begin_src bash
+     cd /opt/jupyterhub/jupyterhub-pharma253
+     git stash
+   #+end_src
+
+3. Pull upstream changes for both the JupyterHub Metrics and Pharma253 repositories
+
+   #+begin_src bash
+     cd /opt/jupyterhub/jupyterhub-pharma253
+     git pull
+     cd /opt/jupyterhub/jupyterhub-metrics
+     git pull
+   #+end_src
+
+4. Reinstall the new JupyterHub into the virtual environment
+
+   #+begin_src bash
+     cd /opt/jupyterhub/jupyterhub-pharma253
+     source venv_jupyter_metrics/bin/activate
+     pip install /opt/jupyterhub/jupyterhub-metrics
+   #+end_src
+
+After that you can try restarting (or failing that, debugging) JupyterHub.
+
 
 * Troubleshooting
 
