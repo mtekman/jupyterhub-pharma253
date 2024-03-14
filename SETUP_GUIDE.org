@@ -521,6 +521,7 @@ if you're lucky, things should just work and you should be able to
 visit the JupyterHub login page (see the messages printed to the
 console).
 
+
 *** Debugging
 
 **** Zero Residuals
@@ -563,6 +564,21 @@ spawned via the =sudo docker ps -a= command.
 #+end_src
 
   should tell you where the errors start.
+
+
+** Running Jupyter
+
+If you are happy with the installation, then you can modify the
+=systemd/jupyterhub.service= file and copy it to
+=/etc/systemd/system/=, and then enable it with =sudo systemctl start
+jupyterhub=. Please modify the virtual environment paths in the file first.
+
+To get a live readout of the Jupyterhub logs invoke via Systemd, run:
+
+#+begin_src bash
+  sudo journalctl --follow -u jupyterhub
+#+end_src
+
 
 * Post Installation Steps
 
