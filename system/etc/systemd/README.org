@@ -1,4 +1,10 @@
 
+These are system files to help with the automation and day to day
+tasks of the server.
+
+
+
+
 All the systemd files in this folder should be modified to suit the
 jupyter virtual environment, paths, proxy machines, users, etc.
 

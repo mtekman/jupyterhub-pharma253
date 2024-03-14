@@ -569,9 +569,10 @@ spawned via the =sudo docker ps -a= command.
 ** Running Jupyter
 
 If you are happy with the installation, then you can modify the
-=systemd/jupyterhub.service= file and copy it to
-=/etc/systemd/system/=, and then enable it with =sudo systemctl start
-jupyterhub=. Please modify the virtual environment paths in the file first.
+=system/etc/system/systemd/jupyterhub.service= file in the repository
+and copy it to =/etc/systemd/system/=, and then enable it with =sudo
+systemctl start jupyterhub=. Please modify the virtual environment
+paths in the file first.
 
 To get a live readout of the Jupyterhub logs invoke via Systemd, run:
 
@@ -624,9 +625,10 @@ address "127.0.0.1:58001" will be recieved on the proxy at their port
 
 This builds the (2) connection in the above schematic.
 
-This can be implemented as a systemd service. Please see the systemd
-folder for the =proxy-tunnel-pharma53.service=. You just need to
-modify it to your tastes and then copy it to
+This can be implemented as a systemd service. Please see the
+=system/etc/systemd/system= folder in the repository for the
+=proxy-tunnel-pharma53.service=. You just need to modify it to your
+tastes and then copy it to
 =/etc/systemd/system/proxy-tunnel-pharma53.service= and then start it
 via =sudo systemctl start proxy-tunnel-pharma53=
 
@@ -820,8 +822,9 @@ repo. Modify it to your needs
         ## and start/enable it
       #+end_src
 
-There should be an example in the systemd folder. Modify it to your
-needs, copy it over to =/etc/systemd/system/docker_limit.slice=.
+There should be an example in the =system/etc/systemd/systemd= folder. Modify
+it to your needs, copy it over to
+=/etc/systemd/system/docker_limit.slice=.
 
 We do not start it, it gets enabled automatically when Docker starts,
 but *only* if you modify the following Docker config file at
@@ -834,7 +837,15 @@ but *only* if you modify the following Docker config file at
     }
   #+end_src
 
+   You can verify that the limits are in place by much later invoking
 
+   #+begin_src bash
+     sudo systemd-cgtop
+   #+end_src
+
+   and witnessing that all docker process are children of the docker-slice process.
+
+  
 * Customization
 
 The templates folder extends the [[https://jupyterhub.readthedocs.io/en/stable/howto/templates.html][Jinja2 templating system]] and some

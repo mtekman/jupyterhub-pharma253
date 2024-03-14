@@ -1,13 +1,13 @@
 #+TITLE: JupyterHub Pharma2-53
 
-*  Per-User DockerSpawner with Conda and Metrics
-
 This is a custom Dockerspawner for JupyterHub that gives more choice
 to the users, permitting the admin allows it.
 
 #+NAME: resources
 [[https://gitlab.com/mtekman/jupyterhub-pharma253/uploads/e3b96e3282fa990f48e1524c92cf29f5/Screenshot_2024-03-14_at_12-10-42_JupyterHub.png]]
 
+It restricts user resources to Docker containers, whilst still
+permitting them to use their conda environments.
 
 * Quick Start
 
@@ -43,10 +43,10 @@ not: Ubuntu):
 
 4. Setup the SystemD and Docker Limits
 
-   - First configure the files in the =systemd= directory, namely:
-     - docker_slice: Set the correct CPUQuota and MemoryHigh limits to match your system
-     - proxy-tunnel: Set the correct user, ssh port, proxy binding port, proxyuser, and proxydevice
-     - jupyterhub: Set the PATH to the virtual environment we installed above
+   - First configure the files in the =system/etc/systemd/system= directory, namely:
+     - =docker_limit.slice=: Set the correct CPUQuota and MemoryHigh limits to match your system
+     - =proxy-tunnel.service=: Set the correct user, ssh port, proxy binding port, proxyuser, and proxydevice
+     - =jupyterhub.service=: Set the PATH to the virtual environment we installed above
 
    - Then, copy over all systemd files to =/etc/systemd/system/=
 
@@ -65,9 +65,32 @@ not: Ubuntu):
      sudo systemctl start jupyterhub
    #+end_src
 
-   It should automatically spawn up the proxy, and docker limits by itself
+   It should automatically spawn up the proxy, and docker limits by itself.
+
+   You can verify that the limits are in place by invoking
+
+   #+begin_src bash
+     sudo systemd-cgtop
+   #+end_src
+
+   and witnessing that all docker process are children of the docker-slice process.
+
+* Administration
+
+  The main active forms of administration is adding users, stopping
+  their docker containers if they get too greedy, or upgrading them if
+  they need more resources.
+
+  If you should so wish to, you can also copy over the administration
+  script at =system/etc/profile.d/pharma_admin.sh= into your
+  =/etc/profile.d/=, which should print a welcome message of common
+  administrative tasks for any users in the sudo group
+  
+  For adding users, a convenience script is also provided
+  =system/usr/local/sbin/add_new_pharma_user.sh= that you should copy
+  over to =/usr/local/sbin=.
 
 
-* Administration and Troubleshooting
+* Troubleshooting
 
-Please see the relevant sections in the [[./COMPLETE_GUIDE.org]]
+Please see the "Troubleshooting" section in the [[./COMPLETE_GUIDE.org]]
