@@ -829,7 +829,8 @@ See [[Debugging]] for extra clues.
   from the notebooks. If the addresses seem correct, then check the
   logs of docker container to see if it's transmitting to the right
   addresses.
- 
+
+
 ** Users cannot use their conda environments
 
 This is to do with =host_homedir_format_string= and the
@@ -852,6 +853,21 @@ remove all containers related to a user and try again.
   sudo docker container stop <id>; sudo docker container rm <id>;
 #+end_src
 
+
+** Permission Denied in the Docker Logs
+
+One common issue that I see in the =sudo docker logs jupyter-dbloggs=
+is that the =/media/daten/davidbloggs/.local= could not be found, for
+user =dbloggs=. The problem is clearly that the
+=host_homedir_format_string= for that user is expecting the home
+directory to be at =/media/daten/dbloggs/= instead.
+
+Either set the =host_homedir_format_string= for that user with a
+config override, or move that user's home directory to the correct
+location (via =sudo usermod -m -d /media/daten/dbloggs/ dbloggs=),
+then stop their container, remove it, and restart the server.
+
+  
 ** Other issues
 
 If other issues arise, please make a PR or email me.
