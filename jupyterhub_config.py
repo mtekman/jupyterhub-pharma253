@@ -15,6 +15,13 @@ server_type = "https"   ## or "local", "proxy", "https"
 
 c.Authenticator.admin_users = ['memo']
 
+## Users can read/write to their home directories, but here we set other locations
+## which users can access in their volumes which are read only.
+c.JupyterHub.spawner_class.volumes_ro = [
+    "/opt/bioinformatic_software/",
+    "/media/daten/software/"
+]
+
 c.JupyterHub.spawner_class.resource_profiles = {
     ## These are maximum LIMITs to which a Docker Image can run.
     ## - At the same time, you can PREALLOCATE resources, see the preallocate
@@ -75,7 +82,6 @@ c.JupyterHub.spawner_class.user_profiles = {
 
 c.JupyterHub.cleanup_servers = False
 c.JupyterHub.sysmon_interval = 2
-
 
 if server_type == "local":
     # Serve locally only

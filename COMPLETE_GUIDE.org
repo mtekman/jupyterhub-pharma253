@@ -338,6 +338,23 @@ the server and access the servers of other users.
 
 Here we define two users: "memo" and "admin" which are valid system user accounts.
 
+
+*** Read Only Volumes
+
+  Users can read/write to their home directories, but they might need
+  other directories accessible too. Here we specify some paths that we
+  want mounted from host into the container.
+
+  For each item in the list, the host path is mounted into the image
+  at the exact same path (issues?)
+
+  #+begin_src python
+    c.JupyterHub.spawner_class.volumes_ro = [
+        "/opt/bioinformatic_software/",
+        "/media/daten/software/"
+    ]
+  #+end_src
+
 ** Server Type
 
 We also need to tell Jupyter what kind of server this is by setting

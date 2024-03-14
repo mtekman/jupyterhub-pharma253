@@ -44,6 +44,9 @@ class Templates():
         api_token = Templates.initialiseMetricService(jconfig)
         self.replaceAPIToken(api_token)
 
+        ## Mount the read-only volumes
+        self.mountROVolumes()
+
 
     @staticmethod
     def checkPath(name, path):
@@ -64,6 +67,16 @@ class Templates():
             "services": [ "metrics-service" ]
         }]
         return(api_token)
+
+    def mountROVolumes(self):
+        bind_map = {} ##  host:image dictionary
+        if len(self.volumes_ro) > 0:
+            for vol in self.volumes_ro:
+                print("Mounting '{vol}' in host at '{vol}' in image"
+                      .format(vol=vol))
+                bind_map[vol] = vol
+        self.read_only_volumes = bind_map
+
 
     def replaceAPIToken(self, token):
         ## We populate the token only on the copy, not the original source.
@@ -312,6 +325,8 @@ class DockerSystemProfileSpawner(SystemUserSpawner):
         ## We need to fill these into the options later
         options['host_homedir_format_string'] = self.host_homedir_format_string
         options['image_homedir_format_string'] = self.image_homedir_format_string
+
+        options['read_only_volumes'] = self.read_only_volumes
 
         ## These are needed for the spawner to be aware of them
         self.mem_limit = options['mem_limit']
