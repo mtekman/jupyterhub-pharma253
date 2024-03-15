@@ -80,7 +80,11 @@ c.JupyterHub.spawner_class.user_profiles = {
     ## permit.
 }
 
+## Keep the servers alive when jupyterhub is stopped or restarted
+## But ensure that when a user clicks "stop", they actually mean "delete"
 c.JupyterHub.cleanup_servers = False
+c.DockerSpawner.remove = True  ## Delete servers!
+
 c.JupyterHub.sysmon_interval = 2
 
 if server_type == "local":
