@@ -42,7 +42,8 @@ class Templates():
 
         ## Create API and metrics services
         api_token = Templates.initialiseMetricService(jconfig)
-        self.replaceAPIToken(api_token)
+        self.replaceAPIToken(api_token, "charts.js")
+        self.replaceAPIToken(api_token, "dockerstats.js")
 
 
     @staticmethod
@@ -65,19 +66,19 @@ class Templates():
         }]
         return(api_token)
 
-    def replaceAPIToken(self, token):
+    def replaceAPIToken(self, token, ourjs_file):
         ## We populate the token only on the copy, not the original source.
-        charts_js = pathjoin(self.venv_static_dir, "our_js", "charts.js")
-        if not pathexists(charts_js):
-            raise AssertionError("Unable to find 'charts.js' at '{path}'"
-                                 .format(path=charts_js))
+        js_file = pathjoin(self.venv_static_dir, "our_js", ourjs_file)
+        if not pathexists(js_file):
+            raise AssertionError("Unable to find '{ourjs_file}' at '{path}'"
+                                 .format(path=js_file, ourjs_file=ourjs_file))
 
         token_from = "api_token : null,"
         token_to   = "api_token : '{token}',".format(token=token)
 
         new_content=""
         replaced_token = False
-        with open(charts_js, 'r') as ch:
+        with open(js_file, 'r') as ch:
             for line in ch:
                 if not replaced_token:
                     if token_from in line:
@@ -87,9 +88,9 @@ class Templates():
 
         if replaced_token == False:
             raise AssertionError("Unable to find '{text}' in '{path}'"
-                                 .format(text = token_from, path=charts_js))
+                                 .format(text = token_from, path=js_file))
 
-        with open(charts_js, 'w') as ch:
+        with open(js_file, 'w') as ch:
             ch.write(new_content)
 
 
