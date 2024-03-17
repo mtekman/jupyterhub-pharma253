@@ -20,7 +20,7 @@ export const Charts = {
         timescale_data : new Map(),   // new data coming in
         hist_data : new Map(),        // summarized data from timescale_data
 
-        generateFakeMetrics: function(){
+        simulateSystemMetrics: function(){
             "Class purely for debugging. It fakes the metrics that would be output from fetchData()"
             const rand_frac = 1.5 + (Math.random() * 1.5)
             const total_cpu_all = Math.random() * 100
@@ -65,7 +65,7 @@ export const Charts = {
             return(metr)
         },
 
-        getMetrics : async function(){
+        getSystemMetrics : async function(){
             const data = await fetch("/hub/api/sysmon", {
                 method: 'GET',
                 headers: {
@@ -93,8 +93,8 @@ Restart the server.`)
 
         populateTimeScale: async function(){
             // For Debugging, uncomment below.
-            //const metrics = Charts.Metrics.generateFakeMetrics()
-            const metrics = await Charts.Metrics.getMetrics()
+            //const metrics = Charts.Metrics.simulateSystemMetrics()
+            const metrics = await Charts.Metrics.getSystemMetrics()
             const time = Date.now()
 
             for (let username in metrics.user.cpu_percent){
@@ -170,7 +170,7 @@ Restart the server.`)
         user_highlight : document.getElementById("highlighted_user"),
         user_active : document.getElementById("active_users"),
         user_pause : document.getElementById("pause_button"),
-        div_collapse : document.getElementById("collapse_plotgraph")
+        div_collapse : document.getElementById("collapse_plotgraph"),
     },
 
     Style : {

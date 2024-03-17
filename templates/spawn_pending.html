@@ -2,7 +2,16 @@
 {% block message %}
 {{ super() }}
 
-Hang tight, we might need to download a docker image, or the system
-might be a little bit overwhelmed.
+<div>
+  <pre>
+  Please wait....
+
+  If this takes longer than 30 seconds, the the system might need
+  to download a Docker image, or the system needs to free space.
+
+  </pre>
+</div>
+
+
 
 {% endblock %}

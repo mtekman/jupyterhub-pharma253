@@ -265,6 +265,7 @@ input:checked + .chart_slider:before {
   background-color: white;
   margin: auto;
   border: 1px solid black;
+  margin-bottom: 8px;
 }
 
 .met_content > p {
@@ -274,6 +275,7 @@ input:checked + .chart_slider:before {
 /* Aligning all metrics and dropdowns */
 #all_extras {
     padding-top: 20px;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-content: stretch;
@@ -284,3 +286,4 @@ input:checked + .chart_slider:before {
     margin: auto;
     
 }
+
