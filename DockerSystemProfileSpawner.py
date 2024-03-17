@@ -54,15 +54,19 @@ class Templates():
 
     @staticmethod
     def initialiseMetricService(jconf):
+        ## Use the same API token for both services?
         api_token = token_hex(32)
         jconf.services = [{
-            'name': 'metrics-service',
+            'name': 'metrics-system',
             'api_token': api_token
+        },{
+           'name': 'metrics-docker',
+           'api_token': api_token
         }]
         jconf.load_roles = [{
             "name": "metrics-role",
             "scopes": ["read:users"],
-            "services": [ "metrics-service" ]
+            "services": [ "metrics-system", "metrics-docker" ]
         }]
         return(api_token)
 

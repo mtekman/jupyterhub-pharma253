@@ -287,3 +287,20 @@ input:checked + .chart_slider:before {
     
 }
 
+.docker > div {
+    display: flex;
+}
+
+.docker span {
+   flex-grow: 1;
+   font-size: 0.8em;
+}
+
+.docker span > p {
+    display: inline-block;
+}
+
+
+#docker_stats {
+  font-size: 0.5em;
+}

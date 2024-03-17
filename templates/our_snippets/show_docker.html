@@ -1,0 +1,13 @@
+<input type="button" class="met_collapsible"
+       id="collapse_docker" value="Show Docker Stats" >
+<div class="met_content docker">
+  <div>
+    <span>Output of "docker stats", next update in:</span>
+    <span>&nbsp;</span>
+    <span><p id="docker_timer">1.5</p><p>s</p></span>
+    <!-- we assume a 1.5s retrieval latency -->
+  </div>
+  <div>
+    <pre id="docker_stats" >Fetching...</pre>
+  </div>
+</div>

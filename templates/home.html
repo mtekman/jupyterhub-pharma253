@@ -9,10 +9,14 @@
   <div>
     {% include "our_snippets/show_metrics.html" %}
   </div>
+  <div>
+    {% include "our_snippets/show_docker.html" %}
+  </div>
 </div>
 
 <script type="module" >
   {% include "our_snippets/show_metrics.js" %}
+  {% include "our_snippets/show_docker.js" %}
 </script>
 
 {% endblock %}
