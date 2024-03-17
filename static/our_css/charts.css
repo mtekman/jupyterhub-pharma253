@@ -68,10 +68,10 @@ td input[type="range"] {width: 150px;}
 }
 .choices__list--dropdown .choices__item,
 .choices__list[aria-expanded] .choices__item {
-  /* Size of each drop down item */
-  position:relative;
-  padding:0px;
-  font-size:small;
+    /* Size of each drop down item */
+    position:relative;
+    padding:0px;
+    font-size:small;
 }
 .choices__list--single {
     max-width: 250px;
@@ -150,8 +150,8 @@ div.myspecs:nth-child(1) {
 }
 
 #collapse_tools ~ div {
-   /* Tool container max width */
-   max-width: 70%;
+    /* Tool container max width */
+    max-width: 70%;
 }
 
 
@@ -236,36 +236,36 @@ input:checked + .chart_slider:before {
 
 /* Collapsible */
 .met_collapsible {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 8px;
-  border: 1px solid black;
-  border-radius: 8px 8px 8px 8px;
-  width: 100%;
-  text-align: center;
-  outline:none;
-  font-size: 15px;
-  margin: auto;
-  margin-bottom: 0.5em;    
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 8px 8px 8px 8px;
+    width: 100%;
+    text-align: center;
+    outline:none;
+    font-size: 15px;
+    margin: auto;
+    margin-bottom: 0.5em;
 }
 
 .active {
-  border-radius: 8px 8px 0px 0px;
-  margin-bottom: 0;    
+    border-radius: 8px 8px 0px 0px;
+    margin-bottom: 0;
 }
 
 .active, .met_collapsible:hover {
-  background-color: #ccc;
+    background-color: #ccc;
 }
 .met_content {
-  padding: 18px 18px;
-  display: none;
-  overflow: hidden;
-  background-color: white;
-  margin: auto;
-  border: 1px solid black;
-  margin-bottom: 8px;
+    padding: 18px 18px;
+    display: none;
+    overflow: hidden;
+    background-color: white;
+    margin: auto;
+    border: 1px solid black;
+    margin-bottom: 8px;
 }
 
 .met_content > p {
@@ -284,7 +284,7 @@ input:checked + .chart_slider:before {
 #all_extras > div {
     flex-grow: 1;
     margin: auto;
-    
+
 }
 
 .docker > div {
@@ -292,15 +292,14 @@ input:checked + .chart_slider:before {
 }
 
 .docker span {
-   flex-grow: 1;
-   font-size: 0.8em;
+    flex-grow: 1;
+    font-size: 0.8em;
 }
 
 .docker span > p {
     display: inline-block;
 }
 
-
 #docker_stats {
-  font-size: 0.5em;
+    font-size: 0.85em;
 }
