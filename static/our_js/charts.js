@@ -5,10 +5,13 @@ import {
     scaleLinear, select, max, line, curveBasis
 } from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-export const Charts = {
+import { Timers } from "./timers.js";
 
+export const Charts = {
     api_token : null, // Don't change this. This token is changed to a
     //new value via the Templates() class when starting Jupyter.
+
+    timer_list : [],
 
     Metrics : {
         choice_element : null,
@@ -206,46 +209,6 @@ Restart the server.`)
         }
     },
 
-    Timers : class Timers {
-
-        static _db = {} // internal database of all timers
-
-        static get(name){
-            return(Charts.Timers._db[name])
-        }
-
-        static setAll(state, donowtoo=false){
-            console.log("Setting timers:", state)
-            // state MUST be either pause or resume
-            for (var tmp in Charts.Timers._db){
-                Charts.Timers.get(tmp)[state](donowtoo)
-            }
-        }
-
-        constructor(name, do_func, millisecs) {
-            this.timer = null
-            this.task = do_func
-            this.ms = millisecs
-            this.resume()
-            Charts.Timers._db[name] = this
-        }
-
-        resume(donowtoo=false){
-            if (this.timer === null){
-                this.timer = setInterval(this.task, this.ms);
-                if (donowtoo){
-                    this.task()
-                }
-            }
-        }
-
-        pause() {
-            if (this.timer !== null){
-                clearInterval(this.timer);
-                this.timer = null
-            }
-        }
-    },
 
     Smooth : {
         /* Functions for processing timescale data, by squashing older
@@ -474,14 +437,14 @@ Restart the server.`)
                             let pathname = path.__data__[0]
                             Charts.Selector.user_highlight.innerText = pathname
                             path.style.strokeWidth = Charts.Style.stroke_width_user_highlight
-                            Charts.Timers.get("render").pause()
+                            Timers.get("render").pause()
                         })
                         .on("mouseout", function(ev){
                             let path = ev.target
                             let pathname = path.__data__[0]
                             path.style.strokeWidth = new_style_map.get(pathname).width
                             Charts.Selector.user_highlight.innerText = null
-                            Charts.Timers.get("render").resume()
+                            Timers.get("render").resume()
                         }),
                         update => update,
                         function(exit){
@@ -541,11 +504,11 @@ Restart the server.`)
         const plot_every = 1000
         const fetch_every = 3000
 
-        new Charts.Timers("populate",
-                          Charts.Metrics.populateTimeScale,
-                          fetch_every)
+        new Timers("populate",
+                   Charts.Metrics.populateTimeScale,
+                   fetch_every)
 
-        new Charts.Timers("squash", function(){
+        new Timers("squash", function(){
             Charts.Smooth.squashDataOlderThan(squash_older_than)
         }, squash_every)
 
@@ -559,18 +522,19 @@ Restart the server.`)
         // RAM plot with xticks
         var p2 = new Charts.Plot("ram", "RAM (MB)", margin, width, height, 100, "memory_rss_mb", true)
         // They share a common Timer
-        new Charts.Timers("render", function(){
+        new Timers("render", function(){
             p1.render(trans_time_new, trans_time_hist)
             p2.render(trans_time_new, trans_time_hist)
         }, plot_every)
 
+        Charts.timer_list = [ "render", "populate", "squash" ];
 
         // Manual Toggle button
         Charts.Selector.user_pause.addEventListener("change", (event) => {
             if (Charts.Selector.user_pause.checked){
-                Charts.Timers.setAll("resume", true)
+                Timers.setAll("resume", true, Charts.timer_list)
             } else {
-                Charts.Timers.setAll("pause")
+                Timers.setAll("pause", false, Charts.timer_list)
             }
         })
 
@@ -580,10 +544,10 @@ Restart the server.`)
             this.classList.toggle("active")
             if (content.style.display === "block") {
                 content.style.display = "none"
-                Charts.Timers.setAll("pause")
+                Timers.setAll("pause", false, Charts.timer_list)
             } else {
                 content.style.display = "block"
-                Charts.Timers.setAll("resume", true)
+                Timers.setAll("resume", true, Charts.timer_list)
             }
         })
 
@@ -599,7 +563,7 @@ Restart the server.`)
         // Upon first loading the page, check that chargs are visible,
         // and if not pause them.
         if (Charts.Selector.div_collapse.nextElementSibling.style.display !== "block"){
-            Charts.Timers.setAll("pause")
+            Timers.setAll("pause", false, Charts.timer_list)
         }
     }
 }
