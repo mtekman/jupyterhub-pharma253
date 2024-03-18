@@ -927,21 +927,63 @@ See [[Debugging]] for extra clues.
 
 ** Docker notebooks hang and do not spawn
 
-- It could just be that images have not been fetched yet and require
-  some time to fetch, build, and then launch a container.
 
-  To speed this up, you can preload the images via =sudo docker run
-  <image-url>= and then kernel spawning should be much faster.
+*** Busy fetching images:
 
-- It could also be that the firewall is blocking Jupyter from talking
-  to Docker. Temporarily disable the firewall to see if it makes a
-  difference =sudo ufw disable=.
+It could just be that images have not been fetched yet and require
+some time to fetch, build, and then launch a container.
 
-  Also check the Jupyter logs to see what addresses it is waiting for
-  from the notebooks. If the addresses seem correct, then check the
-  logs of docker container to see if it's transmitting to the right
-  addresses.
+To speed this up, you can preload the images via =sudo docker run
+<image-url>= and then kernel spawning should be much faster.
 
+*** Check Firewall
+
+It could also be that the firewall is blocking Jupyter from talking to
+Docker. Temporarily disable the firewall to see if it makes a
+difference =sudo ufw disable=.
+
+Also check the Jupyter logs to see what addresses it is waiting for
+from the notebooks. If the addresses seem correct, then check the logs
+of docker container to see if it's transmitting to the right
+addresses.
+
+*** User Home Directory
+
+Check that the =host_homedir_format_string= matches where the user's
+home directory actually is. E.g. if I have a user called jbloggs, and
+my =host_homedir_format_string= is "=/media/daten/{username}=", then
+Docker expects that user's home directory to be: =/media/daten/jbloggs=
+
+Sometimes what actually happens is that the user home directory is
+=/media/daten/joebloggs= instead. You can verify this by
+
+#+begin_src bash
+  sudo su jbloggs    ## login as that user
+  cd ~               ## change to home
+  pwd                ## observed the location of home
+#+end_src
+
+If the home directory is not where Docker is expecting it to be, then
+either:
+
+ 1. Specify a user override in the jupyter_config for =host_homedir_format_string=
+
+    OR
+
+ 2. Change that user's home directory to be compliant with the default.
+
+    #+begin_src bash
+      ## Remove desired directory if exists already.
+      ## If it's empty, this command will succeed. If not, then move any sensitive data OUT.
+      sudo rmdir /media/daten/jbloggs
+      ## Move (-m) the user's home directory (-d) from whatever it is now to
+      ## to the new location.
+      ## - This can be a LONG PROCESS if you are moving between disks/paritions
+      ## - If the user is logged in, tell them to LOG OUT before you do this.
+      sudo usermod -m -d /media/daten/jbloggs jbloggs
+    #+end_src
+
+After that, notebooks should spawn fine.
 
 ** Users cannot use their conda environments
 
