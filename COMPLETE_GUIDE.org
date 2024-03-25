@@ -863,6 +863,32 @@ but *only* if you modify the following Docker config file at
    and witnessing that all docker process are children of the docker-slice process.
 
 
+* Docker Image Stack
+
+The Jupyter Docker images offered by [[https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#image-relationships][jupyter-docker-stacks]] offer
+python, R, and Julia notebooks. These are fine, if users have R
+installations specified by their own conda environments, but many don't.
+
+For this reason I put together a new docker image that offers R,
+Python, Bash kernels and offers some help text on how to use conda environments.
+
+It needs to be built via:
+
+#+begin_src bash
+  cd /opt/jupyterhub/jupyterhub-pharma253
+  sudo docker buildx build -t bash-python-r docker-image
+#+end_src
+
+This will then take some time to build the 2.9GB image, but then it should be visible in the list
+of docker images under the name =bash-python-r=:
+
+#+begin_src bash
+  sudo docker image ls
+#+end_src
+
+You can then specify this docker image by url: =docker.io/library/bash-python-r= and add it to the config
+
+
 * Customization
 
 The templates folder extends the [[https://jupyterhub.readthedocs.io/en/stable/howto/templates.html][Jinja2 templating system]] and some

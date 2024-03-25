@@ -75,6 +75,23 @@ not: Ubuntu):
 
    and witnessing that all docker process are children of the docker-slice process.
 
+* Custom Docker Image
+
+This needs to be built and added to the config file:
+
+   #+begin_src bash
+     sudo docker buildx build -t bash-python-r docker-image
+   #+end_src
+
+   and then set
+
+   #+begin_src python
+     "bash-python-r": "docker.io/library/bash-python-r"
+   #+end_src
+
+   as an option in =c.JupyterHub.spawner_class.docker_profiles=
+
+
 * Administration
 
   The main active forms of administration is adding users, stopping
