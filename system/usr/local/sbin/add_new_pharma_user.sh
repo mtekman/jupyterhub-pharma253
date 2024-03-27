@@ -23,9 +23,9 @@ fi
 homedir=/media/daten/$username;
 
 echo -e "\nThis will create a new account for\n\n              \t'${realname}'\nwith username:\t'${username}'\nwith a home at:\t'${homedir}'\n"
-read -p "Type 'YES' to proceed: " ans
+read -p "Type 'YES' (in caps) to proceed: " ans
 if [ "$ans" != "YES" ]; then
-    echo "$negative"
+    echo -e "${negative} 'YES' in caps was not typed."
     exit 255
 fi
 

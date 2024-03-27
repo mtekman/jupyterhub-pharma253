@@ -240,6 +240,67 @@ After the packages finish installing, you will then need to install a kernel for
         ('%Yhelpme install kernels%R')
 "
            ;;
+       "find my common"*)
+           (
+               echo "
+This will produce a list of your R libraries sorted by descending frequency.
+"
+               if [[ -e ~/R_libraries.txt ]]; then
+                   echo "It appears you have already run this command on $(stat -c'%y' ~/R_libraries.txt | cut -d. -f 1). Continuing now will overwrite the last results.
+"
+               fi
+
+               read -p "Continue? (type 'YES' in capitals) " result_comm
+               if [[ "$result_comm" != "YES" ]]; then
+                   echo "Bailing. Did nothing."
+                   exit 0
+               fi
+
+               echo "Searching..."
+               cd ~
+               find -type f -name "*.ipynb" -exec grep -oP -h "library\([^)]*\)" {} + | sed 's|\\"||g' | sed "s|'||g" | sort | uniq -c | sort -rnk 1 > R_libraries.txt
+               cd - 2>/dev/null
+               echo  "\
+Finished.
+
+You can view your commonly used packages by typing
+
+           %Pcat ~/R_libraries.txt%R
+
+If you wish you can try to automatically install these packages into an environment
+       ('%Yhelpme install my commonly used R packages%R')
+"
+           )
+           ;;
+       "install my common"*)
+           local main=~/R_libraries.txt
+           local attmpt=~/R_libraries_list
+           echo "Generating potential candidates: R_libraries_attempt.txt"
+           cat ${main} \
+               | sed -r 's|.*\(([^)]*)\).*|\1|' \
+               | tr '[:upper:]' '[:lower:]' \
+               | awk '{print "bioconductor-"$0"\nr-"$0}' \
+               | sort > ${attmpt}
+           echo "Backing up candidate list"
+           cp -v ${attmpt} ${attmpt}.bak;
+           echo "Attempting to install candidates"
+           mamba create -n blanktest --dry-run -c bioconda -c conda-forge \
+                      $(cat ${attmpt}) 2>&1 \
+               | grep -oP "[^ ]+(?= does not exist)" >> ${attmpt}.failed
+           echo "Filtering out unknown packages"
+           cat ${attmpt}.failed ${attmpt} \
+               | sort | uniq -u > ${attmpt}.found
+           echo "Found $(wc -l < ${attmpt}.found) packages to install."
+
+           echo "Please activate an environment
+        ('%Yhelpme activate an environment'%R')
+and then install the packages via:
+          %Pmamba install -c bioconda -c conda-forge \$(cat ${attmpt}.found)%R
+you will then need to install a kernel for your environment
+        ('%Yhelpme install kernels'%R')
+
+"
+           ;;
        *)
            echo "\
 A help info tool for %Gconda%R environments
@@ -252,8 +313,11 @@ A help info tool for %Gconda%R environments
                 install conda packages
                 install kernels
                 with bash kernels
+                find my commonly used R packages
+                install my commonly used R packages
                 manually install R packages
-                manually install Python packages%R
+                manually install Python packages
+%R
                  "
         ;;
      esac) | sed "s|%C|${CYN}|g;s|%R|${RST}|g;s|%G|${GRN}|g;s|%P|${PPL}|g;s|%Y|${YLW}|g"
