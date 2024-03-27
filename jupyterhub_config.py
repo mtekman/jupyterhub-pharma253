@@ -42,8 +42,9 @@ c.JupyterHub.spawner_class.docker_profiles = {
     "SingleUser" : "quay.io/jupyterhub/singleuser:main",
     "BaseNotebook" : "quay.io/jupyter/base-notebook",
     ## Includes R, Python, and Julia at the system level, as well as their conda installations.
-    "DataScience" : "quay.io/jupyter/datascience-notebook:latest"
-    ## Add others
+    "DataScience" : "quay.io/jupyter/datascience-notebook:latest",
+    ## Add Custom
+    "bash-python-r" : "docker.io/library/bash-python-r" ## This needs to be BUILT first. See README.
     ##
     ## To prevent users complaining of the slow startup times, download the required image first,
     ## and then run Jupyter.
@@ -60,7 +61,7 @@ c.JupyterHub.spawner_class.user_profiles = {
     ##
     "default" : {
         "allowed_resources": ["Normal", "Tiny", "Small", "Large", "Extreme"],
-        "allowed_docker": ["SingleUser", "BaseNotebook", "DataScience"],
+        "allowed_docker": ["bash-python-r", "SingleUser", "BaseNotebook", "DataScience"],
         "host_homedir_format_string" : "/media/daten/{username}",
         ## maximum guaranteed resources for default users
         ## - if the requested are smaller than the resource profile
