@@ -273,6 +273,9 @@ If you wish you can try to automatically install these packages into an environm
            )
            ;;
        "install my common"*)
+           echo "This script attempts to find the conda packages for each of your
+installed R packages. This script is BETA, and the output should be checked.
+"
            local main=~/R_libraries.txt
            local attmpt=~/R_libraries_list
            echo "Generating potential candidates: R_libraries_attempt.txt"
@@ -291,7 +294,11 @@ If you wish you can try to automatically install these packages into an environm
            cat ${attmpt}.failed ${attmpt} \
                | sort | uniq -u > ${attmpt}.found
            echo "Found $(wc -l < ${attmpt}.found) packages to install."
+           echo "
+Please check the output of '${attmpt}.found' before continuing. There should be
+no packages with duplicate names. If so, manually remove them.
 
+Next steps:"
            echo "Please activate an environment
         ('%Yhelpme activate an environment'%R')
 and then install the packages via:
