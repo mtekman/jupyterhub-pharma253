@@ -26,7 +26,7 @@ USER ${NB_UID}
 
 RUN mamba install --yes \
     'bash_kernel' \
-    'jupyter' \
+    'jupyter_client' \
     'r-biocmanager' \
     'r-devtools' && \
     mamba clean --all -f -y && \
