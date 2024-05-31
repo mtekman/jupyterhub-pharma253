@@ -5,10 +5,11 @@ FROM quay.io/jupyter/r-notebook:4d70cf8da953
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ## We want users to be able to install their own conda kernels.
+## - we also add zstandard libraries for .conda to work?
 USER root
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
-    curl wget nano
+    curl wget nano zstd
 
 ## We need to expose mamba at the user level
 ## This is installed at: /opt/conda/bin/mamba
@@ -25,16 +26,29 @@ COPY user_instructions.sh /etc/profile.d/02-user-instructions.sh
 USER ${NB_UID}
 
 RUN mamba install --yes \
+    'zstandard' \
     'bash_kernel' \
     'jupyter_client' \
     'r-biocmanager' \
-    'r-devtools' && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+    'r-devtools' \
+    'r-svglite'
 
-## And now we have to install the bash kernel
+## Force zstandard reinstall (due to ongoing bug..)
+RUN pip install --upgrade --force-reinstall zstandard
+
+## Update the base installation
+RUN mamba update --yes -n base -c conda-forge -c bioconda --all
+
+## Remove locks
+RUN mamba clean --all -f -y
+RUN fix-permissions "${CONDA_DIR}" && fix-permissions "/home/${NB_USER}"
+
+## Install the bash kernel
 RUN python -m bash_kernel.install
 
 ## And tell it to use already installed R packages if user's have prior installation of R
 ENV R_LIBS_USER="/home/${NB_USER}"/R
+
+## Finally add the right channels to the condarc, and remove the systemrc
+RUN rm /opt/conda/.condarc
+

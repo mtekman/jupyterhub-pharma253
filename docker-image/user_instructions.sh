@@ -308,6 +308,28 @@ you will then need to install a kernel for your environment
 
 "
            ;;
+       "download a folder"*)
+           (
+               echo "\
+1. Navigate to the folder you want to download using the 'cd' and 'ls' commands.
+   For example:
+
+        cd  ## takes me to the home folder
+        ls  ## lists everything in the current home folder
+        cd work               ## move into the work folder
+        ls  ## lists everything in the current work folder
+        cd 2024-rnaseq   ## move into the 2024-rnaseq folder
+        ls  ## lists everything in the current rnaseq folder
+        ## Here I see that there is an 'analysis_one' folder
+        ## that I want to download.
+
+2. Zip the folder you want to download
+
+        zip -r my_zipfile_yeah.zip analysis_one
+
+3. Now go back to the Jupyter sidebar and your zip file should be there to download
+"
+           );;
        *)
            echo "\
 A help info tool for %Gconda%R environments
@@ -324,8 +346,14 @@ A help info tool for %Gconda%R environments
                 install my commonly used R packages
                 manually install R packages
                 manually install Python packages
+                download a folder
 %R
                  "
         ;;
      esac) | sed "s|%C|${CYN}|g;s|%R|${RST}|g;s|%G|${GRN}|g;s|%P|${PPL}|g;s|%Y|${YLW}|g"
 }
+
+## Also source the user's bashrc
+[ -e $HOME/.bashrc ] && source $HOME/.bashrc
+
+### TODO: List already installed packages

@@ -10,7 +10,7 @@ from DockerSystemProfileSpawner import DockerSystemProfileSpawner as DSPS, Templ
 c.JupyterHub.spawner_class = DSPS  ## this is our custom spawner. Don't change.
 
 ## The jupyter python environment MUST be set.
-jupyter_venv = "/home/memo/repos/_mtekman/jupyterhub-pharma253/venv_mtekman/"
+jupyter_venv = "/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/"
 server_type = "https"   ## or "local", "proxy", "https"
 
 c.Authenticator.admin_users = ['memo']
@@ -18,8 +18,9 @@ c.Authenticator.admin_users = ['memo']
 ## Users can read/write to their home directories, but here we set other locations
 ## which all users can access in their volumes which are read only.
 c.JupyterHub.spawner_class.volumes_ro = [
-    "/opt/bioinformatic_software/",
-    "/media/daten/software/"
+    "/media/daten/"                ## share whole directory
+    ##"/media/daten/software/",    ## or share specific ones
+    ##"/media/daten/genomes/"
 ]
 
 c.JupyterHub.spawner_class.resource_profiles = {
@@ -42,7 +43,7 @@ c.JupyterHub.spawner_class.docker_profiles = {
     "SingleUser" : "quay.io/jupyterhub/singleuser:main",
     "BaseNotebook" : "quay.io/jupyter/base-notebook",
     ## Includes R, Python, and Julia at the system level, as well as their conda installations.
-    "DataScience" : "quay.io/jupyter/datascience-notebook:latest",
+    ## "DataScience" : "quay.io/jupyter/datascience-notebook:latest",
     ## Add Custom
     "bash-python-r" : "docker.io/library/bash-python-r" ## This needs to be BUILT first. See README.
     ##
@@ -96,8 +97,8 @@ elif server_type == "https":
     ## Serve HTTPS only from this machine
     c.JupyterHub.port = 443
     ## Change these to match your domain
-    c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/www.example.com/fullchain.pem'
-    c.JupyterHub.ssl_key = '/etc/letsencrypt/live/www.example.com/privkey.pem'
+    c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/jupyter.arnold-lab.com/fullchain.pem'
+    c.JupyterHub.ssl_key = '/etc/letsencrypt/live/jupyter.arnold-lab.com/privkey.pem'
 
 elif server_type == "proxy":
     ## Change this to match your proxy, with HTTPS served on the proxy machine
