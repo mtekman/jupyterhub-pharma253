@@ -1,0 +1,31 @@
+# ansible-playbook -i inventory.yaml main.yaml --ask-become-pass
+- vars:
+  - use_proxy_server: false
+  - create_proxy_os : false
+
+- name: Setup and Configure Proxy
+  gather_facts: no
+  when: create_proxy_os
+  hosts: proxy
+  tasks:
+  - name: Create Proxy OS
+    import_playbook: playbooks/create-proxy-os.yaml
+
+  - name: Wait for Proxy device network device
+    wait_for_connection:
+      delay: 60             ## initial delay
+      sleep: 20             ## check every
+      connect_timeout: 8    ## try again after no response
+      timeout: 500          ## max wait
+
+  - name: Wait for DietPi global setup to complete
+    wait_for:
+      path: /boot/dietpi/.install_stage
+      search_regex: 2       ## indicates installation complete
+
+  - name: Install Proxy Server
+    import_playbook: playbooks/install-proxy-device.yaml
+    when: use_proxy_server
+
+- name: Setup and Configure JupyterHub
+  import_playbook: playbooks/setup-jupyterhub-device.yaml

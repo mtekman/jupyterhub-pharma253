@@ -1,0 +1,74 @@
+- name: Install the Proxy Server
+  vars:
+    https_host: jupyter.example.org
+    proxy_port: 58001
+    jupyter_caddy_file: /etc/caddy/conf.d/jupyter
+  hosts: proxy
+  tasks:
+  - name: Wireguard on the proxy device
+    block:
+    - name: Install wireguard    
+    - name: Configure wireguard
+
+  - name: Firewall on the proxy device
+    block:
+    - name: Install the firewall
+      apt:
+        name: ufw
+        state: present
+        update_cache: yes
+
+    - name: Configure firewall
+      command: |
+        ufw allow from {{ hostvars["vars"]["ip_subnet"] }}{{ hostvars["vars"]["ip_mask_suff"] }}
+
+    - name: Enable UFW service
+      systemd:
+        name: ufw
+        enabled: yes
+        state: started
+
+    - name: Start the UFW rules
+      shell: yes | ufw enable
+
+   
+  - name: Webserver to proxy requests
+    block:
+    - name: Install Caddy
+      apt:
+        name: caddy
+        state: present
+        update_cache: yes
+
+    - name: Configure Caddy
+      block:
+      - name: Ensure import is set
+        ansible.builtin.replace:
+          path: '/etc/caddy/Caddyfile'
+          regexp: "import /etc/caddy/conf.d/"
+          replace: "import {{ jupyter_caddy_file }}"
+          backup: no
+
+      - name: Make import dir
+        shell: mkdir /etc/caddy/conf.d/
+
+      - name: Set the config
+        copy:
+          dest: '{{ jupyter_caddy_file }}'
+          content: |
+            {{ https_host }} {
+               reverse_proxy localhost:{{ proxy_port }} {
+                    header_up Host {host}
+                    header_up X-Real-IP {remote}
+                    header_up X-Forwarded-For {remote}
+                    header_up X-Forwarded-Proto {scheme}
+               }
+            }
+
+    - name: Enable Caddy service
+      systemd:
+        name: caddy
+        enabled: yes
+        state: started
+
+            
