@@ -1,0 +1,74 @@
+- name: Configure the Proxy device
+  hosts: proxydevice
+  become: yes
+  tasks:
+    - name: 1. Install the Firewall
+      block:
+      - name: Install firewall packages
+        apt:
+          name:
+          - ufw
+          - less  ## just useful to have
+          state: present
+          update_cache: yes
+
+      - name: Set the Rules
+        shell: |
+           ufw allow https
+           ufw allow {{ ansible_port }}
+           ufw allow from {{ hostvars["jupyterdevice"]["ansible_host"] }} to any port {{ proxy_port }}
+           ufw default deny incoming
+
+      - name: Enable UFW service
+        systemd:
+          name: ufw
+          enabled: yes
+          state: started
+
+      - name: Start the UFW rules
+        shell: yes | ufw enable
+
+    - name: 2. Install Caddy
+      block:
+      - name: Install needed packages
+        apt:
+          name:
+          - caddy
+          state: present
+          update_cache: yes
+
+      - name: Create module dir
+        file:
+          path: /etc/caddy/conf.d
+          state: directory
+
+      - name: Configure caddy jupyter entry
+        copy:
+          dest: /etc/caddy/conf.d/jupyter
+          content: |
+             {{ hostvars["vars"]["domain_name"] }} {
+                reverse_proxy localhost:{{ proxy_port }} {
+                     header_up Host {host}
+                     header_up X-Real-IP {remote}
+                     header_up X-Forwarded-For {remote}
+                     header_up X-Forwarded-Proto {scheme}
+                 }
+             }
+
+      - name: Configure caddy conf
+        lineinfile:
+            path: /etc/caddy/Caddyfile
+            state: present
+            regexp: "^#?import /etc/caddy/conf.d/.*"
+            line: "import /etc/caddy/conf.d/*"
+            backup: no
+
+      - name: Enable caddy service
+        systemd:
+          name: caddy
+          enabled: yes
+          state: started
+
+
+    - name: 3. Setup the nginx proxy user
+      command: #"TODO"

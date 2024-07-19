@@ -18,6 +18,10 @@
       path: /boot/dietpi/.install_stage
       search_regex: 2       ## indicates installation complete
 
+- name: Configure Firewall, Backend Services
+  import_playbook: playbooks/configure-proxy.yaml
+
+
 #   - name: Install Proxy Server
 #     import_playbook: playbooks/install-proxy-device.yaml
 #     when: use_proxy_server
