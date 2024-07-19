@@ -9,7 +9,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
-    curl wget nano zstd
+    curl wget nano zstd patch
 
 ## We need to expose mamba at the user level
 ## This is installed at: /opt/conda/bin/mamba
