@@ -71,4 +71,6 @@
 
 
     - name: 3. Setup the nginx proxy user
-      command: #"TODO"
+      user:
+        name: '{{ proxy_user }}'
+
