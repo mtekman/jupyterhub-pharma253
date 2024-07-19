@@ -1,16 +1,11 @@
-# ansible-playbook -i inventory.yaml main.yaml --ask-become-pass
-- vars:
-  - use_proxy_server: false
-  - create_proxy_os : false
+# ansible-playbook -i inventory.yaml main.yaml --ask-become-pass --extra-vars="install_target=/dev/sdc"
+- name: Create Proxy OS
+  import_playbook: playbooks/create-proxy-os.yaml
 
 - name: Setup and Configure Proxy
   gather_facts: no
-  when: create_proxy_os
-  hosts: proxy
+  hosts: proxydevice
   tasks:
-  - name: Create Proxy OS
-    import_playbook: playbooks/create-proxy-os.yaml
-
   - name: Wait for Proxy device network device
     wait_for_connection:
       delay: 60             ## initial delay
@@ -23,9 +18,9 @@
       path: /boot/dietpi/.install_stage
       search_regex: 2       ## indicates installation complete
 
-  - name: Install Proxy Server
-    import_playbook: playbooks/install-proxy-device.yaml
-    when: use_proxy_server
+#   - name: Install Proxy Server
+#     import_playbook: playbooks/install-proxy-device.yaml
+#     when: use_proxy_server
 
-- name: Setup and Configure JupyterHub
-  import_playbook: playbooks/setup-jupyterhub-device.yaml
+# - name: Setup and Configure JupyterHub
+#   import_playbook: playbooks/setup-jupyterhub-device.yaml

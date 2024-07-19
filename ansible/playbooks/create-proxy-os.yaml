@@ -17,7 +17,7 @@
     - name: Download and mount the Dietpi image
       vars:
         base_img : "https://dietpi.com/downloads/images/testing/DietPi_RPi5-ARMv8-Bookworm.img.xz"
-        base_md5 : "sha256:0cff3e4888abc289a14b63a02d9ec5f285023d6338ad48998098ee46b50d715c"
+        base_md5 : "sha256:5887ce8a9c423dbf5572f91f5f8b7c9933131026dfa6ab1c2e7426aa071e744a."
       block:
       - name: Ensure necessary packages are installed
         become: true
@@ -79,7 +79,6 @@
               - { regexp: '^#*hdmi_blanking=.*', line: 'hdmi_blanking=0' }
               - { regexp: '^#*disable_overscan=.*', line: 'disable_overscan=1' }
               - { regexp: '^#*display_auto_detect=.*', line: 'display_auto_detect=0' }
-              - { regexp: '^#*display_hdmi_rotate=.*', line: 'display_hdmi_rotate=3' }
               - { regexp: '^#*disable_splash=.*', line: 'disable_splash=0' }
               - { regexp: '^#*temp_limit=.*', line: 'temp_limit=50' }
               - { regexp: '^#*framebuffer_width=.*', line: 'framebuffer_width=600' }
@@ -93,8 +92,14 @@
               line: "{{ item.line }}"
               backup: no
 
+        - name: Generate a new ssh key and store to path
+          openssh_keypair:
+             path: '{{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }}'
+             type: rsa
+             size: 4096
+
         - name: Get SSH Pub key
-          command: 'cat {{ hostvars["vars"]["ssh_pub_key"] }}'
+          command: 'cat {{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }}.pub'
           register: id_rsa_pub_string
 
         - name: Replace Dietpi lines
@@ -105,19 +110,19 @@
             - { regexp: '^AUTO_SETUP_NET_WIFI_ENABLED=.*',      line: 'AUTO_SETUP_NET_WIFI_ENABLED=0' }
             - { regexp: '^AUTO_SETUP_NET_WIFI_COUNTRY_CODE=.*', line: 'AUTO_SETUP_NET_WIFI_COUNTRY_CODE=DE' }
             - { regexp: '^AUTO_SETUP_NET_USESTATIC=.*',         line: 'AUTO_SETUP_NET_USESTATIC=1' }
-            - { regexp: '^AUTO_SETUP_NET_STATIC_IP=.*',         line: 'AUTO_SETUP_NET_STATIC_IP={{ hostvars["rpi5"]["ansible_host"] }}' }
+            - { regexp: '^AUTO_SETUP_NET_STATIC_IP=.*',         line: 'AUTO_SETUP_NET_STATIC_IP={{ hostvars["proxydevice"]["ansible_host"] }}' }
             - { regexp: '^AUTO_SETUP_NET_STATIC_MASK=.*',       line: 'AUTO_SETUP_NET_STATIC_MASK=255.255.255.0' }
             - { regexp: '^AUTO_SETUP_NET_STATIC_GATEWAY=.*',    line: 'AUTO_SETUP_NET_STATIC_GATEWAY={{ hostvars["vars"]["ip_gateway"] }}' }
             - { regexp: '^AUTO_SETUP_NET_STATIC_DNS=.*',        line: 'AUTO_SETUP_NET_STATIC_DNS=9.9.9.9 149.112.112.112' }
-            - { regexp: '^AUTO_SETUP_NET_HOSTNAME=.*',          line: 'AUTO_SETUP_NET_HOSTNAME={{ hostvars["rpi5"]["host_name"] }}' }
+            - { regexp: '^AUTO_SETUP_NET_HOSTNAME=.*',          line: 'AUTO_SETUP_NET_HOSTNAME={{ hostvars["proxydevice"]["host_name"] }}' }
             - { regexp: '^AUTO_SETUP_SSH_SERVER_INDEX=.*',      line: 'AUTO_SETUP_SSH_SERVER_INDEX=-2' } # OpenSSH
             - { regexp: '^AUTO_SETUP_AUTOMATED=.*',             line: 'AUTO_SETUP_AUTOMATED=1' }
-            - { regexp: '^AUTO_SETUP_GLOBAL_PASSWORD=.*',       line: 'AUTO_SETUP_GLOBAL_PASSWORD={{ hostvars["rpi5"]["host_pass"] }}' }
+            - { regexp: '^AUTO_SETUP_GLOBAL_PASSWORD=.*',       line: 'AUTO_SETUP_GLOBAL_PASSWORD={{ hostvars["proxydevice"]["host_pass"] }}' }
             - { regexp: '^CONFIG_CHECK_DIETPI_UPDATES=.*',      line: 'CONFIG_CHECK_DIETPI_UPDATES=0' }
             - { regexp: '^CONFIG_CHECK_APT_UPDATES=.*',         line: 'CONFIG_CHECK_APT_UPDATES=0.' }
             - { regexp: '^CONFIG_SERIAL_CONSOLE_ENABLE=.*',     line: 'CONFIG_SERIAL_CONSOLE_ENABLE=0' }
-            - { regexp: '^AUTO_SETUP_SSH_PUBKEY=.*',            line: 'AUTO_SETUP_SSH_PUBKEY="{{ id_rsa_pub_string.stdout }}"' }
-            - { regexp: '^SOFTWARE_DISABLE_SSH_PASSWORD_LOGINS=.*', line: 'SOFTWARE_DISABLE_SSH_PASSWORD_LOGINS=0' }   ## only key
+            - { regexp: '^#?AUTO_SETUP_SSH_PUBKEY=.*',          line: 'AUTO_SETUP_SSH_PUBKEY="{{ id_rsa_pub_string.stdout | trim }}"' }
+            - { regexp: '^SOFTWARE_DISABLE_SSH_PASSWORD_LOGINS=.*', line: 'SOFTWARE_DISABLE_SSH_PASSWORD_LOGINS=1' }   ## only key
             - { regexp: '^SURVEY_OPTED_IN=.*',                  line: 'SURVEY_OPTED_IN=0' }
           ansible.builtin.replace:
             path: '{{ boot_path }}/dietpi.txt'
@@ -144,7 +149,7 @@
 
         - name: Set the SSH config
           loop:
-          - { regexp: '^.*Port .*', line: 'Port {{ hostvars["rpi5"]["ansible_port"] }}' }
+          - { regexp: '^.*Port .*', line: 'Port {{ hostvars["proxydevice"]["ansible_port"] }}' }
           - { regexp: '^.*AuthorizedKeysFile .*', line: 'AuthorizedKeysFile  /etc/ssh/authorized_keys' }  ## enforce strict ssh key access
           - { regexp: "^.*Subsystem sftp.*", line: 'Subsystem sftp /usr/lib/openssh/sftp-server' } 
           lineinfile:
@@ -155,7 +160,7 @@
             create: yes
 
         - name: Install SSH key
-          shell: 'cp {{ hostvars["vars"]["ssh_pub_key"] }} {{ root_path }}/etc/ssh/authorized_keys'
+          shell: 'cp {{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }}.pub {{ root_path }}/etc/ssh/authorized_keys'
 
         - name: Unmount the root partition
           become: true
@@ -177,11 +182,10 @@
        - name: DD to disk
          shell: 'dd if={{ fix_img }} of={{ install_target }} status=progress bs=1M; sync;'
 
-    - name: Remove RPi5 from known SSH list
-      shell: |
-        grep -v "{{ hostvars['rpi5']['ansible_host'] }}" $(dirname {{ hostvars["vars"]["ssh_pub_key"] }})/known_hosts > /tmp/known_hosts && \
-        mv -v /tmp/known_hosts $(dirname {{ hostvars["vars"]["ssh_pub_key"] }})/known_hosts
-
+    # - name: Remove RPi5 from known SSH list
+    #   shell: |
+    #     grep -v "{{ hostvars['proxydevice']['ansible_host'] }}" $(dirname {{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }})/known_hosts > /tmp/known_hosts && \
+    #     mv -v /tmp/known_hosts $(dirname {{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }})/known_hosts
 
     - name: Tell user to Eject Disk
       debug:
