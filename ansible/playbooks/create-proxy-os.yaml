@@ -151,7 +151,8 @@
           loop:
           - { regexp: '^.*Port .*', line: 'Port {{ hostvars["proxydevice"]["ansible_port"] }}' }
           - { regexp: '^.*AuthorizedKeysFile .*', line: 'AuthorizedKeysFile  /etc/ssh/authorized_keys' }  ## enforce strict ssh key access
-          - { regexp: "^.*Subsystem sftp.*", line: 'Subsystem sftp /usr/lib/openssh/sftp-server' } 
+          - { regexp: "^.*Subsystem sftp.*", line: 'Subsystem sftp /usr/lib/openssh/sftp-server' }
+          - { regexp: "^.*PasswordAuthentication.*", line: "PasswordAuthentication no" }
           lineinfile:
             path: '{{ root_path }}/etc/ssh/sshd_config'
             regexp: "{{ item.regexp }}"
