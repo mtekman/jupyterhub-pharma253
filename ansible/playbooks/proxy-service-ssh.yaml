@@ -1,0 +1,47 @@
+- name: Install SSH proxy tunnel
+  hosts: jupyterdevice
+  vars:
+    ssh_keypath: '/etc/ssh/{{ proxy_user }}_key'
+    ssh_opts: '-o ServerAliveInterval=60 -o ExitOnForwardFailure=yes'
+    ssh_comm: 'vmstat 120'
+    proxy_ssh: '{{ hostvars["proxydevice"]["ansible_port"] }}'
+    proxy_port: '{{ hostvars["proxydevice"]["proxy_port"] }}'
+    proxy_user: '{{ hostvars["proxydevice"]["proxy_user"] }}'
+    proxy_host: '{{ hostvars["proxydevice"]["ansible_host"] }}'
+    proxy_service: 'proxy-pharma.service'
+  become: yes
+  tasks:
+  - name: Create a proxy system user
+    user:
+      name: '{{ proxy_user }}'
+      system: true
+
+  - name: Copy SSH pub key over
+    copy:
+      src: '{{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }}'
+      dest: '/etc/ssh/{{ proxy_user }}_key'
+
+  - name: Create Tunnel service
+    copy:
+      dest: '/etc/systemd/system/{{ proxy_service }}'
+      content: |
+        [Unit]
+        Description=Maintain SSH Tunnel
+        After=network.target
+
+        [Service]
+        User={{ proxy_user }}
+        ExecStart=/usr/bin/ssh -i {{ ssh_keypath }} -p {{ proxy_ssh }} {{ ssh_opts }} -R {{ proxy_port }}:127.0.0.1:{{ proxy_port }} {{ proxy_user }}@{{ proxy_host }} {{ ssh_comm }}
+        RestartSec=15
+        Restart=always
+        KillMode=mixed
+
+        [Install]
+        WantedBy=multi-user.target
+
+  - name: Start and enable tunnel service
+    systemd:
+       name: '{{ proxy_service }}'
+       enabled: yes
+       state: started
+

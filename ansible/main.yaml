@@ -21,6 +21,9 @@
 - name: Configure Firewall, Backend Services
   import_playbook: playbooks/configure-proxy.yaml
 
+- name: Install SSH proxy tunnel
+  import_playbook: playbooks/proxy-service-ssh.yaml
+
 
 #   - name: Install Proxy Server
 #     import_playbook: playbooks/install-proxy-device.yaml
