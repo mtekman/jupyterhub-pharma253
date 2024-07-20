@@ -16,10 +16,11 @@
       name: '{{ proxy_user }}'
       system: true
 
-  - name: Copy SSH pub key over
+  - name: Copy public SSH key from proxy device to jupyter
     copy:
-      src: '{{ hostvars["proxydevice"]["ansible_ssh_private_key_file"] }}'
+      src: /tmp/ssh_proxy_key
       dest: '/etc/ssh/{{ proxy_user }}_key'
+      
 
   - name: Create Tunnel service
     copy:

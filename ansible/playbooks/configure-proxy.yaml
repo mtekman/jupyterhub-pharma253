@@ -13,7 +13,9 @@
           update_cache: yes
 
       - name: Set the Rules
+        ## Certbot needs http, and caddy should not be up
         shell: |
+           ufw allow http
            ufw allow https
            ufw allow {{ ansible_port }}
            ufw allow from {{ hostvars["jupyterdevice"]["ansible_host"] }} to any port {{ proxy_port }}
@@ -27,6 +29,14 @@
 
       - name: Start the UFW rules
         shell: yes | ufw enable
+
+    - name: Install certificates
+      block:
+      - name: Install certbot
+        apt:
+          name: certbot
+          state: present
+          update_cache: yes
 
     - name: 2. Install Caddy
       block:
@@ -71,6 +81,28 @@
 
 
     - name: 3. Setup the nginx proxy user
-      user:
-        name: '{{ proxy_user }}'
+      block:
+      - name: Make proxy user
+        user:
+          name: '{{ proxy_user }}'
+          generate_ssh_key: true
+
+      - name: Copy private key over to ansible device
+        ## We use this to copy to the jupyter device
+        fetch:
+          src: '/home/{{ proxy_user }}/.ssh/id_rsa'
+          dest: '/tmp/ssh_proxy_key'
+          flat: true
+
+      - name: Get the public key
+        become: yes
+        shell: 'cat /home/{{ proxy_user }}/.ssh/id_rsa.pub'
+        register: proxy_ssh_key
+
+      - name: Append key to authorized keys file
+        lineinfile:
+           path: /etc/ssh/authorized_keys
+           regexp: '^{{ proxy_ssh_key.stdout | trim }}'
+           line: '{{ proxy_ssh_key.stdout | trim }}'
+
 
