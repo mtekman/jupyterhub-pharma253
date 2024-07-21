@@ -8,6 +8,9 @@
     proxy_port: 1234
     proxy_net: 127.0.0.1
     docker_ip: 172.17.0.1
+    docker_cpuquota_perc: 7000
+    docker_memhigh_gb: 230
+    
   tasks:
   - name: Setup Install Directories
     become: yes
@@ -66,4 +69,39 @@
       when: "{{ item.when }}"
       backup: no
 
-    
+  - name: Configure the Docker Limits
+    copy:
+      src: /etc/systemd/system/docker_limit.slice
+      content: |
+        [Unit]
+        Description=Slice that limits docker resources
+        Before=slices.target
+
+        [Slice]
+        CPUAccounting=true
+        CPUQuota={{ docker_cpuquota_perc }}%
+        MemoryAccounting=true
+        MemoryHigh={{ docker_memhigh_gb }}G
+
+  - name: Configure the JupyterHub service file
+    copy:
+      src: /etc/system/systemd/system/jupyterhub.service
+      content: |
+        [Unit]
+        Description=Jupyterhub Docker Service
+        After=network.target
+        Wants={{ proxy_service }} docker_limit.slice  ## weak dependency, jupyter still starts if proxy or docker limitter fails
+        
+        [Service]
+        TODO: FINISH THIS
+        Environment="PATH=/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin:%h/.local/bin:%h/bin:%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ExecStart=/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub --config="/opt/jupyterhub/jupyterhub-pharma253/jupyterhub_config.py"
+        WorkingDirectory=/opt/jupyterhub/jupyterhub-pharma253
+        Restart=on-failure
+        RestartSec=60
+        User=root
+        KillMode=process
+        
+        [Install]
+        WantedBy=multi-user.target        
+      
