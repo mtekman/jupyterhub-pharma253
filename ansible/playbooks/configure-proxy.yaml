@@ -71,7 +71,7 @@
           enabled: yes
           state: started
 
-    - name: 2.5 Install certificates
+    - name: 3. Install certificates
       block:
       - name: Install certbot
         apt:
@@ -100,7 +100,7 @@
           state: started
 
 
-    - name: 3. Setup the nginx proxy user
+    - name: 4. Setup the nginx proxy user
       block:
       - name: Make proxy user
         user:
