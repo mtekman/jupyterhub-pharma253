@@ -13,7 +13,7 @@
           update_cache: yes
 
       - name: Set the Rules
-        ## Certbot needs http, and caddy should not be up
+        ## Certbot needs http
         shell: |
            ufw allow http
            ufw allow https
@@ -29,14 +29,6 @@
 
       - name: Start the UFW rules
         shell: yes | ufw enable
-
-    - name: Install certificates
-      block:
-      - name: Install certbot
-        apt:
-          name: certbot
-          state: present
-          update_cache: yes
 
     - name: 2. Install Caddy
       block:
@@ -79,6 +71,34 @@
           enabled: yes
           state: started
 
+    - name: 2.5 Install certificates
+      block:
+      - name: Install certbot
+        apt:
+          name: certbot
+          state: present
+          update_cache: yes
+
+      - name: Set Caddy down
+        systemd:
+          name: caddy
+          enabled: yes
+          state: stopped
+
+      - name: Configure certbot
+        become: yes
+        shell:
+          cmd: |
+            certbot renew \
+                    -d {{ hostvars["vars"]["domain_name"] }} \
+                    -m {{ hostvars["vars"]["certbot_admin_email"] }}
+
+      - name: Set Caddy back up
+        systemd:
+          name: caddy
+          enabled: yes
+          state: started
+
 
     - name: 3. Setup the nginx proxy user
       block:
@@ -104,5 +124,3 @@
            path: /etc/ssh/authorized_keys
            regexp: '^{{ proxy_ssh_key.stdout | trim }}'
            line: '{{ proxy_ssh_key.stdout | trim }}'
-
-
