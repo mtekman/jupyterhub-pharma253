@@ -4,12 +4,12 @@ FROM quay.io/jupyter/r-notebook:4d70cf8da953
 # Add RUN statements to install packages as the $NB_USER defined in the base images.
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-## We want users to be able to install their own conda kernels.
+## We want users to be able to install their own conda kernels
 ## - we also add zstandard libraries for .conda to work?
 USER root
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
-    curl wget nano zstd patch
+    curl wget nano zstd vim patch
 
 ## We need to expose mamba at the user level
 ## This is installed at: /opt/conda/bin/mamba
@@ -28,7 +28,7 @@ USER ${NB_UID}
 RUN mamba install --yes \
     'zstandard' \
     'bash_kernel' \
-    'jupyter_client' \
+    'jupyter' \
     'r-biocmanager' \
     'r-devtools' \
     'r-svglite'
