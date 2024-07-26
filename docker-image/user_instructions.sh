@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RST='\o033[0m'
-YLW='\o033[1;33m'
+YLW='\o033[1;31m'
 PPL='\o033[1;35m'
 CYN='\o033[1;36m'
 GRN='\o033[1;32m'
@@ -308,28 +308,47 @@ you will then need to install a kernel for your environment
 
 "
            ;;
-       "download a folder"*)
-           (
-               echo "\
-1. Navigate to the folder you want to download using the 'cd' and 'ls' commands.
-   For example:
 
-        cd  ## takes me to the home folder
-        ls  ## lists everything in the current home folder
-        cd work               ## move into the work folder
-        ls  ## lists everything in the current work folder
-        cd 2024-rnaseq   ## move into the 2024-rnaseq folder
-        ls  ## lists everything in the current rnaseq folder
-        ## Here I see that there is an 'analysis_one' folder
-        ## that I want to download.
+       "list packages"*)
+           echo "\
+If you want a list of packages in an environment, first find the name of the
+environment you want ('%Yhelpme list my environments%R') and then type:
 
-2. Zip the folder you want to download
+        %Pmamba list -n myenv%R
 
-        zip -r my_zipfile_yeah.zip analysis_one
+assuming that the name of the environment you wanted was called 'myenv'
 
-3. Now go back to the Jupyter sidebar and your zip file should be there to download
-"
-           );;
+";;
+
+       "delete an environment"*)
+           echo "\
+To delete an environment, first find the name and path of the environment you
+want to delete ('%Yhelpme list my environments%R')
+
+        %Pmamba env list%R
+
+ # conda environments:
+ #
+ bamtools                 /media/daten/user/.conda/envs/bamtools
+ rnaseq                   /media/daten/user/.conda/envs/rnaseq
+ base                  *  /opt/conda
+
+Let us assume that you want to remove the bamtools environment. You would then
+type
+
+        %Pmamba env remove -n bamtools%R
+
+That should be it.
+
+If that FAILS for any reason, then one emergency command that you should never
+*ever* use is to force remove it by path:
+
+        %Prm -rf /media/daten/user/.conda/envs/bamtools%R
+
+Only use the above command in an absolute emergency.
+";;
+
+
        *)
            echo "\
 A help info tool for %Gconda%R environments
@@ -338,6 +357,8 @@ A help info tool for %Gconda%R environments
                 list my environments
                 activate an environment
                 create a new environment
+                list packages in an environment
+                delete an environment
                 search for packages
                 install conda packages
                 install kernels
@@ -346,7 +367,6 @@ A help info tool for %Gconda%R environments
                 install my commonly used R packages
                 manually install R packages
                 manually install Python packages
-                download a folder
 %R
                  "
         ;;
@@ -355,5 +375,3 @@ A help info tool for %Gconda%R environments
 
 ## Also source the user's bashrc
 [ -e $HOME/.bashrc ] && source $HOME/.bashrc
-
-### TODO: List already installed packages
