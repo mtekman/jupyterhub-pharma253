@@ -1,107 +1,280 @@
 - name: Setup and Configure JupyterHub Pharma
-  hosts: jupyter
-  become: false
-  vars:
-    dir_pharma: /opt/jh-253/jupterhub-pharma
-    metrics_repo: git+https://github.com/mtekman/jupyterhub@sysmon
-    venv_dir: /opt/jh-253/venv
-    proxy_port: 1234
-    proxy_net: 127.0.0.1
-    docker_ip: 172.17.0.1
-    docker_cpuquota_perc: 7000
-    docker_memhigh_gb: 230
-    
+  hosts: localhost  ##jupyter
+  become: false     ## by default don't be root
+  vars_files: setup_vars.yml
   tasks:
   - name: Setup Install Directories
     become: yes
-    cmd: |
+    shell: |
       mkdir -p {{ dir_pharma }}
       mkdir -p {{ venv_dir }}
       chmod a+wrx {{ dir_pharma }}
       chmod a+wrx {{ venv_dir }}
 
   - name: Clone the repo
-    shell: |
-      ## Shallow clone the Pharma
-      git clone --depth 1 https://gitlab.com/mtekman/jupyterhub-pharma253 \
-        -b main {{ dir_pharma }}
+    shell:
+      cmd: |
+        ## Shallow clone the Pharma
+        git clone --depth 1 https://gitlab.com/mtekman/jupyterhub-pharma253 \
+        -b master {{ dir_pharma }}
+      creates: '{{ dir_pharma }}/COMPLETE_GUIDE.org'
 
-  - name: Generate virtualenv for metrics repo and install it
-    block:
-    - name: Install pyvenv
-      apt:
-        name:
-        - python3-venv
+  - name: Install some prerequisite packages
+    become: yes
+    apt:
+      name:
+      - virtualenv
+      - pip
+      - npm
+      - node-configurable-http-proxy
+      - ufw
       state: present
       update_cache: yes
 
+  - name: Generate virtualenv for metrics repo and install it
+    block:
     - name: Install the Jupyterhub with Metrics into venv
       pip:
         virtualenv: '{{ venv_dir }}'
         virtualenv_python: python3
         name:
+        - six
         - '{{ metrics_repo }}'
         - dockerspawner
         - psutil
         - configurable
         - http-proxy
 
+  - name: Setup Docker
+    become: yes
+    block:
+    ## Instructions from: https://docs.docker.com/engine/install/debian/
+    - name: Install neccesary docker pre-packages
+      apt:
+        name:
+        - ca-certificates
+        - curl
+        state: present
+        update_cache: yes
+
+    - name: Install docker keyrings
+      shell:
+        cmd: |
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          chmod a+r /etc/apt/keyrings/docker.asc
+        creates: /etc/apt/keyrings/docker.asc
+
+    - name: Add docker repo
+      shell:
+        cmd: |
+          echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+          tee /etc/apt/sources.list.d/docker.list > /dev/null
+          apt-get update
+        creates: /etc/apt/sources.list.d/docker.list
+
+    - name: Install docker packages
+      apt:
+        name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Start docker quickly
+      ## We need this so we can extract the docker subnet
+      systemd:
+        name: docker
+        state: started
+
+    - name: Extract the docker subnet
+      shell: ip -br a | grep "docker0" | awk '{print $3}'
+      ## If this command fails, just set docker_ip to
+      ## 172.17.0.1/16
+      register: docker_ip
+
+    - name: Stop docker quickly
+      ## We stop docker because we need to configure docker
+      ## slice limits
+      systemd:
+        name: docker
+        state: stopped
+
   - name: Configure Jupyterhub Pharma
-    ## We won't do the full configuration, just a working one.
-    loop:
-    ## Set Jupyter venv
-    - { find: '^jupyter_venv = .*', set: 'jupyter_venv = "{{ venv_dir }}"', when: true }
-    ## Set Admin users
-    ## Set Read-only volumes
-    ## Set Proxy
-    - { find: '^server_type = .*', set: 'server_type = "proxy"', when: use_proxy}
-    - { find: '^    c.JupyterHub.bind_url = .*',
-         set: '^    c.JupyterHub.bind_url = "http://{{ proxy_net }}:{{ proxy_port }}"',
-        when: true}
-    ## Set Docker
-    - { find: '^c.JupyterHub.hub_ip = .*',
-          set: 'c.JupyterHub.hub_ip = "{{ docker_ip }}"', when: true}
-    lineinfile:
-      path: '{{ dir_pharma }}/jupyter_config.py'
-      state: present
-      regexp: "{{ item.find }}"
-      line: "{{ item.set }}"
-      when: "{{ item.when }}"
-      backup: no
+    block:
+    - name: Set required params
+      ## We won't do the full configuration, just a working one.
+      loop:
+      ## Set Jupyter venv
+      - { find: '^jupyter_venv = .*',
+           set:  'jupyter_venv = "{{ venv_dir }}"' }
+      ## Set Admin users
+      - { find: '^c.Authenticator.admin_users = .*',
+           set:  'c.Authenticator.admin_users = {{ admin_users }}' }
+      ## Set Docker
+      - { find: '^c.JupyterHub.hub_ip = .*',
+           set:  'c.JupyterHub.hub_ip = "{{ docker_ip.stdout | split("/") | first  }}"' }
+      ## Replace the default user "memo" too and his default image
+      - { find: '^    "memo" : {',
+           set:  '    "tekman2" : {' }
+      - { find: '^        "host_homedir_format_string" : .*',
+           set:  '        "host_homedir_format_string" : "{{ home_dir }}/{username}",' }
+      ## Set Read-only volumes
+      lineinfile:
+        path: '{{ dir_pharma }}/jupyterhub_config.py'
+        state: present
+        regexp: "{{ item.find }}"
+        line: "{{ item.set }}"
+        backup: no
 
-  - name: Configure the Docker Limits
-    copy:
-      src: /etc/systemd/system/docker_limit.slice
-      content: |
-        [Unit]
-        Description=Slice that limits docker resources
-        Before=slices.target
+    - name: Set https params
+      when: not use_proxy
+      loop:
+      - { find: '^server_type = .*',
+           set: 'server_type = "https"' }
+      - { find: "^    c.JupyterHub.ssl_cert = .*",
+           set:  "    c.JupyterHub.ssl_cert = '/etc/letsencrypt/live/{{ public_url }}/fullchain.pem'" }
+      - { find: "^    c.JupyterHub.ssl_key = .*",
+           set:  "    c.JupyterHub.ssl_key = '/etc/letsencrypt/live/{{ public_url }}/privkey.pem'" }
+      lineinfile:
+        path: '{{ dir_pharma }}/jupyterhub_config.py'
+        state: present
+        regexp: "{{ item.find }}"
+        line: "{{ item.set }}"
+        backup: no
 
-        [Slice]
-        CPUAccounting=true
-        CPUQuota={{ docker_cpuquota_perc }}%
-        MemoryAccounting=true
-        MemoryHigh={{ docker_memhigh_gb }}G
+    - name: Set proxy params
+      when: use_proxy
+      loop:
+      ## Set Proxy
+      - { find: '^server_type = .*',
+           set:  'server_type = "proxy"' }
+      - { find: '^    c.JupyterHub.bind_url = .*',
+           set:  '    c.JupyterHub.bind_url = "http://{{ proxy_net }}:{{ proxy_port }}"' }
+      lineinfile:
+        path: '{{ dir_pharma }}/jupyterhub_config.py'
+        state: present
+        regexp: "{{ item.find }}"
+        line: "{{ item.set }}"
+        backup: no
 
-  - name: Configure the JupyterHub service file
-    copy:
-      src: /etc/system/systemd/system/jupyterhub.service
-      content: |
-        [Unit]
-        Description=Jupyterhub Docker Service
-        After=network.target
-        Wants={{ proxy_service }} docker_limit.slice  ## weak dependency, jupyter still starts if proxy or docker limitter fails
+  - name: Configure Systemd slices
+    become: yes
+    block:
+    - name: Configure the Docker Limits
+      copy:
+        dest: /etc/systemd/system/docker_limit.slice
+        content: |
+          [Unit]
+          Description=Slice that limits docker resources
+          Before=slices.target
+
+          [Slice]
+          CPUAccounting=true
+          CPUQuota={{ docker_cpuquota_perc }}%
+          MemoryAccounting=true
+          MemoryHigh={{ docker_memhigh_gb }}G
+
+    - name: Configure Proxy service file
+      when: use_proxy
+      copy:
+        dest: /etc/systemd/system/jupyter_proxy.service
+        content: |
+          [Unit]
+          Description=Maintain SSH Tunnel
+          After=network.target
+
+          [Service]
+          User={{ proxy_remote_user }}
+          ExecStart=/usr/bin/ssh -i {{ proxy_remote_pubkey_loc }} \
+           -p {{ proxy_remote_sshport }} \
+           -o ServerAliveInterval=60 \
+           -o ExitOnForwardFailure=yes \
+           -R {{ proxy_bind_port }}:127.0.0.1:{{ proxy_bind_port }} \
+           {{ proxy_remote_user }}@{{ proxy_remote_net }} vmstat 120
+          RestartSec=15
+          Restart=always
+          KillMode=mixed
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Configure the JupyterHub service file
+      copy:
+        dest: /etc/systemd/system/jupyterhub.service
+        content: |
+          [Unit]
+          Description=Jupyterhub Docker Service
+          After=network.target
+          ## weak dependency, jupyter still starts if proxy or docker limitter fails
+          Wants={{ (use_proxy | bool) | ternary("jupyter_proxy.service ", "") }}docker_limit.slice
+
+          [Service]
+          Environment="PATH={{ venv_dir }}/bin:%h/.local/bin:%h/bin:%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+          ExecStart={{ venv_dir }}/bin/jupyterhub --config="{{ dir_pharma }}/jupyterhub_config.py"
+          WorkingDirectory={{ dir_pharma }}
+          Restart=on-failure
+          RestartSec=60
+          User=root
+          KillMode=process
+
+          [Install]
+          WantedBy=multi-user.target
+
+  - name: Check if certificate already installed
+    become: yes
+    stat:
+      path: '/etc/letsencrypt/live/{{ public_url }}/fullchain.pem'
+    register: certificate_installed
+
+  - name: Install HTTPS certificate
+    when: (not use_proxy) and (not certificate_installed.stat.exists)
+    become: yes
+    block:
+    - name: Install certbot
+      apt:
+        name: certbot
+        state: present
+        update_cache: yes
+
+    - name: Temporarily allow HTTP
+      ufw:
+        rule: allow
+        name: WWW Full
+
+    - name: Install the certificate
+      shell:
+        cmd: |
+          certbot certonly --standalone -d {{ public_url }} -m {{ admin_email }} --agree-tos
+
+    - name: Disallow HTTP again
+      ufw:
+        rule: deny
+        name: WWW Full
+
+  - name: Start the systemd services
+    become: yes
+    block:
+    - name: Set the UFW rules for docker
+      ufw:
+        rule: allow
+        from: '{{ docker_ip.stdout }}'
+
+    - name: Start Jupyter
+      systemd:
+        name: jupyterhub
+        state: started
+        enabled: yes
+
+    - name: UFW Allow HTTP and HTTPs
+      ## See: /etc/ufw/applications.d/ufw-webserver
+      ufw:
+        rule: allow
+        name: WWW Full
+
         
-        [Service]
-        TODO: FINISH THIS
-        Environment="PATH=/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin:%h/.local/bin:%h/bin:%h/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-        ExecStart=/opt/jupyterhub/jupyterhub-pharma253/venv_jupyter_metrics/bin/jupyterhub --config="/opt/jupyterhub/jupyterhub-pharma253/jupyterhub_config.py"
-        WorkingDirectory=/opt/jupyterhub/jupyterhub-pharma253
-        Restart=on-failure
-        RestartSec=60
-        User=root
-        KillMode=process
-        
-        [Install]
-        WantedBy=multi-user.target        
-      
