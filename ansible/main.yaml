@@ -1,33 +1,32 @@
 # ansible-playbook -i inventory.yaml main.yaml --ask-become-pass --extra-vars="install_target=/dev/sdc"
-- name: Create Proxy OS
-  import_playbook: playbooks/create-proxy-os.yaml
+# - name: Create Proxy OS
+#   import_playbook: playbooks/create-proxy-os.yaml
 
-- name: Setup and Configure Proxy
-  gather_facts: no
-  hosts: proxydevice
-  tasks:
-  - name: Wait for Proxy device network device
-    wait_for_connection:
-      delay: 60             ## initial delay
-      sleep: 20             ## check every
-      connect_timeout: 8    ## try again after no response
-      timeout: 500          ## max wait
+# - name: Setup and Configure Proxy
+#   gather_facts: no
+#   hosts: proxydevice
+#   tasks:
+#   - name: Wait for Proxy device network device
+#     wait_for_connection:
+#       delay: 60             ## initial delay
+#       sleep: 20             ## check every
+#       connect_timeout: 8    ## try again after no response
+#       timeout: 500          ## max wait
 
-  - name: Wait for DietPi global setup to complete
-    wait_for:
-      path: /boot/dietpi/.install_stage
-      search_regex: 2       ## indicates installation complete
+#   - name: Wait for DietPi global setup to complete
+#     wait_for:
+#       path: /boot/dietpi/.install_stage
+#       search_regex: 2       ## indicates installation complete
 
-- name: Configure Firewall, Backend Services
-  import_playbook: playbooks/configure-proxy.yaml
+# - name: Configure Firewall, Backend Services
+#   import_playbook: playbooks/configure-proxy.yaml
 
-- name: Install SSH proxy tunnel
-  import_playbook: playbooks/proxy-service-ssh.yaml
-
+# - name: Install SSH proxy tunnel
+#   import_playbook: playbooks/proxy-service-ssh.yaml
 
 #   - name: Install Proxy Server
 #     import_playbook: playbooks/install-proxy-device.yaml
 #     when: use_proxy_server
 
-# - name: Setup and Configure JupyterHub
-#   import_playbook: playbooks/setup-jupyterhub-device.yaml
+ - name: Setup and Configure JupyterHub
+   import_playbook: playbooks/setup-jupyterhub-device.yaml
