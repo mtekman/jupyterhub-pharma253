@@ -62,7 +62,7 @@ c.JupyterHub.spawner_class.user_profiles = {
     ##
     "default" : {
         "allowed_resources": ["Normal", "Tiny", "Small", "Large", "Extreme"],
-        "allowed_docker": ["bash-python-r", "SingleUser", "BaseNotebook", "DataScience"],
+        "allowed_docker": ["bash-python-r", "SingleUser", "BaseNotebook"],
         "host_homedir_format_string" : "/media/daten/{username}",
         ## maximum guaranteed resources for default users
         ## - if the requested are smaller than the resource profile
@@ -70,12 +70,13 @@ c.JupyterHub.spawner_class.user_profiles = {
         "max_preallocate" : {"cpu_guarantee" : 5, "mem_guarantee": 10 }},
 
     ## User overrides
-    "memo" : { "allowed_resources" : ["Normal", "Tiny", "Small"],
-               ##"allowed_docker" : ["SingleUser"],  ## must be an array, not string or tuple
-               "max_preallocate" : {"cpu_guarantee" : 2, "mem_guarantee": 4 },
-              ##"host_homedir_format_string" : "/opt/jupyterhub/user_home/jupyter_users/{username}"}
-              ## Note that conda only works when home directories are set...
-              "host_homedir_format_string" : "/home/{username}"}
+    "memo" : {
+        "allowed_resources" : ["Normal", "Tiny", "Small"],
+        "allowed_docker" : ["bash-python-r", "SingleUser"],  ## must be an array, not string or tuple
+        "max_preallocate" : {"cpu_guarantee" : 2, "mem_guarantee": 4 },
+        ##"host_homedir_format_string" : "/opt/jupyterhub/user_home/jupyter_users/{username}"}
+        ## Note that conda only works when home directories are set...
+        "host_homedir_format_string" : "/home/{username}"}
     ##
     ## Note: The allowed profile with the largest RAM and largest
     ## number of CPUs is the upper limit on what the HTML sliders will
