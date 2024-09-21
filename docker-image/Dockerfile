@@ -14,7 +14,9 @@ RUN apt-get update --yes && \
 ## We need to expose mamba at the user level
 ## This is installed at: /opt/conda/bin/mamba
 ## Users 
-COPY user_instructions.sh /etc/profile.d/02-user-instructions.sh
+COPY user_instructions.sh /etc/profile.d/03-user-instructions.sh
+## We initialize it here
+COPY shared_mamba_init.sh /etc/profile.d/02-mamba-init.sh
 
 # Add a "USER root" statement followed by RUN statements to install system packages using apt-get,
 # change file permissions, etc.
