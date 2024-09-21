@@ -156,6 +156,15 @@
         line: "{{ item.set }}"
         backup: no
 
+    - name: Set systemwide conda params
+      when: use_systemwide_conda
+      lineinfile:
+        path: '{{ dir_pharma }}/jupyterhub_config.py'
+        state: present
+        regexp: '    "/opt/shared_micromamba/"     ## shared conda envs'
+        line:   '    "{{ systemwide_conda_dir }}"     ## shared conda envs'
+        backup: no
+
     - name: Set https params
       when: not use_proxy
       loop:
@@ -401,14 +410,12 @@
          proto: tcp
 
     - name: UFW Allow HTTPS on intranet
-      ## See: /etc/ufw/applications.d/ufw-webserver
       ufw:
          rule: allow
          src: '{{ intranet_ip.stdout }}'
          to_ip: '0.0.0.0/0'  ## ipv4 only
          port: 443
          proto: tcp
-
 
   - name: Start Jupyter
     become: yes

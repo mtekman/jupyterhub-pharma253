@@ -18,7 +18,8 @@ c.Authenticator.admin_users = ['memo']
 ## Users can read/write to their home directories, but here we set other locations
 ## which all users can access in their volumes which are read only.
 c.JupyterHub.spawner_class.volumes_ro = [
-    "/media/daten/"                ## share whole directory
+    "/opt/shared_micromamba/"     ## shared conda envs
+    ##"/media/daten/"                ## share whole directory
     ##"/media/daten/software/",    ## or share specific ones
     ##"/media/daten/genomes/"
 ]
