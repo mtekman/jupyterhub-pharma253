@@ -107,6 +107,10 @@
 
   - name: Configure Jupyterhub Pharma
     block:
+    - name: Copy params from backup
+      copy:
+        src: '{{ dir_pharma }}/template_jupyterhub_config.py'
+        dest: '{{ dir_pharma }}/jupyterhub_config.py'
     - name: Set required params
       ## We won't do the full configuration, just a working one.
       loop:
@@ -122,7 +126,7 @@
       ## Replace the default user "memo" too and his default image
       - { find: '^    "memo" : {',
            set:  '    "tekman2" : {' }
-      - { find: '^        "host_homedir_format_string" : .*',
+      - { find: '^        "host_homedir_format_string" : "/media/daten/{username}",',
            set:  '        "host_homedir_format_string" : "{{ home_dir }}/{username}",' }
       ## Set Read-only volumes
       lineinfile:
