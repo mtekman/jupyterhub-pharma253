@@ -1,0 +1,12 @@
+# This is the mamba RC file copied into every user directory
+# to allow users to have access to shared conda environments
+pkgs_dirs:
+  - $HOME/micromamba/pkgs
+  - $HOME/mamba/pkgs
+  - $HOME/miniconda/pkgs
+  - /opt/shared_micromamba/pkgs
+envs_dirs:
+  - $HOME/mamba/envs
+  - $HOME/miniconda/envs
+  - $HOME/micromamba/envs
+  - /opt/shared_micromamba/envs

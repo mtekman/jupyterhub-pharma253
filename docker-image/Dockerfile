@@ -54,3 +54,7 @@ RUN rm /opt/conda/.condarc
 
 ## Remove annoying banner
 ## RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
+
+## Copy over the mamba RC containing the shared installation
+COPY shared_mamba.rc  /home/${NB_USER}/.mambarc
+

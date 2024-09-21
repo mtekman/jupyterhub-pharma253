@@ -280,6 +280,15 @@
       shell:
          /tmp/install.sh < /dev/random
 
+    - name: Set shared conda rc in docker image
+      become: yes
+      lineinfile:
+        path: '{{ dir_pharma }}/docker-image/shared_mamba.rc'
+        state: present
+        regexp: '/opt/shared_micromamba/'
+        line: '{{ systemwide_conda_dir }}'
+        backup: no
+
   - name: Post Docker Tasks
     become: yes
     block:
