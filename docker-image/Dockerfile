@@ -52,3 +52,5 @@ ENV R_LIBS_USER="/home/${NB_USER}"/R
 ## Finally add the right channels to the condarc, and remove the systemrc
 RUN rm /opt/conda/.condarc
 
+## Remove annoying banner
+## RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"

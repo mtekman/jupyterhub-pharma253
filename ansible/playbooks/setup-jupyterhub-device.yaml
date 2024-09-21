@@ -261,7 +261,7 @@
         rule: deny
         name: WWW Full
 
-  - name: Start the systemd services
+  - name: Post Docker Tasks
     become: yes
     block:
     - name: Set the UFW rules for docker
@@ -269,16 +269,42 @@
         rule: allow
         from: '{{ docker_ip.stdout }}'
 
-    - name: Start Jupyter
-      systemd:
-        name: jupyterhub
-        state: started
-        enabled: yes
+    - name: Build Docker Image
+      shell:
+        chdir: '{{ dir_pharma }}'
+        cmd: docker buildx build -t bash-python-r docker-image
+      ##community.docker.docker_image_build:
+      ##  tag: bash-python-r
+      ##  path: '{{ dir_pharma }}/docker-image'
 
+  - name: Admin Tasks
+    become: yes
+    block:
+    - name: Copy Pharma tasks
+      copy:
+        src: '{{ dir_pharma }}/system/etc/profile.d/pharma_admin.sh'
+        dest: '/etc/profile.d/pharma_admin.sh'
+        mode: a+wrx
+    - name: Copy User tasks
+      copy:
+        src: '{{ dir_pharma }}/system/usr/local/sbin/add_new_pharma_user.sh'
+        dest: '/usr/local/sbin/add_new_pharma_user.sh'
+        mode: a+wrx
+
+
+  - name: Finally Start the Server
+    become: yes
+    block:
     - name: UFW Allow HTTP and HTTPs
       ## See: /etc/ufw/applications.d/ufw-webserver
       ufw:
         rule: allow
         name: WWW Full
+
+    - name: Start Jupyter
+      systemd:
+        name: jupyterhub
+        state: started
+        enabled: yes
 
         

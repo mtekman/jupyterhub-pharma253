@@ -8,10 +8,10 @@ GRN='\o033[1;32m'
 
 cat << "EOF" | sed "s|%C|${CYN}|g;s|%R|${RST}|g;s|%G|${GRN}|g;s|%P|${PPL}|g;s|%Y|${YLW}|g"
 
-  %C╔═══════%R %YWelcome to your Docker Container%R %C═══════╗%R
+  %C╔═══════%R %PWelcome to your Docker Container%R %C═══════╗%R
   %C║%R For information on how to install and packages %C║%R
   %C║%R manage packages in your conda environments,    %C║%R
-  %C║%R please type: %Yhelpme%R                            %C║%R
+  %C║%R please type: %Phelpme%R                            %C║%R
   %C╚════════════════════════════════════════════════╝%R
 
 EOF
@@ -28,7 +28,7 @@ We need to first initialise mamba and then load ('source') it
      source ~/.bashrc%R
 
 Now we can use it to list our environments
-     ('%Yhelpme list my environments%R')
+     ('%Phelpme list my environments%R')
 
 "
            ;;
@@ -41,10 +41,10 @@ type:
      %Pmamba env list%R
 
 If you have environments listed there, then you can activate them
-    ('%Yhelpme activate an environment%R')
+    ('%Phelpme activate an environment%R')
 
 If you don't have environments listed there, then you can create a new one
-    ('%Yhelpme create a new environment%R')
+    ('%Phelpme create a new environment%R')
 
 "
            ;;
@@ -57,14 +57,14 @@ initialised. Then you can create a new environment by typing:
       %Pmamba create --name mynewenvironment%R
 
 This creates a blank environment with the desired name. You can then
-activate this environment ('%Yhelpme activate an environment%R')
+activate this environment ('%Phelpme activate an environment%R')
 
 "
            ;;
        "activate"*)
            echo "\
 
-First list your environments to get the name ('%Yhelpme list my environments%R').
+First list your environments to get the name ('%Phelpme list my environments%R').
 If for example you are offered an environment such as
 
       /media/daten/user/micromamba/envs/user_r
@@ -74,7 +74,7 @@ then you can activate that environment by typing:
       %Pmamba activate user_r%R
 
 You can now search for packages to install in this environment
-     ('%Yhelpme search for packages%R')
+     ('%Phelpme search for packages%R')
 
 If you wish to deactivate the environment you are in, you can type:
 
@@ -110,20 +110,20 @@ Name                   Version Build             Channel  Subdir
 This means that we can download DESeq2 from the bioconda. We can then use this
 information to install DESeq2 to a specific environment.
 
-     ('%Yhelpme install conda packages%R')
+     ('%Phelpme install conda packages%R')
 
 If your package cannot be found in Conda, then that means you have to install
 it manually
 
-     ('%Yhelpme manually install R packages%R') or
-     ('%Yhelpme manually install Python packages%R')
+     ('%Phelpme manually install R packages%R') or
+     ('%Phelpme manually install Python packages%R')
      "
            ;;
        "install conda"*)
            echo "\
 
-To install a conda package that you've already searched for ('%Yhelpme search for packages%R'),
-you first need to activate the environment ('%Yhelpme activate an environment%R') you want to
+To install a conda package that you've already searched for ('%Phelpme search for packages%R'),
+you first need to activate the environment ('%Phelpme activate an environment%R') you want to
 use, and then install it. For example, if we want the latest version of 'bioconductor-deseq',
 then one would type:
 
@@ -138,13 +138,13 @@ environment, then you can add them to the end of the command:
 
 The packages should then be installed into the environment and you now only need to
 install kernels for Jupyter to see them.
-     ('%Yhelpme install kernels%R')
+     ('%Phelpme install kernels%R')
 "
            ;;
        "install kernels"*)
            echo "\
 At this point you should have packages that you've installed into a conda environment
-('%Yhelpme install conda packages%R'). Jupyter cannot see them yet, since it needs
+('%Phelpme install conda packages%R'). Jupyter cannot see them yet, since it needs
 to know where these 'kernels' are. To do so you need to decide if you will be
 working in R, Python, or Bash.
 
@@ -168,7 +168,7 @@ working in R, Python, or Bash.
 
    If working in bash, the kernel is already installed and you just need to
    activate it in the document
-          ('%Yhelpme with bash kernels%R')
+          ('%Phelpme with bash kernels%R')
 "
            ;;
        "with bash"*)
@@ -187,9 +187,9 @@ other environments into the same notebook by
            ;;
         "manually install R"*)
            echo "\
-If you searched for an R package in conda ('%Yhelpme search for packages%R') and found
+If you searched for an R package in conda ('%Phelpme search for packages%R') and found
 nothing for your package of choice, then you need to manually install it into
-the environment ('%Yhelpme create an environment%R').
+the environment ('%Phelpme create an environment%R').
 
 First, activate your environment:
 
@@ -217,15 +217,15 @@ For normal R packages from CRAN (e.g. 'Hmisc')
 
 After the packages finish installing or building (this can take some
 time), you will then need to install a kernel for it
-       ('%Yhelpme install kernels%R')
+       ('%Phelpme install kernels%R')
 
 "
            ;;
        "manually install Python"*)
            echo "\
-If you searched for a Python package in conda ('%Yhelpme search for packages%R') and found
+If you searched for a Python package in conda ('%Phelpme search for packages%R') and found
 nothing for your package of choice, then you need to manually install it into
-the environment ('%Yhelpme create an environment%R').
+the environment ('%Phelpme create an environment%R').
 
 First, activate your environment:
 
@@ -237,7 +237,7 @@ For python packages in pip (e.g. sklearn):
 
 
 After the packages finish installing, you will then need to install a kernel for it
-        ('%Yhelpme install kernels%R')
+        ('%Phelpme install kernels%R')
 "
            ;;
        "find my common"*)
@@ -268,7 +268,7 @@ You can view your commonly used packages by typing
            %Pcat ~/R_libraries.txt%R
 
 If you wish you can try to automatically install these packages into an environment
-       ('%Yhelpme install my commonly used R packages%R')
+       ('%Phelpme install my commonly used R packages%R')
 "
            )
            ;;
@@ -300,11 +300,11 @@ no packages with duplicate names. If so, manually remove them.
 
 Next steps:"
            echo "Please activate an environment
-        ('%Yhelpme activate an environment'%R')
+        ('%Phelpme activate an environment'%R')
 and then install the packages via:
           %Pmamba install -c bioconda -c conda-forge \$(cat ${attmpt}.found)%R
 you will then need to install a kernel for your environment
-        ('%Yhelpme install kernels'%R')
+        ('%Phelpme install kernels'%R')
 
 "
            ;;
@@ -334,7 +334,7 @@ you will then need to install a kernel for your environment
            echo "\
 A help info tool for %Gconda%R environments
 
-  usage: %Yhelpme%R %Ginitialise
+  usage: %Phelpme%R %Ginitialise
                 list my environments
                 activate an environment
                 create a new environment

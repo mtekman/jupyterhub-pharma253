@@ -9,6 +9,12 @@ to the users, permitting the admin allows it.
 It restricts user resources to Docker containers, whilst still
 permitting them to use their conda environments.
 
+* Easy Installation via Ansible
+
+Please refer the =ansible= folder for more instructions that should automatically perform all of the steps in
+the "Quick Start" section below.
+
+
 * Quick Start
 
 A full breakdown of the installation process can be read in the

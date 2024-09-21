@@ -1,6 +1,7 @@
 #!/bin/bash
 
 negative="\nAction: Quitting, without doing anything.\nReason:"
+HOME_ROOT=/home
 
 # Check if user has sudo privileges
 if ! [ "$EUID" -eq 0 ]; then
@@ -20,7 +21,7 @@ if [ "$realname" == "" ]; then
     exit 255
 fi
 
-homedir=/media/daten/$username;
+homedir=${HOME_ROOT}/${username};
 
 echo -e "\nThis will create a new account for\n\n              \t'${realname}'\nwith username:\t'${username}'\nwith a home at:\t'${homedir}'\n"
 read -p "Type 'YES' (in caps) to proceed: " ans
