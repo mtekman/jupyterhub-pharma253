@@ -2,6 +2,32 @@
   hosts: localhost  ##jupyter
   become: false     ## by default don't be root
   vars_files: setup_vars.yml
+    ## Private vars to populate
+    ## public_url: jupyter.example.com
+    ## proxy_remote_net: 123.123.123.123
+    ## proxy_remote_sshport: 22
+    ## admin_users: ["momo, "root"]
+    ## admin_email: "whatever@gmail.com" ## for certbot expiry warnings.
+  vars:
+    ## Dirs
+    dir_pharma: /opt/jhub/jupterhub-pharma
+    metrics_repo: git+https://github.com/mtekman/jupyterhub@sysmon
+    venv_dir: /opt/jhub/venv
+    home_dir: "/home"         ## no trailing slash
+    allow_public_access: false ## if true, open http and https to everywhere. Otherwise limit to intranet.
+    intranet_device: "eno1"
+    ## Proxy
+    use_proxy: false
+    proxy_bind_port: 58001    ## we assume jupyter and proxy bind to same port.
+    proxy_remote_user: proxy-jupyter
+    proxy_remote_pubkey_loc: /etc/ssh/proxy-jupyter_key
+    ## System Conda
+    use_systemwide_conda: true
+    systemwide_conda_dir: /opt/sharedconda
+    ## Docker
+    docker_cpuquota_perc: 69000  ## 100% * num_cores, we leave 10 cores free
+    docker_memhigh_gb: 1900      ## 230
+
   tasks:
   - name: Setup Install Directories
     become: yes
@@ -259,9 +285,11 @@
     when: use_systemwide_conda
     block:
     - name: Download and install micromamba
-      shell: |
-         curl -L micro.mamba.pm/install.sh -o /tmp/micromamba_install.sh
-         chmod +x /tmp/micromamba_install.sh
+      shell:
+        cmd: |
+          curl -L micro.mamba.pm/install.sh -o /tmp/micromamba_install.sh
+          chmod +x /tmp/micromamba_install.sh
+        creates: /tmp/micromamba_install.sh
 
     - name: Create shared directory accessible to all
       become: yes
@@ -272,26 +300,37 @@
 
     - name: Install micromamba and set default system env dir
       become: yes
-      env:
-        PREFIX_LOCATION="{{ systemwide_conda_dir }}"
-        BIN_FOLDER="/usr/local/bin"
-        INIT_SHELL="yes"
-        CONDA_FORGE_YES="no"
+      environment:
+        PREFIX_LOCATION: "{{ systemwide_conda_dir }}"
+        BIN_FOLDER: "/usr/local/bin"
+        INIT_SHELL: "yes"
+        CONDA_FORGE_YES: "no"
       shell:
-         /tmp/install.sh < /dev/random
+        cmd: |
+          /tmp/micromamba_install.sh < /dev/random
+        creates: "{{ systemwide_conda_dir }}/etc/profile.d/micromamba.sh"
 
     - name: Set shared conda rc in docker image
       become: yes
+      loop:
+      - { find: '^  - /opt/shared_micromamba/pkgs',
+           set:  '  - {{ systemwide_conda_dir }}/pkgs' }
+      - { find: '^  - /opt/shared_micromamba/envs',
+           set:  '  - {{ systemwide_conda_dir }}/envs' }
       lineinfile:
         path: '{{ dir_pharma }}/docker-image/shared_mamba.rc'
         state: present
-        regexp: '/opt/shared_micromamba/'
-        line: '{{ systemwide_conda_dir }}'
+        regexp: '{{ item.find }}'
+        line: '{{ item.set }}'
         backup: no
 
   - name: Post Docker Tasks
     become: yes
     block:
+    - name: Get Docker subnet again if lost
+      shell: ip -br a | grep "docker0" | awk '{print $3}'
+      register: docker_ip
+
     - name: Set the UFW rules for docker
       ufw:
         rule: allow
@@ -319,18 +358,61 @@
         dest: '/usr/local/sbin/add_new_pharma_user.sh'
         mode: a+wrx
 
-
-  - name: Finally Start the Server
+  - name: Configure Public Access
+    when: allow_public_access
     become: yes
     block:
-    - name: UFW Allow HTTP and HTTPs
+    - name: UFW Allow HTTP everywhere
       ## See: /etc/ufw/applications.d/ufw-webserver
       ufw:
-        rule: allow
-        name: WWW Full
+         rule: allow
+         port: 80
+         proto: tcp
+         src: '0.0.0.0/0'
+         to_ip: '0.0.0.0/0'  ## ipv4 only
 
-    - name: Start Jupyter
-      systemd:
-        name: jupyterhub
-        state: started
-        enabled: yes
+    - name: UFW Allow HTTPS everywhere
+      ## See: /etc/ufw/applications.d/ufw-webserver
+      ufw:
+         rule: allow
+         port: 443
+         proto: tcp
+         src: '0.0.0.0/0'
+         to_ip: '0.0.0.0/0'  ## ipv4 only
+
+
+  - name: Configure Intranet Access Only
+    when: not allow_public_access
+    become: yes
+    block:
+    - name: Extract the local subnet
+      shell: ip -br a | grep "{{ intranet_device }}" | awk '{print $3}'
+      ## If this command fails, just set intranet_ip to
+      ## 123.123.0.1/16
+      register: intranet_ip
+
+    - name: UFW Allow HTTP on intranet
+      ## See: /etc/ufw/applications.d/ufw-webserver
+      ufw:
+         rule: allow
+         src: '{{ intranet_ip.stdout }}'
+         to_ip: '0.0.0.0/0'  ## ipv4 only
+         port: 80
+         proto: tcp
+
+    - name: UFW Allow HTTPS on intranet
+      ## See: /etc/ufw/applications.d/ufw-webserver
+      ufw:
+         rule: allow
+         src: '{{ intranet_ip.stdout }}'
+         to_ip: '0.0.0.0/0'  ## ipv4 only
+         port: 443
+         proto: tcp
+
+
+  - name: Start Jupyter
+    become: yes
+    systemd:
+      name: jupyterhub
+      state: started
+      enabled: yes
