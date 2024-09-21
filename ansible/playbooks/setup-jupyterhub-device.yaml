@@ -255,6 +255,31 @@
         rule: deny
         name: WWW Full
 
+  - name: Install a systemwide conda installation
+    when: use_systemwide_conda
+    block:
+    - name: Download and install micromamba
+      shell: |
+         curl -L micro.mamba.pm/install.sh -o /tmp/micromamba_install.sh
+         chmod +x /tmp/micromamba_install.sh
+
+    - name: Create shared directory accessible to all
+      become: yes
+      file:
+        path: '{{ systemwide_conda_dir }}'
+        state: directory
+        mode: a+wx
+
+    - name: Install micromamba and set default system env dir
+      become: yes
+      env:
+        PREFIX_LOCATION="{{ systemwide_conda_dir }}"
+        BIN_FOLDER="/usr/local/bin"
+        INIT_SHELL="yes"
+        CONDA_FORGE_YES="no"
+      shell:
+         /tmp/install.sh < /dev/random
+
   - name: Post Docker Tasks
     become: yes
     block:
@@ -300,5 +325,3 @@
         name: jupyterhub
         state: started
         enabled: yes
-
-        
