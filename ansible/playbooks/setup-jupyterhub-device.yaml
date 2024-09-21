@@ -28,6 +28,8 @@
       - npm
       - node-configurable-http-proxy
       - ufw
+      - ca-certificates
+      - curl
       state: present
       update_cache: yes
 
@@ -49,14 +51,6 @@
     become: yes
     block:
     ## Instructions from: https://docs.docker.com/engine/install/debian/
-    - name: Install neccesary docker pre-packages
-      apt:
-        name:
-        - ca-certificates
-        - curl
-        state: present
-        update_cache: yes
-
     - name: Install docker keyrings
       shell:
         cmd: |
