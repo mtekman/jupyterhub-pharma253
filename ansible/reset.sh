@@ -8,10 +8,5 @@ else
     docker rmi -f bash-python-r
     systemctl stop docker
     systemctl stop docker.socket
-    ufw delete 4
-    ufw delete 4
-    ufw delete 4
-    ufw delete 4
-    ufw status
     rm -rf /opt/jhub/
 fi
