@@ -8,14 +8,15 @@
     ## proxy_remote_sshport: 22
     ## admin_users: ["momo, "root"]
     ## admin_email: "whatever@gmail.com" ## for certbot expiry warnings.
+    ## intranet_list : ["1.2.3.0/16"]
   vars:
+    user_install: jupyterinstall
     ## Dirs
     dir_pharma: /opt/jhub/jupterhub-pharma
     metrics_repo: git+https://github.com/mtekman/jupyterhub@sysmon
     venv_dir: /opt/jhub/venv
     home_dir: "/home"         ## no trailing slash
-    allow_public_access: false ## if true, open http and https to everywhere. Otherwise limit to intranet.
-    intranet_device: "eno1"
+    allow_public_access: false ## if true, open http and https to everywhere. Otherwise limit to intranet_list
     ## Proxy
     use_proxy: false
     proxy_bind_port: 58001    ## we assume jupyter and proxy bind to same port.
@@ -40,15 +41,24 @@
     }
 
   tasks:
+  - name: Create Jupyter User
+    become: yes
+    user:
+        name: jupyterinstall
+        shell: /bin/bash
+        create_home: false
+        state: present
+
   - name: Setup Install Directories
     become: yes
     shell: |
       mkdir -p {{ dir_pharma }}
       mkdir -p {{ venv_dir }}
-      chmod a+wrx {{ dir_pharma }}
-      chmod a+wrx {{ venv_dir }}
+      chown -R {{ user_install }}:{{ user_install }} {{ dir_pharma }}
+      chown -R {{ user_install }}:{{ user_install }} {{ venv_dir }}
 
   - name: Clone the repo
+    become_user: '{{ user_install }}'
     shell:
       cmd: |
         ## Shallow clone the Pharma
@@ -70,19 +80,18 @@
       state: present
       update_cache: yes
 
-  - name: Generate virtualenv for metrics repo and install it
-    block:
-    - name: Install the Jupyterhub with Metrics into venv
-      pip:
-        virtualenv: '{{ venv_dir }}'
-        virtualenv_python: python3
-        name:
-        - six
-        - '{{ metrics_repo }}'
-        - dockerspawner
-        - psutil
-        - configurable
-        - http-proxy
+  - name: Install the Jupyterhub with Metrics into venv
+    become: yes
+    pip:
+      virtualenv: '{{ venv_dir }}'
+      virtualenv_python: python3
+      name:
+      - '{{ metrics_repo }}'
+      - six
+      - dockerspawner
+      - psutil
+      - configurable
+      - http-proxy
 
   - name: Setup Docker
     become: yes
@@ -137,6 +146,7 @@
         state: stopped
 
   - name: Configure Jupyterhub Pharma
+    become_user: '{{ user_install }}'
     block:
     - name: Copy params from backup
       copy:
@@ -381,52 +391,23 @@
   - name: Configure Public Access
     when: allow_public_access
     become: yes
-    block:
-    - name: UFW Allow HTTP everywhere
-      ## See: /etc/ufw/applications.d/ufw-webserver
-      ufw:
-         rule: allow
-         port: 80
-         proto: tcp
-         src: '0.0.0.0/0'
-         to_ip: '0.0.0.0/0'  ## ipv4 only
-
-    - name: UFW Allow HTTPS everywhere
-      ## See: /etc/ufw/applications.d/ufw-webserver
-      ufw:
-         rule: allow
-         port: 443
-         proto: tcp
-         src: '0.0.0.0/0'
-         to_ip: '0.0.0.0/0'  ## ipv4 only
-
+    ufw:
+      rule: allow
+      port: 443
+      proto: tcp
+      src: '0.0.0.0/0'
+      to_ip: '0.0.0.0/0'  ## ipv4 only
 
   - name: Configure Intranet Access Only
     when: not allow_public_access
     become: yes
-    block:
-    - name: Extract the local subnet
-      shell: ip -br a | grep "{{ intranet_device }}" | awk '{print $3}'
-      ## If this command fails, just set intranet_ip to
-      ## 123.123.0.1/16
-      register: intranet_ip
-
-    - name: UFW Allow HTTP on intranet
-      ## See: /etc/ufw/applications.d/ufw-webserver
-      ufw:
-         rule: allow
-         src: '{{ intranet_ip.stdout }}'
-         to_ip: '0.0.0.0/0'  ## ipv4 only
-         port: 80
-         proto: tcp
-
-    - name: UFW Allow HTTPS on intranet
-      ufw:
-         rule: allow
-         src: '{{ intranet_ip.stdout }}'
-         to_ip: '0.0.0.0/0'  ## ipv4 only
-         port: 443
-         proto: tcp
+    loop: '{{ intranet_list }}'
+    ufw: 
+      rule: allow
+      src: '{{ item }}'
+      to_ip: '0.0.0.0/0'  ## ipv4 only
+      port: 443
+      proto: tcp
 
   - name: Set the partitioning
     become: yes
@@ -452,7 +433,6 @@
         dump: '{{ part_tmp.dump }}'
         passno: '{{ part_tmp.pass }}'
         state: mounted
-
 
   - name: Start Jupyter
     become: yes
