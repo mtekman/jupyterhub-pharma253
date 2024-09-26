@@ -27,6 +27,17 @@
     ## Docker
     docker_cpuquota_perc: 69000  ## 100% * num_cores, we leave 10 cores free
     docker_memhigh_gb: 1900      ## 230
+    ## Partitioning
+    part_userhome : {
+       src: "UUID=030789c1-5d89-4044-8255-0474df615655",
+       mnt : "/media/daten",
+       fstype: "ext4", opts: "defaults", dump: 0, pass: 2
+    }
+    part_tmp: {
+       src: "UUID=c44db4a9-0876-4887-bdee-07ddd548936a",
+       mnt: "/tmp",
+       fstype: "ext4", opts: "defaults,rw,users,noexec,nofail", dump: 0, pass: 0
+    }
 
   tasks:
   - name: Setup Install Directories
@@ -416,6 +427,32 @@
          to_ip: '0.0.0.0/0'  ## ipv4 only
          port: 443
          proto: tcp
+
+  - name: Set the partitioning
+    become: yes
+    block:
+    - name: Mount the User Directories
+      when: part_userhome is defined
+      mount:
+        src: '{{ part_userhome.src }}'
+        path: '{{ part_userhome.mnt }}'
+        fstype: '{{ part_userhome.fstype }}'
+        opts: '{{ part_userhome.opts }}'
+        dump: '{{ part_userhome.dump }}'
+        passno: '{{ part_userhome.pass }}'
+        state: mounted
+
+    - name: Mount the Temp Partition
+      when: part_tmp is defined
+      mount:
+        src: '{{ part_tmp.src }}'
+        path: '{{ part_tmp.mnt }}'
+        fstype: '{{ part_tmp.fstype }}'
+        opts: '{{ part_tmp.opts }}'
+        dump: '{{ part_tmp.dump }}'
+        passno: '{{ part_tmp.pass }}'
+        state: mounted
+
 
   - name: Start Jupyter
     become: yes
