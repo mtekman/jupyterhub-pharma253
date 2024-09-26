@@ -58,7 +58,7 @@
       chown -R {{ user_install }}:{{ user_install }} {{ venv_dir }}
 
   - name: Clone the repo
-    become_user: '{{ user_install }}'
+    become: yes
     shell:
       cmd: |
         ## Shallow clone the Pharma
