@@ -15,7 +15,6 @@
     dir_pharma: /opt/jhub/jupterhub-pharma
     metrics_repo: git+https://github.com/mtekman/jupyterhub@sysmon
     venv_dir: /opt/jhub/venv
-    home_dir: "/home"         ## no trailing slash
     allow_public_access: false ## if true, open http and https to everywhere. Otherwise limit to intranet_list
     ## Proxy
     use_proxy: false
@@ -31,7 +30,7 @@
     ## Partitioning
     part_userhome : {
        src: "UUID=030789c1-5d89-4044-8255-0474df615655",
-       mnt : "/media/daten",
+       mnt : "/media/daten",  ## no trailing slash
        fstype: "ext4", opts: "defaults", dump: 0, pass: 2
     }
     part_tmp: {
@@ -176,7 +175,7 @@
       - { find: '^    "memo" : {',
            set:  '    "tekman2" : {' }
       - { find: '^        "host_homedir_format_string" : "/media/daten/{username}",',
-           set:  '        "host_homedir_format_string" : "{{ home_dir }}/{username}",' }
+           set:  '        "host_homedir_format_string" : "{{ part_userhome.mnt }}/{username}",' }
       ## Set Read-only volumes
       lineinfile:
         path: '{{ dir_pharma }}/jupyterhub_config.py'
