@@ -112,6 +112,9 @@ else:
 ##  your "ufw status" allows the Docker subnet
 c.JupyterHub.hub_ip = '172.17.0.1' ## This corresponds to the docker0 address
 
+## All system users can login
+c.Authenticator.allow_all = True
+
 c.Spawner.default_url = '/lab'
 c.DockerSpawner.debug = True
 
