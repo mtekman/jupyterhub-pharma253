@@ -37,7 +37,10 @@
     part_tmp: {
        src: "UUID=c44db4a9-0876-4887-bdee-07ddd548936a",
        mnt: "/tmp",
-       fstype: "ext4", opts: "defaults,rw,users,noexec,nofail", dump: 0, pass: 0
+       fstype: "ext4",
+       ## Ideally we use noexec, but then Jupyter does not build...
+       ##opts: "defaults,rw,users,noexec,nofail", dump: 0, pass: 0
+       opts: "defaults", dump: 0, pass: 0
     }
 
   tasks:
@@ -70,6 +73,7 @@
     become: yes
     apt:
       name:
+      - node-less
       - virtualenv
       - pip
       - npm
@@ -82,12 +86,13 @@
 
   - name: Install the Jupyterhub with Metrics into venv
     become: yes
+    become_user: '{{ user_install }}'
     pip:
       virtualenv: '{{ venv_dir }}'
       virtualenv_python: python3
       name:
-      - '{{ metrics_repo }}'
       - six
+      - '{{ metrics_repo }}'
       - dockerspawner
       - psutil
       - configurable
