@@ -28,11 +28,11 @@ c.JupyterHub.spawner_class.resource_profiles = {
     ## These are maximum LIMITs to which a Docker Image can run.
     ## - At the same time, you can PREALLOCATE resources, see the preallocate
     ##   subentry in the user_profiles
-    "Tiny"   : {"cpu_limit": 1,  "mem_limit": 2},
-    "Small"  : {"cpu_limit": 2,  "mem_limit": 4},
-    "Normal" : {"cpu_limit": 5,  "mem_limit": 10},
-    "Large"  : {"cpu_limit": 10, "mem_limit": 40},
-    "Extreme": {"cpu_limit": 36, "mem_limit": 80}
+    ## "Tiny"   : {"cpu_limit": 1,  "mem_limit": 2},
+    ## "Small"  : {"cpu_limit": 2,  "mem_limit": 4},
+    ## "Normal" : {"cpu_limit": 5,  "mem_limit": 10},
+    "Medium"  : {"cpu_limit": 10, "mem_limit": 40},
+    "Large": {"cpu_limit": 30, "mem_limit": 100}
 }
 
 c.JupyterHub.spawner_class.docker_profiles = {
@@ -62,7 +62,7 @@ c.JupyterHub.spawner_class.user_profiles = {
     ## to the user in the selection screen.
     ##
     "default" : {
-        "allowed_resources": ["Normal", "Tiny", "Small", "Large", "Extreme"],
+        "allowed_resources": ["Medium", "Large"],
         "allowed_docker": ["bash-python-r", "SingleUser", "BaseNotebook"],
         "host_homedir_format_string" : "/media/daten/{username}",
         ## maximum guaranteed resources for default users
