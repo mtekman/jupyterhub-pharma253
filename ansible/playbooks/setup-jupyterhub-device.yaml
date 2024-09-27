@@ -139,7 +139,7 @@
         state: started
 
     - name: Extract the docker subnet
-      tags: ufw
+      tags: ufw, config
       shell: ip -br a | grep "docker0" | awk '{print $3}'
       ## If this command fails, just set docker_ip to
       ## 172.17.0.1/16
@@ -153,6 +153,7 @@
         state: stopped
 
   - name: Configure Jupyterhub Pharma
+    tags: config
     become: yes
     block:
     - name: Copy params from backup
