@@ -55,10 +55,12 @@
   - name: Setup Install Directories
     become: yes
     shell: |
-      mkdir -p {{ dir_pharma }}
-      mkdir -p {{ venv_dir }}
-      chown -R {{ user_install }}:{{ user_install }} {{ dir_pharma }}
-      chown -R {{ user_install }}:{{ user_install }} {{ venv_dir }}
+      mkdir -p '{{ dir_pharma }}'
+      mkdir -p '{{ venv_dir }}'
+      chown -R '{{ user_install }}:{{ user_install }}' '{{ dir_pharma }}'
+      chown -R '{{ user_install }}:{{ user_install }}' '{{ venv_dir }}'
+      chmod u+wrx '{{ dir_pharma }}'
+      chmod u+wrx '{{ venv_dir }}'
 
   - name: Clone the repo
     become: yes
@@ -73,6 +75,7 @@
     become: yes
     apt:
       name:
+      - acl ## for become_user
       - node-less
       - virtualenv
       - pip
@@ -86,7 +89,6 @@
 
   - name: Install the Jupyterhub with Metrics into venv
     become: yes
-    become_user: '{{ user_install }}'
     pip:
       virtualenv: '{{ venv_dir }}'
       virtualenv_python: python3
@@ -138,6 +140,7 @@
         state: started
 
     - name: Extract the docker subnet
+      tags: ufw
       shell: ip -br a | grep "docker0" | awk '{print $3}'
       ## If this command fails, just set docker_ip to
       ## 172.17.0.1/16
@@ -151,7 +154,7 @@
         state: stopped
 
   - name: Configure Jupyterhub Pharma
-    become_user: '{{ user_install }}'
+    become: yes
     block:
     - name: Copy params from backup
       copy:
@@ -286,6 +289,7 @@
           WantedBy=multi-user.target
 
   - name: Check if certificate already installed
+    tags: ufw
     become: yes
     stat:
       path: '/etc/letsencrypt/live/{{ public_url }}/fullchain.pem'
@@ -302,6 +306,7 @@
         update_cache: yes
 
     - name: Temporarily allow HTTP
+      tags: ufw
       ufw:
         rule: allow
         name: WWW Full
@@ -312,6 +317,7 @@
           certbot certonly --standalone -d {{ public_url }} -m {{ admin_email }} --agree-tos
 
     - name: Disallow HTTP again
+      tags: ufw
       ufw:
         rule: deny
         name: WWW Full
@@ -363,10 +369,12 @@
     become: yes
     block:
     - name: Get Docker subnet again if lost
+      tags: ufw
       shell: ip -br a | grep "docker0" | awk '{print $3}'
       register: docker_ip
 
     - name: Set the UFW rules for docker
+      tags: ufw
       ufw:
         rule: allow
         from: '{{ docker_ip.stdout }}'
@@ -394,6 +402,7 @@
         mode: a+wrx
 
   - name: Configure Public Access
+    tags: ufw
     when: allow_public_access
     become: yes
     ufw:
@@ -405,9 +414,10 @@
 
   - name: Configure Intranet Access Only
     when: not allow_public_access
+    tags: ufw
     become: yes
     loop: '{{ intranet_list }}'
-    ufw: 
+    ufw:
       rule: allow
       src: '{{ item }}'
       to_ip: '0.0.0.0/0'  ## ipv4 only
