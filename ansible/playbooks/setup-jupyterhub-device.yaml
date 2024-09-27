@@ -352,6 +352,7 @@
         creates: "{{ systemwide_conda_dir }}/etc/profile.d/micromamba.sh"
 
     - name: Set shared conda rc in docker image
+      tags: dockerimage
       become: yes
       loop:
       - { find: '^  - /opt/shared_micromamba/pkgs',
@@ -380,6 +381,7 @@
         from: '{{ docker_ip.stdout }}'
 
     - name: Build Docker Image
+      tags: dockerimage
       shell:
         chdir: '{{ dir_pharma }}'
         cmd: docker buildx build -t bash-python-r docker-image
