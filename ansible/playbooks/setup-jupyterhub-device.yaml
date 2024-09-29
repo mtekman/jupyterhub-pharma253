@@ -429,7 +429,7 @@
   - name: Set the partitioning
     become: yes
     block:
-    - name: Mount the User Directories
+    - name: Mount the Users
       when: part_userhome is defined
       mount:
         src: '{{ part_userhome.src }}'
@@ -440,7 +440,7 @@
         passno: '{{ part_userhome.pass }}'
         state: mounted
 
-    - name: Mount the Temp Partition
+    - name: Mount the Temp
       when: part_tmp is defined
       mount:
         src: '{{ part_tmp.src }}'
