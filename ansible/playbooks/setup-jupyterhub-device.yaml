@@ -45,6 +45,7 @@
        src: "CIFS=TODO"
        mnt: "/media/backup"
        fstype: "cifs"
+       credentials: "something"
     }
 
   tasks:
@@ -472,18 +473,37 @@
     when: part_backup is defined
     become: yes
     block:
-    - name: Systemd backup service with conditional mount
+    - name: Systemd backup mount unit
+      copy:
+        dest: /etc/systemd/system/user_backup.mount
+        content: |
+          [Unit]
+          Description=Mount NAS Share
+
+          [Mount]
+          What='{{ part_backup.src }}'
+          Where='{{ part_backup.mnt }}'
+          Type='{{ part_backup.fstype }}'
+          Options='_netdev,credentials={{ part_backup.credentials }},iocharset=utf8,rw'
+
+          [Install]
+          WantedBy=multi-user.target
+
+
+    - name: Systemd backup service with mount
       copy:
         dest: /etc/systemd/system/user_backup.service
         content: |
           [Unit]
-          Description=Backup Service
-          ConditionPathIsMountPoint={{ part_backup.mnt }}
+          Description=Backup Service with mount requirement
+          Requires=user_backup.mount
+          After=user_backup.mount
           ##ConditionPathIsMountPoint={{ part_backup.mnt }}
 
           [Service]
           Type=oneshot
           ExecStart=rsync -avP '{{ part_userhome.mnt }}' '{{ part_backup.mnt }}'
+          ExecStopPost='/bin/umount {{ part_backup.mnt }}'
 
           [Install]
           WantedBy=multi-user.target
