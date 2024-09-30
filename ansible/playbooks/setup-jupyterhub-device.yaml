@@ -41,6 +41,7 @@
        ##opts: "defaults,rw,users,noexec,nofail", dump: 0, pass: 0
        opts: "defaults", dump: 0, pass: 0
     }
+    backup_calendar: 'Mon..Fri *-*-* 20:53:00'
     part_backup: {
        src: "CIFS=TODO"
        mnt: "/media/backup"
@@ -470,6 +471,7 @@
 
 
   - name: Define the Backup Service
+    tag: backup
     when: part_backup is defined
     become: yes
     block:
@@ -502,7 +504,7 @@
 
           [Service]
           Type=oneshot
-          ExecStart=rsync -avP '{{ part_userhome.mnt }}' '{{ part_backup.mnt }}'
+          ExecStart=rsync -rtuq --delete --log-file='{{ part_backup.mnt}}/_rsync.log' '{{ part_userhome.mnt }}' '{{ part_backup.mnt }}'
           ExecStopPost='/bin/umount {{ part_backup.mnt }}'
 
           [Install]
@@ -516,7 +518,7 @@
           Description=Backup timer service
 
           [Timer]
-          OnCalendar=*-*-* 03:00:00
+          OnCalendar={{ backup_calendar }}
           Persistent=true
           Unit=user_backup.service
 
