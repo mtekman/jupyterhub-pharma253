@@ -456,16 +456,16 @@
         passno: '{{ part_tmp.pass }}'
         state: mounted
 
-    - name: Mount the Backup
-      when: part_backup is defined
-      mount:
-        src: '{{ part_backup.src }}'
-        path: '{{ part_backup.mnt }}'
-        fstype: '{{ part_backup.fstype }}'
-        opts: '{{ part_backup.opts }}'
-        dump: '{{ part_backup.dump }}'
-        passno: '{{ part_backup.pass }}'
-        state: mounted
+    # - name: Mount the Backup
+    #   when: part_backup is defined
+    #   mount:
+    #     src: '{{ part_backup.src }}'
+    #     path: '{{ part_backup.mnt }}'
+    #     fstype: '{{ part_backup.fstype }}'
+    #     opts: '{{ part_backup.opts }}'
+    #     dump: '{{ part_backup.dump }}'
+    #     passno: '{{ part_backup.pass }}'
+    #     state: mounted
 
 
   - name: Define the Backup Service
@@ -479,6 +479,7 @@
           [Unit]
           Description=Backup Service
           ConditionPathIsMountPoint={{ part_backup.mnt }}
+          ##ConditionPathIsMountPoint={{ part_backup.mnt }}
 
           [Service]
           Type=oneshot
